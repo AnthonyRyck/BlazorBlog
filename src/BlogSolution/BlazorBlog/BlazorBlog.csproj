@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>aspnet-BlazorServerMySqlTemplate-07F663C9-25A1-4467-BD59-C37F19A789EB</UserSecretsId>
+    <UserSecretsId>aspnet-BlazorBlog-07F663C9-25A1-4467-BD59-C37F19A789EB</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
