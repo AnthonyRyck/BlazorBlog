@@ -1,0 +1,56 @@
+﻿@page "/newpost"
+@attribute [Authorize(Roles = "Admin, Compisateur")]
+@inject INewPostViewModel viewModel
+
+<h3>Nouvel article</h3>
+
+<div>
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" >
+    <MudTabPanel Text="Edition" Icon="@Icons.Filled.EditNote">
+        <div class="padding-10px">
+			<EditForm 
+					EditContext="@viewModel.EditContextValidation">
+				<DataAnnotationsValidator />
+				
+				<div>
+					<div>
+						<ValidationMessage For="@(() => viewModel.ValidationPost.Titre)" />
+					</div>
+					<MudTextField @bind-Value="viewModel.ValidationPost.Titre" 
+								Label="Titre" 
+								Variant="Variant.Outlined"></MudTextField>
+				</div>
+				
+				<div>
+					<MudTextField T="string" 
+								Label="Article" 
+								Variant="Variant.Outlined" 
+								@bind-Text="viewModel.ValidationPost.Content"
+								Lines="20" />
+				</div>
+				<MudFab StartIcon="@Icons.Filled.Save" 
+						Label="Enregistrer"
+						OnClick="@viewModel.SavePost" />
+
+				<MudFab StartIcon="@Icons.Filled.Publish" 
+						Label="Publier"
+						OnClick="@viewModel.PublishPost" />
+			</EditForm>
+		</div>
+    </MudTabPanel>
+
+    <MudTabPanel Text="Preview" Icon="@Icons.Filled.RemoveRedEye">
+        <MudMarkdown Value="@viewModel.ValidationPost.Content" 
+						CodeBlockTheme="CodeBlockTheme.AtomOneDark" />
+    </MudTabPanel>
+</MudTabs>
+</div>
+
+@code {
+
+	protected override void OnInitialized()
+	{
+		viewModel.SetStateHasChanged(StateHasChanged);
+		base.OnInitialized();
+	}
+}

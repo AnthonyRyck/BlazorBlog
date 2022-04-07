@@ -8,8 +8,7 @@ namespace BlazorBlog.Data
 	public enum Role
 	{
 		SansRole,
-		Member,
-		Manager,
+		Compositeur,
 		Admin
 	}
 }

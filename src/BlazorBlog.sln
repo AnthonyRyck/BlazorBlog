@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBlog", "BlazorBlog\Bl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shared", "_Shared", "{41968463-3080-4AFC-8414-0B75F94D40EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorBlog.AccessData", "BlazorBlog.AccessData\BlazorBlog.AccessData.csproj", "{17DAAFF0-23A9-43DA-A0FF-89B0A74C4DA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBlog.AccessData", "BlazorBlog.AccessData\BlazorBlog.AccessData.csproj", "{17DAAFF0-23A9-43DA-A0FF-89B0A74C4DA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorBlog.Core", "BlazorBlog.Core\BlazorBlog.Core.csproj", "{481D4C8C-EA6A-49CE-AD60-0B6EFE3E36F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBlog.Core", "BlazorBlog.Core\BlazorBlog.Core.csproj", "{481D4C8C-EA6A-49CE-AD60-0B6EFE3E36F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

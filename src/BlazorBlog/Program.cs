@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 using System.Globalization;
 using MudBlazor.Services;
 using BlazorBlog.AccessData;
+using BlazorBlog.ViewModels;
+using MudBlazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +46,9 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 // Service de l'application
 builder.Services.AddSingleton(new BlogContext(connectionDb));
 builder.Services.AddMudServices();
+builder.Services.AddMudMarkdownServices();
+
+builder.Services.AddScoped<INewPostViewModel, NewPostViewModel>();
 
 var app = builder.Build();
 
