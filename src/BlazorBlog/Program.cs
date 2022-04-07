@@ -3,6 +3,7 @@ using BlazorBlog.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +34,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 	.AddRoles<IdentityRole>()
 	.AddEntityFrameworkStores<ApplicationDbContext>();
+
+// Pour les tables "blogs"
+//builder.Services.AddDbContextPool<blogContext>(opt => opt.UseMySql(connectionDb, ServerVersion.AutoDetect(connectionDb)));
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -78,14 +82,23 @@ var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 using (var scope = scopeFactory.CreateScope())
 {
 	var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-	var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-	var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+	//var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+	//var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-	// Vrai si la base de données est créée, false si elle existait déjà.
-	if (db.Database.EnsureCreated())
-	{
-		DataInitializer.InitData(roleManager, userManager).Wait();
-	}
+    // Vrai si la base de donnees est a creer, false si elle existait deja.
+    if (db.Database.EnsureCreated())
+    {
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+		// Création des tables pour le blog
+		//var dbContextBlog = scope.ServiceProvider.GetRequiredService<blogContext>();
+		//var databaseCreator = dbContextBlog.GetService<IRelationalDatabaseCreator>();
+		//databaseCreator.CreateTables();
+
+		// Ajout dans la base de l'utilisateur "root"
+		await DataInitializer.InitData(roleManager, userManager);
+    }
 }
 
 // Pour les logs.
