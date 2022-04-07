@@ -4,7 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-BlazorSvrMySqlAuth-25067E44-C373-45CB-BDDF-8D33C1336C31</UserSecretsId>
+    <UserSecretsId>BlazorBlog-25067E44-C373-45CB-BDDF-8D33C1336C31</UserSecretsId>
+    <Configurations>Debug;Release;RELEASEDOCKER</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
