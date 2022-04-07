@@ -16,7 +16,7 @@ namespace BlazorBlog.AccessData
         /// Permet de créer les tables pour le blog
         /// </summary>
         /// <returns></returns>
-        public async Task CreateTables(string pathSql)
+        public async Task CreateTablesAsync(string pathSql)
         {
             try
             {

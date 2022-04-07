@@ -6,6 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Script\BlogDb.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Script\BlogDb.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="MySql.Data" Version="8.0.28" />
 	</ItemGroup>

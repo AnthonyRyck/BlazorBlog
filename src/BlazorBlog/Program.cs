@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Globalization;
 using MudBlazor.Services;
+using BlazorBlog.AccessData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,9 +25,9 @@ var builder = WebApplication.CreateBuilder(args);
                             .Replace("YOURDB", dbName)
                             .Replace("YOURDATABASE", databaseAddress);
 #elif DEBUG
-string connectionDb = "server=127.0.0.1;user id=root;password=PassBlogDb;database=blogblazordb";
+	string connectionDb = "server=127.0.0.1;user id=root;password=PassBlogDb;database=blogblazordb";
 #else
-string connectionDb = builder.Configuration.GetConnectionString("MySqlConnection");
+	string connectionDb = builder.Configuration.GetConnectionString("MySqlConnection");
 #endif
 						
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -36,14 +37,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 	.AddRoles<IdentityRole>()
 	.AddEntityFrameworkStores<ApplicationDbContext>();
 
-// Pour les tables "blogs"
-//builder.Services.AddDbContextPool<blogContext>(opt => opt.UseMySql(connectionDb, ServerVersion.AutoDetect(connectionDb)));
-
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
-
+// Service de l'application
+builder.Services.AddSingleton(new BlogContext(connectionDb));
 builder.Services.AddMudServices();
 
 var app = builder.Build();
@@ -86,8 +85,6 @@ var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 using (var scope = scopeFactory.CreateScope())
 {
 	var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-	//var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-	//var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
     // Vrai si la base de donnees est a creer, false si elle existait deja.
     if (db.Database.EnsureCreated())
@@ -95,13 +92,13 @@ using (var scope = scopeFactory.CreateScope())
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-		// Création des tables pour le blog
-		//var dbContextBlog = scope.ServiceProvider.GetRequiredService<blogContext>();
-		//var databaseCreator = dbContextBlog.GetService<IRelationalDatabaseCreator>();
-		//databaseCreator.CreateTables();
-
 		// Ajout dans la base de l'utilisateur "root"
 		await DataInitializer.InitData(roleManager, userManager);
+
+        var blogCtx = scope.ServiceProvider.GetService<BlogContext>();
+
+		string pathSql = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Script", "BlogDb.sql");
+		await blogCtx.CreateTablesAsync(pathSql);
     }
 }
 

@@ -23,4 +23,9 @@
     <PackageReference Include="Serilog.Sinks.MySQL" Version="4.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorBlog.AccessData\BlazorBlog.AccessData.csproj" />
+    <ProjectReference Include="..\BlazorBlog.Core\BlazorBlog.Core.csproj" />
+  </ItemGroup>
+
 </Project>
