@@ -5,8 +5,6 @@ namespace BlazorBlog.ViewModels
 {
 	public interface INewPostViewModel
 	{
-		
-
 		/// <summary>
 		/// Entité de validation d'un post.
 		/// </summary>
@@ -16,11 +14,6 @@ namespace BlazorBlog.ViewModels
 		/// Permet la validation du Forms
 		/// </summary>
 		EditContext EditContextValidation { get; set; }
-
-		/// <summary>
-		/// Pour la validation d'un post
-		/// </summary>
-		Task OnValidSubmitPost();
 
 		/// <summary>
 		/// Sauvegarde le post ou ses changements
@@ -33,10 +26,5 @@ namespace BlazorBlog.ViewModels
 		/// </summary>
 		/// <returns></returns>
 		Task PublishPost();
-
-		/// <summary>
-		/// Permet au ViewModel d'indiquer un changement.
-		/// </summary>
-		void SetStateHasChanged(Action state);
 	}
 }

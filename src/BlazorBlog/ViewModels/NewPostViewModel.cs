@@ -2,16 +2,17 @@
 using BlazorBlog.Core;
 using BlazorBlog.ModelsValidation;
 using Microsoft.AspNetCore.Components.Forms;
+using MudBlazor;
 
 namespace BlazorBlog.ViewModels
 {
 	public class NewPostViewModel : INewPostViewModel
 	{
-		private Action StateHasChanged;
-		private BlogContext ContextBlog;
+		private readonly BlogContext ContextBlog;
 		private Post PostEnCours;
+		private readonly ISnackbar Snack;
 
-		public NewPostViewModel(BlogContext blogContext)
+		public NewPostViewModel(BlogContext blogContext, ISnackbar snackbar)
 		{
 			ContextBlog = blogContext;
 			PostEnCours = new Post()
@@ -20,6 +21,7 @@ namespace BlazorBlog.ViewModels
 			};
 			ValidationPost = new PostValidation();
 			EditContextValidation = new EditContext(ValidationPost);
+			Snack = snackbar;
 		}
 
 		#region INewPostViewModel
@@ -27,35 +29,7 @@ namespace BlazorBlog.ViewModels
 		public PostValidation ValidationPost { get; set; }
 
 		public EditContext EditContextValidation { get; set; }
-
-
-		public async Task OnValidSubmitPost()
-		{
-			// Faire la sauvegarde dans la base de données
-			try
-			{
-				// Post pas encore sauvegardé en base
-				if(PostEnCours.Id == -1)
-				{
-					PostEnCours = ValidationPost.ToPost(new Guid());
-					await ContextBlog.AddPostAsync(PostEnCours);
-				}
-				else
-				{
-					PostEnCours.Content = ValidationPost.Content;
-					PostEnCours.Title = ValidationPost.Titre;
-					PostEnCours.UpdatedAt = DateTime.Now;
-					await ContextBlog.UpdatePostAsync(PostEnCours);
-				}
-			}
-			catch (Exception ex)
-			{
-				
-			}
-
-			StateHasChanged.Invoke();
-		}
-
+		
 
 		public async Task SavePost()
 		{
@@ -83,7 +57,8 @@ namespace BlazorBlog.ViewModels
 				}
 				catch (Exception ex)
 				{
-
+					Snack.Add("Erreur sur la sauvegarde du post", Severity.Error);
+					Log.Error(ex, "NewPostViewModel - SavePost");
 				}
 			}
 		}
@@ -116,16 +91,12 @@ namespace BlazorBlog.ViewModels
 				}
 				catch (Exception ex)
 				{
-
+					Snack.Add("Erreur sur la publication du post", Severity.Error);
+					Log.Error(ex, "NewPostViewModel - PublishPost");
 				}
 			}
 		}
 
-
-		public void SetStateHasChanged(Action state)
-		{
-			StateHasChanged = state;
-		}
 
 		#endregion
 

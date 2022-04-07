@@ -45,12 +45,3 @@
     </MudTabPanel>
 </MudTabs>
 </div>
-
-@code {
-
-	protected override void OnInitialized()
-	{
-		viewModel.SetStateHasChanged(StateHasChanged);
-		base.OnInitialized();
-	}
-}
