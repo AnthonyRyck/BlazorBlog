@@ -13,7 +13,7 @@ namespace BlazorBlog.AccessData
 
 
         /// <summary>
-        /// 
+        /// Permet de créer les tables pour le blog
         /// </summary>
         /// <returns></returns>
         public async Task CreateTables(string pathSql)
@@ -56,7 +56,7 @@ namespace BlazorBlog.AccessData
         }
 
         /// <summary>
-        /// 
+        /// Execute une commande avec le retour passé.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="commandSql"></param>
