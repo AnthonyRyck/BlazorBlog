@@ -60,6 +60,7 @@ builder.Services.AddMudServices(config =>
 builder.Services.AddMudMarkdownServices();
 
 builder.Services.AddScoped<INewPostViewModel, NewPostViewModel>();
+builder.Services.AddScoped<IDisplayPostViewModel, DisplayPostViewModel>();
 
 var app = builder.Build();
 

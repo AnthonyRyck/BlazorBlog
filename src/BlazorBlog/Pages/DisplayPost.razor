@@ -1,0 +1,15 @@
+﻿@page "/post/{idPost:int}"
+@inject IDisplayPostViewModel viewModel
+
+<h3>DisplayPost</h3>
+
+@code {
+	[Parameter]
+    public int idPost { get; set; }
+    
+    protected override void OnParametersSet()
+    {
+        //ViewModel.LoadFan(idFan);
+        base.OnParametersSet();
+    }
+}
