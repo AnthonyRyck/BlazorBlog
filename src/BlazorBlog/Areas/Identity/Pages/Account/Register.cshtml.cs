@@ -18,6 +18,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using BlazorBlog.Data;
 
 namespace BlazorBlog.Areas.Identity.Pages.Account
 {
@@ -116,8 +117,15 @@ namespace BlazorBlog.Areas.Identity.Pages.Account
 				if (result.Succeeded)
 				{
 					_logger.LogInformation($"Nouvel utilisateur créé {Input.UserLogin}.");
+					await _userManager.AddToRoleAsync(user, Role.Compositeur.ToString());
 
-					await _userManager.AddToRoleAsync(user, "Member");
+					// Création du répertoire de l'utilisateur pour les images
+					string pathUser = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "images", Input.UserLogin);
+					if (!Directory.Exists(pathUser))
+					{
+						Directory.CreateDirectory(pathUser);
+					}
+
 					return LocalRedirect(returnUrl);
 
 					// *********** Pour confirmer le compte avec un mail ***********
