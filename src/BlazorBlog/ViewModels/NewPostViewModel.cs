@@ -1,18 +1,19 @@
-﻿using BlazorBlog.AccessData;
-using BlazorBlog.Core;
+﻿using BlazorBlog.Core;
 using BlazorBlog.ModelsValidation;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
+using Toolbelt.Blazor.HotKeys;
 
 namespace BlazorBlog.ViewModels
 {
-	public class NewPostViewModel : INewPostViewModel
+	public class NewPostViewModel : INewPostViewModel, IDisposable
 	{
 		private readonly BlogContext ContextBlog;
 		private Post PostEnCours;
 		private readonly ISnackbar Snack;
+		private readonly HotKeys KeysContext;
 
-		public NewPostViewModel(BlogContext blogContext, ISnackbar snackbar)
+		public NewPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys)
 		{
 			ContextBlog = blogContext;
 			PostEnCours = new Post()
@@ -22,6 +23,9 @@ namespace BlazorBlog.ViewModels
 			ValidationPost = new PostValidation();
 			EditContextValidation = new EditContext(ValidationPost);
 			Snack = snackbar;
+			KeysContext = hotKeys;
+			KeysContext.CreateContext()
+				.Add(ModKeys.Ctrl, Keys.S, SavePost, "Sauvegarde du post.", exclude: Exclude.ContentEditable);
 		}
 
 		#region INewPostViewModel
@@ -46,6 +50,7 @@ namespace BlazorBlog.ViewModels
 					{
 						PostEnCours = ValidationPost.ToPost(new Guid());
 						await ContextBlog.AddPostAsync(PostEnCours);
+						Snack.Add("Sauvegarde du post - OK", Severity.Success);
 					}
 					else
 					{
@@ -53,6 +58,7 @@ namespace BlazorBlog.ViewModels
 						PostEnCours.Title = ValidationPost.Titre;
 						PostEnCours.UpdatedAt = DateTime.Now;
 						await ContextBlog.UpdatePostAsync(PostEnCours);
+						Snack.Add($"Post mis à jour {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);
 					}
 				}
 				catch (Exception ex)
@@ -97,12 +103,15 @@ namespace BlazorBlog.ViewModels
 			}
 		}
 
-
 		#endregion
 
-		public NewPostViewModel()
+		#region IDisposable
+
+		public async void Dispose()
 		{
-			ValidationPost = new PostValidation();
+			await KeysContext.DisposeAsync();
 		}
+
+		#endregion
 	}
 }

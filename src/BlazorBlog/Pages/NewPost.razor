@@ -4,44 +4,66 @@
 
 <h3>Nouvel article</h3>
 
-<div>
-<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" >
+<div class="row">
+	<div class="col-10">
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" Outlined="true">
     <MudTabPanel Text="Edition" Icon="@Icons.Filled.EditNote">
-        <div class="padding-10px">
-			<EditForm 
-					EditContext="@viewModel.EditContextValidation">
-				<DataAnnotationsValidator />
-				
-				<div>
+        <MudPaper Elevation="3">
+			<div class="padding-10px">
+				<EditForm EditContext="@viewModel.EditContextValidation">
+					<DataAnnotationsValidator />
+					
 					<div>
-						<ValidationMessage For="@(() => viewModel.ValidationPost.Titre)" />
+						<div>
+							<ValidationMessage For="@(() => viewModel.ValidationPost.Titre)" />
+						</div>
+						<MudTextField @bind-Value="viewModel.ValidationPost.Titre" 
+									Label="Titre" 
+									Variant="Variant.Outlined"></MudTextField>
 					</div>
-					<MudTextField @bind-Value="viewModel.ValidationPost.Titre" 
-								Label="Titre" 
-								Variant="Variant.Outlined"></MudTextField>
-				</div>
-				
-				<div>
-					<MudTextField T="string" 
-								Label="Article" 
-								Variant="Variant.Outlined" 
-								@bind-Text="viewModel.ValidationPost.Content"
-								Lines="20" />
-				</div>
-				<MudFab StartIcon="@Icons.Filled.Save" 
-						Label="Enregistrer"
-						OnClick="@viewModel.SavePost" />
-
-				<MudFab StartIcon="@Icons.Filled.Publish" 
-						Label="Publier"
-						OnClick="@viewModel.PublishPost" />
-			</EditForm>
-		</div>
+					
+					<div>
+						<MudTextField T="string" 
+									Label="Article" 
+									Variant="Variant.Outlined" 
+									@bind-Text="viewModel.ValidationPost.Content"
+									Lines="20" />
+					</div>
+				</EditForm>
+			</div>
+		</MudPaper>
     </MudTabPanel>
 
     <MudTabPanel Text="Preview" Icon="@Icons.Filled.RemoveRedEye">
-        <MudMarkdown Value="@viewModel.ValidationPost.Content" 
+		 <MudPaper Elevation="5">
+			 <div class="padding-10px">
+				<MudMarkdown Value="@viewModel.ValidationPost.Content" 
 						CodeBlockTheme="CodeBlockTheme.AtomOneDark" />
+			</div>
+		</MudPaper>
     </MudTabPanel>
 </MudTabs>
+</div>
+
+	<div class="col-2">
+		<MudStack>
+			<MudButton StartIcon="@Icons.Filled.Save" 
+							Variant="Variant.Filled"
+							Color="Color.Primary"
+							OnClick="@viewModel.SavePost">Enregistrer</MudButton>
+
+			<MudButton StartIcon="@Icons.Filled.Publish" 
+					Size="Size.Small"
+					Variant="Variant.Filled"
+					Color="Color.Success"
+					OnClick="@viewModel.PublishPost">Publier</MudButton>
+
+			<div>
+				<MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">
+					Image mis en avant
+				</MudButton>
+				@*<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg" />*@
+			</div>
+		</MudStack>
+	</div>
 </div>

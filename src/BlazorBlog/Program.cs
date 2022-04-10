@@ -9,6 +9,8 @@ using MudBlazor.Services;
 using BlazorBlog.AccessData;
 using BlazorBlog.ViewModels;
 using MudBlazor;
+using Microsoft.Extensions.FileProviders;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +60,8 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
 builder.Services.AddMudMarkdownServices();
+
+builder.Services.AddHotKeys();
 
 builder.Services.AddScoped<INewPostViewModel, NewPostViewModel>();
 builder.Services.AddScoped<IDisplayPostViewModel, DisplayPostViewModel>();
@@ -129,5 +133,17 @@ Log.Logger = new LoggerConfiguration()
 	.MinimumLevel.Override("System", LogEventLevel.Warning)
 	.WriteTo.MySQL(connectionDb, "Logs")
 	.CreateLogger();
+
+// Chemin pour stocker les images
+string pathImages = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "images");
+if (!Directory.Exists(pathImages))
+    Directory.CreateDirectory(pathImages);
+
+	
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(pathImages),
+    RequestPath = "/images"
+});
 
 app.Run();

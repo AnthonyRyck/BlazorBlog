@@ -1,5 +1,4 @@
-﻿
-namespace BlazorBlog.ViewModels
+﻿namespace BlazorBlog.ViewModels
 {
 	public class DisplayPostViewModel : IDisplayPostViewModel
 	{
@@ -20,10 +19,11 @@ namespace BlazorBlog.ViewModels
 		{
 			IsLoading = true;
 
-
-
 			IsLoading = false;
+			return Task.CompletedTask;
 		}
+
+		#endregion
 
 	}
 }
