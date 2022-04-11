@@ -12,7 +12,6 @@ namespace BlazorBlog.AccessData
 			ConnectionString = connectionString;
 		}
 
-
 		/// <summary>
 		/// Permet de créer les tables pour le blog
 		/// </summary>
@@ -38,7 +37,7 @@ namespace BlazorBlog.AccessData
 		/// <returns></returns>
 		public async Task<IEnumerable<Post>> GetPostsAsync()
 		{
-			var commandText = @"SELECT idpost, title, content, createat, updateat, userid, ispublished "
+			var commandText = @"SELECT idpost, title, content, image, createat, updateat, userid, ispublished "
 							 + "FROM posts;";
 
 			Func<MySqlCommand, Task<List<Post>>> funcCmd = async (cmd) =>
@@ -54,10 +53,11 @@ namespace BlazorBlog.AccessData
 							Id = reader.GetInt32(0),
 							Title = reader.GetString(1),
 							Content = reader.GetString(2),
-							CreatedAt = reader.GetDateTime(3),
-							UpdatedAt = reader.GetDateTime(4),
-							UserId = reader.GetGuid(5),
-							IsPublished = reader.GetBoolean(6)
+							Image = reader.GetString(3),							
+							CreatedAt = reader.GetDateTime(4),
+							UpdatedAt = reader.GetDateTime(5),
+							UserId = reader.GetGuid(6),
+							IsPublished = reader.GetBoolean(7)
 						};
 
 						posts.Add(post);
@@ -81,15 +81,13 @@ namespace BlazorBlog.AccessData
 			return posts;
 		}
 
-
-
 		/// <summary>
 		/// Récupère tous les posts qui sont publiés
 		/// </summary>
 		/// <returns></returns>
 		public async Task<IEnumerable<Post>> GetPublishedPostsAsync()
 		{
-			var commandText = @"SELECT idpost, title, content, createat, updateat, userid, ispublished "
+			var commandText = @"SELECT idpost, title, content, image, createat, updateat, userid, ispublished "
 							 + "FROM posts "
 							 + "WHERE ispublished=1;";
 
@@ -106,10 +104,11 @@ namespace BlazorBlog.AccessData
 							Id = reader.GetInt32(0),
 							Title = reader.GetString(1),
 							Content = reader.GetString(2),
-							CreatedAt = reader.GetDateTime(3),
-							UpdatedAt = reader.GetDateTime(4),
-							UserId = reader.GetGuid(5),
-							IsPublished = reader.GetBoolean(6)
+							Image = reader.GetString(3),							
+							CreatedAt = reader.GetDateTime(4),
+							UpdatedAt = reader.GetDateTime(5),
+							UserId = reader.GetGuid(6),
+							IsPublished = reader.GetBoolean(7)
 						};
 
 						posts.Add(post);
@@ -139,7 +138,7 @@ namespace BlazorBlog.AccessData
 		/// <returns></returns>
 		public async Task<Post> GetPostAsync(int id)
 		{
-			var commandText = @"SELECT idpost, title, content, createat, updateat, userid, ispublished "
+			var commandText = @"SELECT idpost, title, content, image, createat, updateat, userid, ispublished "
 							 + "FROM posts "
 							 + $"WHERE idpost={id};";
 
@@ -155,10 +154,11 @@ namespace BlazorBlog.AccessData
 							Id = reader.GetInt32(0),
 							Title = reader.GetString(1),
 							Content = reader.GetString(2),
-							CreatedAt = reader.GetDateTime(3),
-							UpdatedAt = reader.GetDateTime(4),
-							UserId = reader.GetGuid(5),
-							IsPublished = reader.GetBoolean(6)
+							Image = reader.GetString(3),
+							CreatedAt = reader.GetDateTime(4),
+							UpdatedAt = reader.GetDateTime(5),
+							UserId = reader.GetGuid(6),
+							IsPublished = reader.GetBoolean(7)
 						};
 					}
 				}
@@ -190,8 +190,8 @@ namespace BlazorBlog.AccessData
 			{
 				using (var conn = new MySqlConnection(ConnectionString))
 				{
-					string command = "INSERT INTO posts (title, content, createat, updateat, userid, ispublished)"
-									+ " VALUES(@title, @content, @createat, @updateat, @userid, @ispublished);";
+					string command = "INSERT INTO posts (title, content, image, createat, updateat, userid, ispublished)"
+									+ " VALUES(@title, @content, @image, @createat, @updateat, @userid, @ispublished);";
 
 					nouveauPost.CreatedAt = DateTime.Now;
 					nouveauPost.UpdatedAt = nouveauPost.CreatedAt;
@@ -200,6 +200,7 @@ namespace BlazorBlog.AccessData
 					{
 						cmd.Parameters.AddWithValue("@title", nouveauPost.Title);
 						cmd.Parameters.AddWithValue("@content", nouveauPost.Content);
+						cmd.Parameters.AddWithValue("@image", nouveauPost.Image);
 						cmd.Parameters.AddWithValue("@createat", nouveauPost.CreatedAt);
 						cmd.Parameters.AddWithValue("@updateat", nouveauPost.UpdatedAt);
 						cmd.Parameters.AddWithValue("@userid", nouveauPost.UserId.ToString());
@@ -232,13 +233,14 @@ namespace BlazorBlog.AccessData
 		{
 			using (var conn = new MySqlConnection(ConnectionString))
 			{
-				var commandUpdateCompetence = @$"UPDATE posts SET title=@titre, content=@contenu, updateat=@update, ispublished=@ispublish"
+				var commandUpdateCompetence = @$"UPDATE posts SET title=@titre, content=@contenu, image=@image, updateat=@update, ispublished=@ispublish"
 									  + $" WHERE idpost={postEnCours.Id};";
 
 				using (var cmd = new MySqlCommand(commandUpdateCompetence, conn))
 				{
 					cmd.Parameters.AddWithValue("@titre", postEnCours.Title);
 					cmd.Parameters.AddWithValue("@contenu", postEnCours.Content);
+					cmd.Parameters.AddWithValue("@image", postEnCours.Image);
 					cmd.Parameters.AddWithValue("@update", postEnCours.UpdatedAt);
 					cmd.Parameters.AddWithValue("@ispublish", postEnCours.IsPublished);
 

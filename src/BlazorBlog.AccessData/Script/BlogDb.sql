@@ -2,6 +2,7 @@
 (idpost int NOT NULL AUTO_INCREMENT,
 title VARCHAR(30) NOT NULL,
 content LONGTEXT,
+image VARCHAR(50),
 createat DATETIME NOT NULL,
 updateat DATETIME NOT NULL,
 userid VARCHAR(255) NOT NULL,

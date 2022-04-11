@@ -9,7 +9,6 @@ namespace BlazorBlog.ModelsValidation
 		[MaxLength(30, ErrorMessage ="Maximum 30 caractères")]
 		public string Titre { get; set; }
 
-		//[Required(ErrorMessage = "Il faut du contenu")]
 		public string Content { get; set; }
 	}
 

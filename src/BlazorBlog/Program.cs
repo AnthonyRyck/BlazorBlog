@@ -63,8 +63,11 @@ builder.Services.AddMudMarkdownServices();
 
 builder.Services.AddHotKeys();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<INewPostViewModel, NewPostViewModel>();
 builder.Services.AddScoped<IDisplayPostViewModel, DisplayPostViewModel>();
+builder.Services.AddScoped<IGalerieViewModel, GalerieViewModel>();
 
 var app = builder.Build();
 
@@ -143,7 +146,7 @@ if (!Directory.Exists(pathImages))
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(pathImages),
-    RequestPath = "/images"
+    RequestPath = "/userimg"
 });
 
 app.Run();

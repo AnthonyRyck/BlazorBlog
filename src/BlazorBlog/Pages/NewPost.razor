@@ -1,5 +1,5 @@
 ﻿@page "/newpost"
-@attribute [Authorize(Roles = "Admin, Compisateur")]
+@attribute [Authorize(Roles = "Admin, Compositeur")]
 @inject INewPostViewModel viewModel
 
 <h3>Nouvel article</h3>
@@ -45,8 +45,9 @@
 </MudTabs>
 </div>
 
-	<div class="col-2">
+	<div class="col-2 background-super-light-gray">
 		<MudStack>
+			<br />
 			<MudButton StartIcon="@Icons.Filled.Save" 
 							Variant="Variant.Filled"
 							Color="Color.Primary"
@@ -57,13 +58,14 @@
 					Variant="Variant.Filled"
 					Color="Color.Success"
 					OnClick="@viewModel.PublishPost">Publier</MudButton>
-
-			<div>
-				<MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">
-					Image mis en avant
-				</MudButton>
-				@*<MudImage Src="images/mony.jpg" Alt="Mony the dog" Elevation="25" Class="rounded-lg" />*@
-			</div>
+					
+			<MudImage Src="@viewModel.ImageEnAvant"
+					  Alt="Définir l'image mis en avant"
+							Elevation="25" 
+							Fluid="true"
+							ObjectFit="ObjectFit.Cover"
+							Class="rounded-lg background-gray"
+							@onclick="viewModel.OpenGalerie" />
 		</MudStack>
 	</div>
 </div>

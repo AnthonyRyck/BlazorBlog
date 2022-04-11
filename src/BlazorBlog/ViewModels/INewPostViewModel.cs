@@ -16,6 +16,11 @@ namespace BlazorBlog.ViewModels
 		EditContext EditContextValidation { get; set; }
 
 		/// <summary>
+		/// Image mis en avant.
+		/// </summary>
+		string ImageEnAvant { get; }
+
+		/// <summary>
 		/// Sauvegarde le post ou ses changements
 		/// </summary>
 		/// <returns></returns>
@@ -26,5 +31,11 @@ namespace BlazorBlog.ViewModels
 		/// </summary>
 		/// <returns></returns>
 		Task PublishPost();
+
+		/// <summary>
+		/// Ouvre le Dialog pour voir la galerie d'images
+		/// </summary>
+		/// <returns></returns>
+		Task OpenGalerie();
 	}
 }

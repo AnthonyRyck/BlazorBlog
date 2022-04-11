@@ -1,4 +1,5 @@
-﻿using BlazorBlog.Core;
+﻿using BlazorBlog.Composants;
+using BlazorBlog.Core;
 using BlazorBlog.ModelsValidation;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
@@ -12,10 +13,15 @@ namespace BlazorBlog.ViewModels
 		private Post PostEnCours;
 		private readonly ISnackbar Snack;
 		private readonly HotKeys KeysContext;
+		private readonly IDialogService DialogService;
+		private readonly DialogOptions FullScreenOption;
 
-		public NewPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys)
+		public NewPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys, IDialogService dialogService)
 		{
 			ContextBlog = blogContext;
+			DialogService = dialogService;
+			FullScreenOption = new DialogOptions() { FullScreen = true, CloseButton = true };
+
 			PostEnCours = new Post()
 			{
 				Id = -1
@@ -33,7 +39,10 @@ namespace BlazorBlog.ViewModels
 		public PostValidation ValidationPost { get; set; }
 
 		public EditContext EditContextValidation { get; set; }
+
 		
+		public string ImageEnAvant { get; private set; }
+
 
 		public async Task SavePost()
 		{
@@ -100,6 +109,18 @@ namespace BlazorBlog.ViewModels
 					Snack.Add("Erreur sur la publication du post", Severity.Error);
 					Log.Error(ex, "NewPostViewModel - PublishPost");
 				}
+			}
+		}
+
+		public async Task OpenGalerie()
+		{
+			var dialog = DialogService.Show<GalerieComponent>("Galerie", FullScreenOption);
+			var result = await dialog.Result;
+			
+			if(!result.Cancelled)
+			{
+				ImageEnAvant = result.Data.ToString();
+				PostEnCours.Image = ImageEnAvant;
 			}
 		}
 
