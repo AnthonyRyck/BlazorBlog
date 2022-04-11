@@ -5,6 +5,6 @@ content LONGTEXT,
 image VARCHAR(50),
 createat DATETIME NOT NULL,
 updateat DATETIME NOT NULL,
-userid VARCHAR(255) NOT NULL,
+userid VARCHAR(256) NOT NULL,
 ispublished BIT(1) NOT NULL DEFAULT 0,
 PRIMARY KEY(idpost));

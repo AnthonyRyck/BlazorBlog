@@ -56,7 +56,7 @@ namespace BlazorBlog.AccessData
 							Image = reader.GetString(3),							
 							CreatedAt = reader.GetDateTime(4),
 							UpdatedAt = reader.GetDateTime(5),
-							UserId = reader.GetGuid(6),
+							UserId = reader.GetString(6),
 							IsPublished = reader.GetBoolean(7)
 						};
 
@@ -107,7 +107,7 @@ namespace BlazorBlog.AccessData
 							Image = reader.GetString(3),							
 							CreatedAt = reader.GetDateTime(4),
 							UpdatedAt = reader.GetDateTime(5),
-							UserId = reader.GetGuid(6),
+							UserId = reader.GetString(6),
 							IsPublished = reader.GetBoolean(7)
 						};
 
@@ -157,7 +157,7 @@ namespace BlazorBlog.AccessData
 							Image = reader.GetString(3),
 							CreatedAt = reader.GetDateTime(4),
 							UpdatedAt = reader.GetDateTime(5),
-							UserId = reader.GetGuid(6),
+							UserId = reader.GetString(6),
 							IsPublished = reader.GetBoolean(7)
 						};
 					}

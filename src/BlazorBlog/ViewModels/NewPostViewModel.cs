@@ -15,16 +15,21 @@ namespace BlazorBlog.ViewModels
 		private readonly HotKeys KeysContext;
 		private readonly IDialogService DialogService;
 		private readonly DialogOptions FullScreenOption;
+		private readonly string LoginUser;
 
-		public NewPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys, IDialogService dialogService)
+		public NewPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys, IDialogService dialogService, 
+								IHttpContextAccessor httpContextAccessor)
 		{
 			ContextBlog = blogContext;
 			DialogService = dialogService;
+			LoginUser = httpContextAccessor.HttpContext.User.Identity.Name;
+
 			FullScreenOption = new DialogOptions() { FullScreen = true, CloseButton = true };
 
 			PostEnCours = new Post()
 			{
-				Id = -1
+				Id = -1,
+				UserId = LoginUser
 			};
 			ValidationPost = new PostValidation();
 			EditContextValidation = new EditContext(ValidationPost);
