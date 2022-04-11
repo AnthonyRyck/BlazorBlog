@@ -120,7 +120,7 @@ namespace BlazorBlog.Areas.Identity.Pages.Account
 					await _userManager.AddToRoleAsync(user, Role.Compositeur.ToString());
 
 					// Création du répertoire de l'utilisateur pour les images
-					string pathUser = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "images", Input.UserLogin);
+					string pathUser = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES, Input.UserLogin);
 					if (!Directory.Exists(pathUser))
 					{
 						Directory.CreateDirectory(pathUser);

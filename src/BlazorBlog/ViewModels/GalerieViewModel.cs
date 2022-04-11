@@ -12,7 +12,7 @@ namespace BlazorBlog.ViewModels
         public GalerieViewModel(IHttpContextAccessor httpContextAccessor, ISnackbar snackbar)
 		{
 			UserName = httpContextAccessor.HttpContext.User.Identity.Name;
-			PathImagesUser = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "images", UserName);
+			PathImagesUser = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES, UserName);
             PathImages = GetFilesFromPath(PathImagesUser);
 
 			Snack = snackbar;
@@ -42,10 +42,8 @@ namespace BlazorBlog.ViewModels
 
 		private string SetUrlImageName(string imageName)
 		{
-			return "../userimg/" + UserName + "/" + imageName;
+			return $"..{ConstantesApp.USERIMG}/" + UserName + "/" + imageName;
 		}
-
-
 
 		#region IGalerieViewModel
 

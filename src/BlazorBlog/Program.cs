@@ -138,7 +138,7 @@ Log.Logger = new LoggerConfiguration()
 	.CreateLogger();
 
 // Chemin pour stocker les images
-string pathImages = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "images");
+string pathImages = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES);
 if (!Directory.Exists(pathImages))
     Directory.CreateDirectory(pathImages);
 
@@ -146,7 +146,7 @@ if (!Directory.Exists(pathImages))
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(pathImages),
-    RequestPath = "/userimg"
+    RequestPath = ConstantesApp.USERIMG
 });
 
 app.Run();
