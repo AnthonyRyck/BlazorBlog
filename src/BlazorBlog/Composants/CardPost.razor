@@ -1,0 +1,23 @@
+﻿<div class="card-post" style="background-image: url(@Image);">
+     <div class="padding-25px">
+         <h2>@Titre</h2>
+         <div>par @User / @Date.ToString("d")</div>
+     </div>
+</div>
+
+
+
+@code {
+
+    [Parameter]
+    public string Titre { get; set; }
+
+    [Parameter]
+    public string User { get; set; }
+
+    [Parameter]
+    public DateTime Date{ get; set; }
+
+    [Parameter]
+    public string Image { get; set; }
+}

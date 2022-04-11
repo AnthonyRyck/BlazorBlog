@@ -71,6 +71,10 @@ a, .btn-link {
     padding: 5px;
 }
 
+.padding-25px {
+    padding: 25px;
+}
+
 .margin-left-right-5px {
 	margin-left: 5px;
 	margin-right: 5px;
@@ -87,4 +91,11 @@ a, .btn-link {
 
 .background-super-light-gray {
     background-color: Gainsboro;
+}
+
+.card-post {
+    height: 350px;
+    width: 450px;
+    color: white;
+    background-size: cover;
 }

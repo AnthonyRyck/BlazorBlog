@@ -87,7 +87,7 @@ namespace BlazorBlog.AccessData
 		/// <returns></returns>
 		public async Task<IEnumerable<Post>> GetPublishedPostsAsync()
 		{
-			var commandText = @"SELECT idpost, title, content, image, createat, updateat, userid, ispublished "
+			var commandText = @"SELECT idpost, title, image, createat, userid "
 							 + "FROM posts "
 							 + "WHERE ispublished=1;";
 
@@ -103,12 +103,9 @@ namespace BlazorBlog.AccessData
 						{
 							Id = reader.GetInt32(0),
 							Title = reader.GetString(1),
-							Content = reader.GetString(2),
-							Image = reader.GetString(3),							
-							CreatedAt = reader.GetDateTime(4),
-							UpdatedAt = reader.GetDateTime(5),
-							UserId = reader.GetString(6),
-							IsPublished = reader.GetBoolean(7)
+							Image = reader.GetString(2),
+							CreatedAt = reader.GetDateTime(3),
+							UserId = reader.GetString(4)
 						};
 
 						posts.Add(post);

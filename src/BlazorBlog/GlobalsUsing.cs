@@ -2,3 +2,4 @@
 global using Serilog.Events;
 global using BlazorBlog.AccessData;
 global using BlazorBlog.Codes;
+global using BlazorBlog.Core;

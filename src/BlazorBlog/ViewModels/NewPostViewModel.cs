@@ -28,8 +28,7 @@ namespace BlazorBlog.ViewModels
 
 			PostEnCours = new Post()
 			{
-				Id = -1,
-				UserId = LoginUser
+				Id = -1
 			};
 			ValidationPost = new PostValidation();
 			EditContextValidation = new EditContext(ValidationPost);
@@ -62,7 +61,7 @@ namespace BlazorBlog.ViewModels
 					// Post pas encore sauvegardé en base
 					if (PostEnCours.Id == -1)
 					{
-						PostEnCours = ValidationPost.ToPost(new Guid());
+						PostEnCours = ValidationPost.ToPost(LoginUser);
 						await ContextBlog.AddPostAsync(PostEnCours);
 						Snack.Add("Sauvegarde du post - OK", Severity.Success);
 					}
@@ -96,7 +95,7 @@ namespace BlazorBlog.ViewModels
 					// Post pas encore sauvegardé en base
 					if (PostEnCours.Id == -1)
 					{
-						PostEnCours = ValidationPost.ToPost(new Guid());
+						PostEnCours = ValidationPost.ToPost(LoginUser);
 						PostEnCours.IsPublished = true;
 						await ContextBlog.AddPostAsync(PostEnCours);
 					}
@@ -107,7 +106,10 @@ namespace BlazorBlog.ViewModels
 						PostEnCours.UpdatedAt = DateTime.Now;
 						PostEnCours.IsPublished = true;
 						await ContextBlog.UpdatePostAsync(PostEnCours);
+
 					}
+
+					Snack.Add($"Post publié {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);
 				}
 				catch (Exception ex)
 				{
@@ -125,7 +127,7 @@ namespace BlazorBlog.ViewModels
 			if(!result.Cancelled)
 			{
 				ImageEnAvant = result.Data.ToString();
-				PostEnCours.Image = ImageEnAvant;
+				ValidationPost.Image = ImageEnAvant;
 			}
 		}
 
