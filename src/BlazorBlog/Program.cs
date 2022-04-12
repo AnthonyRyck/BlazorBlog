@@ -47,6 +47,8 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 
 // Service de l'application
 builder.Services.AddSingleton(new BlogContext(connectionDb));
+
+// MudBlazor Services
 builder.Services.AddMudServices(config =>
 {
     config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
