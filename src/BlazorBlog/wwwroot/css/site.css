@@ -100,11 +100,24 @@ a, .btn-link {
     background-size: cover;
 }
 
+.grow {
+    transition: all .2s ease-in-out;
+}
+
+.grow:hover {
+    transform: scale(1.1);
+}
+
+
 .center-content {
     margin: auto;
     text-align: center;
 	
 }
+
+/*******************************/
+/*CSS pour affichage d'un post */
+/*******************************/
 
 .post-title {
     height: 400px;
@@ -117,4 +130,11 @@ a, .btn-link {
 
 .post-title h1 {
     font-size: 60px;
+}
+
+.post-content {
+    max-width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    word-break: break-word;
 }

@@ -1,4 +1,5 @@
 ﻿@page "/post/{idPost:int}"
+@layout UserLayout
 @inject IDisplayPostViewModel viewModel
 
 @if(viewModel.IsLoading)
@@ -12,8 +13,10 @@ else
 		<span>@viewModel.Article.UserId / @viewModel.Article.CreatedAt.ToString("D")</span>
     </div>
 	
-<MudMarkdown Value="@viewModel.Article.Content" 
-			CodeBlockTheme="CodeBlockTheme.AtomOneDark" />
+	<div class="post-content">
+        <MudMarkdown Value="@viewModel.Article.Content" 
+	        		CodeBlockTheme="CodeBlockTheme.AtomOneDark" />
+    </div>
 }
 @code {
 	[Parameter]
