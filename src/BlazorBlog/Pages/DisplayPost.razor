@@ -1,15 +1,27 @@
 ﻿@page "/post/{idPost:int}"
 @inject IDisplayPostViewModel viewModel
 
-<h3>DisplayPost</h3>
-
+@if(viewModel.IsLoading)
+{
+	<div>Chargement de l'article...</div>
+}
+else
+{
+    <div class="center-content post-title" style="background-image:url(@viewModel.Article.Image)">
+        <h1>@viewModel.Article.Title</h1>
+		<span>@viewModel.Article.UserId / @viewModel.Article.CreatedAt.ToString("D")</span>
+    </div>
+	
+<MudMarkdown Value="@viewModel.Article.Content" 
+			CodeBlockTheme="CodeBlockTheme.AtomOneDark" />
+}
 @code {
 	[Parameter]
     public int idPost { get; set; }
     
-    protected override void OnParametersSet()
+    protected override async void OnParametersSet()
     {
-        //ViewModel.LoadFan(idFan);
+		await viewModel.LoadPost(idPost);
         base.OnParametersSet();
     }
 }

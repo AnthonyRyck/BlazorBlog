@@ -99,3 +99,22 @@ a, .btn-link {
     color: white;
     background-size: cover;
 }
+
+.center-content {
+    margin: auto;
+    text-align: center;
+	
+}
+
+.post-title {
+    height: 400px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+	color:aliceblue;
+	font-size: 20px;
+}
+
+.post-title h1 {
+    font-size: 60px;
+}

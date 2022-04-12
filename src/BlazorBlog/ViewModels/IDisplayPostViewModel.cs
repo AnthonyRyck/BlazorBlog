@@ -7,6 +7,10 @@
 		/// </summary>
 		bool IsLoading { get; }
 
+		/// <summary>
+		/// C'est tout le post
+		/// </summary>
+		Post Article { get; }
 
 		/// <summary>
 		/// Charge le post demandé.

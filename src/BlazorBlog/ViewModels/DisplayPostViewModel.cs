@@ -14,13 +14,13 @@
 
 		public bool IsLoading { get; private set; }
 
+		public Post Article { get; private set; }
 
-		public Task LoadPost(int idpost)
+		public async Task LoadPost(int idpost)
 		{
 			IsLoading = true;
-
+			Article = await Context.GetPostAsync(idpost);
 			IsLoading = false;
-			return Task.CompletedTask;
 		}
 
 		#endregion

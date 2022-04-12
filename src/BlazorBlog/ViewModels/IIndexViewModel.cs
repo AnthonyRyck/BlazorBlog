@@ -12,5 +12,11 @@
 		/// </summary>
 		/// <returns></returns>
 		Task GetAllPosts();
+
+		/// <summary>
+		/// Ouvre la page de l'article
+		/// </summary>
+		/// <param name="id"></param>
+		void OpenPost(int id);
 	}
 }

@@ -10,7 +10,8 @@
        <CardPost Image="@post.Image"
                 Titre="@post.Title"
                 User="@post.UserId"
-                Date="@post.CreatedAt" />
+                Date="@post.CreatedAt"
+                OnClickPost="@(() => ViewModel.OpenPost(post.Id))" />
     }
 
 </MudStack>
