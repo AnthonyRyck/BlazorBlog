@@ -1,0 +1,26 @@
+FROM mcr.microsoft.com/dotnet/aspnet:6.0.1-bullseye-slim AS base
+WORKDIR /app
+EXPOSE 80
+
+ENV DB_HOST="YourAddressdatabase"
+ENV LOGIN_DB="YourLogin"
+ENV PASSWORD_DB="YourPassword"
+ENV DB_NAME="YourDbName"
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0.101-bullseye-slim AS build
+WORKDIR /src
+COPY ["./src/BlazorBlog.AccessData/", "BlazorBlog.AccessData/"]
+COPY ["./src/BlazorBlog.Core/", "BlazorBlog.Core/"]
+COPY ["./src/BlazorBlog/", "BlazorBlog/"]
+
+RUN dotnet restore "BlazorBlog/BlazorBlog.csproj"
+RUN dotnet build "BlazorBlog/BlazorBlog.csproj" -c ReleaseDocker -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "BlazorBlog/BlazorBlog.csproj" -c ReleaseDocker -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+RUN mkdir -p suivi
+ENTRYPOINT ["dotnet", "BlazorBlog.dll"]
