@@ -14,9 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Login to DockerHub
-        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username anthonyryck --password-stdin
       - name: Build image
         run: docker build --file ./src/dockerfilegitactions --tag anthonyryck/blazorblog:latest .
+      - name: Login to DockerHub
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username anthonyryck --password-stdin
       - name: Push to DockerHub
         run: docker push anthonyryck/blazorblog:latest

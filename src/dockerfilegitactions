@@ -13,6 +13,8 @@ COPY ["./src/BlazorBlog.AccessData/", "BlazorBlog.AccessData/"]
 COPY ["./src/BlazorBlog.Core/", "BlazorBlog.Core/"]
 COPY ["./src/BlazorBlog/", "BlazorBlog/"]
 
+RUN dotnet restore "BlazorBlog.AccessData/BlazorBlog.AccessData.csproj"
+RUN dotnet restore "BlazorBlog.Core/BlazorBlog.Core.csproj"
 RUN dotnet restore "BlazorBlog/BlazorBlog.csproj"
 RUN dotnet build "BlazorBlog/BlazorBlog.csproj" -c ReleaseDocker -o /app/build
 
@@ -22,5 +24,7 @@ RUN dotnet publish "BlazorBlog/BlazorBlog.csproj" -c ReleaseDocker -o /app/publi
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN mkdir -p suivi
+
+# Création du répertoire pour les images des auteurs
+RUN mkdir -p images
 ENTRYPOINT ["dotnet", "BlazorBlog.dll"]
