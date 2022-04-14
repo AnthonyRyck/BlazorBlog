@@ -34,7 +34,8 @@ namespace BlazorBlog.ViewModels
 			}
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex, "Error GetFilesFromPath");
+                Snack.Add("Erreur sur le chargement des images", Severity.Error);
             }
 
             return files;
@@ -67,14 +68,14 @@ namespace BlazorBlog.ViewModels
                     Snack.Add($"Upload de {file.Name} réussi", Severity.Success);
                     PathImages.Add(SetUrlImageName(file.Name));
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
 					if (File.Exists(pathImage))
 					{
 						File.Delete(pathImage);
 					}
-
-					Snack.Add("Erreur lors de l'upload de l'image - Max 3 Mo", Severity.Error);
+                    Log.Error(ex, "Error OnInputFileChanged");
+                    Snack.Add("Erreur lors de l'upload de l'image - Max 3 Mo", Severity.Error);
 				}
             }
         }

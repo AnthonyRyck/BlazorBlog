@@ -1,5 +1,4 @@
 ﻿using BlazorBlog.Composants;
-using BlazorBlog.Core;
 using BlazorBlog.ModelsValidation;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
@@ -7,7 +6,7 @@ using Toolbelt.Blazor.HotKeys;
 
 namespace BlazorBlog.ViewModels
 {
-	public class NewPostViewModel : INewPostViewModel, IDisposable
+	public class EditPostViewModel : IEditPostViewModel
 	{
 		private readonly BlogContext ContextBlog;
 		private Post PostEnCours;
@@ -17,7 +16,8 @@ namespace BlazorBlog.ViewModels
 		private readonly DialogOptions FullScreenOption;
 		private readonly string LoginUser;
 
-		public NewPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys, IDialogService dialogService, 
+
+		public EditPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys, IDialogService dialogService,
 								IHttpContextAccessor httpContextAccessor)
 		{
 			ContextBlog = blogContext;
@@ -26,10 +26,6 @@ namespace BlazorBlog.ViewModels
 
 			FullScreenOption = new DialogOptions() { FullScreen = true, CloseButton = true };
 
-			PostEnCours = new Post()
-			{
-				Id = -1
-			};
 			ValidationPost = new PostValidation();
 			EditContextValidation = new EditContext(ValidationPost);
 			Snack = snackbar;
@@ -38,15 +34,25 @@ namespace BlazorBlog.ViewModels
 				.Add(ModKeys.Ctrl, Keys.S, SavePost, "Sauvegarde du post.", exclude: Exclude.ContentEditable);
 		}
 
-		#region INewPostViewModel
+		#region IEditPostViewModel
+
 
 		public PostValidation ValidationPost { get; set; }
 
 		public EditContext EditContextValidation { get; set; }
 
-		
+
 		public string ImageEnAvant { get; private set; }
 
+		public async Task LoadPost(int idpost)
+		{
+			PostEnCours = await ContextBlog.GetPostAsync(idpost);
+			ValidationPost.Content = PostEnCours.Content;
+			ValidationPost.Titre = PostEnCours.Title;
+			ValidationPost.Image = PostEnCours.Image;
+			ValidationPost.Published = PostEnCours.IsPublished;
+			ImageEnAvant = PostEnCours.Image;
+		}
 
 		public async Task SavePost()
 		{
@@ -58,21 +64,11 @@ namespace BlazorBlog.ViewModels
 			{
 				try
 				{
-					// Post pas encore sauvegardé en base
-					if (PostEnCours.Id == -1)
-					{
-						PostEnCours = ValidationPost.ToPost(LoginUser);
-						await ContextBlog.AddPostAsync(PostEnCours);
-						Snack.Add("Sauvegarde du post - OK", Severity.Success);
-					}
-					else
-					{
-						PostEnCours.Content = ValidationPost.Content;
-						PostEnCours.Title = ValidationPost.Titre;
-						PostEnCours.UpdatedAt = DateTime.Now;
-						await ContextBlog.UpdatePostAsync(PostEnCours);
-						Snack.Add($"Post mis à jour {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);
-					}
+					PostEnCours.Content = ValidationPost.Content;
+					PostEnCours.Title = ValidationPost.Titre;
+					PostEnCours.UpdatedAt = DateTime.Now;
+					await ContextBlog.UpdatePostAsync(PostEnCours);
+					Snack.Add($"Post mis à jour {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);
 				}
 				catch (Exception ex)
 				{
@@ -92,16 +88,8 @@ namespace BlazorBlog.ViewModels
 			{
 				try
 				{
-					// Post pas encore sauvegardé en base
-					if (PostEnCours.Id == -1)
-					{
-						PostEnCours = ValidationPost.ToPost(LoginUser);
-					}
-					else
-					{
-						PostEnCours.Content = ValidationPost.Content;
-						PostEnCours.Title = ValidationPost.Titre;
-					}
+					PostEnCours.Content = ValidationPost.Content;
+					PostEnCours.Title = ValidationPost.Titre;
 
 					PostEnCours.Posted = DateTime.Now;
 					PostEnCours.IsPublished = true;
@@ -121,21 +109,12 @@ namespace BlazorBlog.ViewModels
 		{
 			var dialog = DialogService.Show<GalerieComponent>("Galerie", FullScreenOption);
 			var result = await dialog.Result;
-			
-			if(!result.Cancelled)
+
+			if (!result.Cancelled)
 			{
 				ImageEnAvant = result.Data.ToString();
 				ValidationPost.Image = ImageEnAvant;
 			}
-		}
-
-		#endregion
-
-		#region IDisposable
-
-		public async void Dispose()
-		{
-			await KeysContext.DisposeAsync();
 		}
 
 		#endregion

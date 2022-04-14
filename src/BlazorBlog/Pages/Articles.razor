@@ -1,0 +1,64 @@
+﻿@page "/articles"
+@attribute [Authorize(Roles = "Admin, Compositeur")]
+@inject IArticlesViewModel ViewModel
+
+<h3>Articles</h3>
+
+<MudDataGrid T="Post" 
+            Items="@ViewModel.AllPosts"
+            ReadOnly="true"
+            Bordered="true" 
+            Dense="true" >
+
+
+@*	<ToolBarContent>
+        <MudText Typo="Typo.h6">Liste des articles</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>*@
+    <Columns>
+        <Column T="Post" Field="Title" Title="Titre" IsEditable="false" />
+        <Column T="Post" Field="UserId" Title="Auteur" IsEditable="false" />
+        <Column T="Post" Field="Posted" Title="Date" IsEditable="false">
+	        <CellTemplate>
+				@if(context.Item.Posted.HasValue)
+				{
+					<div>Publié</div>
+					<div>@context.Item.Posted.Value.ToString("F");</div>
+                }
+                else
+                {
+                    <div>Dernière modification</div>
+                    <div>@context.Item.UpdatedAt.ToString("F")</div>
+                }
+            </CellTemplate>
+		</Column>
+		
+		<Column T="Post">
+            <CellTemplate>
+                <MudFab Color="Color.Primary"
+				        Size="Size.Small"
+                        StartIcon="@Icons.Material.Filled.Edit" 
+                        OnClick="@(() => ViewModel.EditPost(context.Item.Id))" />
+            </CellTemplate>
+        </Column>
+		
+		<Column T="Post">
+            <CellTemplate>
+                <MudFab Color="Color.Secondary"
+						Size="Size.Small"
+                        StartIcon="@Icons.Material.Filled.DeleteForever" 
+                        OnClick="@(() => ViewModel.DeletePost(context.Item.Id))" />
+            </CellTemplate>
+        </Column>
+		
+    </Columns>
+</MudDataGrid>
+
+@code {
+    protected async override Task OnInitializedAsync()
+    {
+		await ViewModel.GetArticles();
+    }
+}

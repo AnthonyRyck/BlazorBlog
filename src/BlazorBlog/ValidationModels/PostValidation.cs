@@ -11,6 +11,8 @@ namespace BlazorBlog.ModelsValidation
 
 		public string Content { get; set; }
 		public string Image { get; internal set; }
+
+		public bool Published { get; set; }
 	}
 
 

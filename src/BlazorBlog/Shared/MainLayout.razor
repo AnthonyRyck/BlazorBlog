@@ -2,7 +2,7 @@
 
 <PageTitle>BlazorSvrMySqlAuth</PageTitle>
 
-<MudThemeProvider/>
+<MudThemeProvider IsDarkMode=true />
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
@@ -14,6 +14,7 @@
     </AuthorizeView>
 
     <main>
+		<AuthorizeView Roles="Admin, Compositeur">
         <div class="top-row px-4 auth">
             <LoginDisplay />
             <a href="https://github.com/AnthonyRyck/BlazorBlog" target="_blank">
@@ -21,6 +22,7 @@
                 Github
             </a>
         </div>
+		 </AuthorizeView>
 
         <article class="content px-4">
             @Body

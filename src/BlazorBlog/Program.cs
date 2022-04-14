@@ -71,6 +71,8 @@ builder.Services.AddScoped<INewPostViewModel, NewPostViewModel>();
 builder.Services.AddScoped<IDisplayPostViewModel, DisplayPostViewModel>();
 builder.Services.AddScoped<IGalerieViewModel, GalerieViewModel>();
 builder.Services.AddScoped<IIndexViewModel, IndexViewModel>();
+builder.Services.AddScoped<IArticlesViewModel, ArticlesViewModel>();
+builder.Services.AddScoped<IEditPostViewModel, EditPostViewModel>();
 
 var app = builder.Build();
 

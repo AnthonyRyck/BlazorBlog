@@ -10,7 +10,7 @@ else
 {
     <div class="center-content post-title" style="background-image:url(@viewModel.Article.Image)">
         <h1>@viewModel.Article.Title</h1>
-		<span>@viewModel.Article.UserId / @viewModel.Article.CreatedAt.ToString("D")</span>
+		<span>@viewModel.Article.UserId / @viewModel.Article.Posted.Value.ToString("D")</span>
     </div>
 	
 	<div class="post-content">

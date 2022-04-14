@@ -1,5 +1,4 @@
 ﻿@page "/"
-@layout UserLayout
 @inject IIndexViewModel ViewModel
 
 <PageTitle>Accueil</PageTitle>
@@ -11,7 +10,7 @@
        <CardPost Image="@post.Image"
                 Titre="@post.Title"
                 User="@post.UserId"
-                Date="@post.CreatedAt"
+                Date="@post.Posted.Value"
                 OnClickPost="@(() => ViewModel.OpenPost(post.Id))" />
     }
 

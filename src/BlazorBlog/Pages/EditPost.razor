@@ -1,0 +1,91 @@
+﻿@page "/editpost/{idPost:int}"
+@attribute [Authorize(Roles = "Admin, Compositeur")]
+@inject IEditPostViewModel ViewModel
+
+<h3>Edition</h3>
+
+<div class="row">
+	<div class="col-10">
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" Outlined="true">
+    <MudTabPanel Text="Edition" Icon="@Icons.Filled.EditNote">
+        <MudPaper Elevation="3">
+			<div class="padding-10px">
+				<EditForm EditContext="@ViewModel.EditContextValidation">
+					<DataAnnotationsValidator />
+					
+					<div>
+						<div>
+							<ValidationMessage For="@(() => ViewModel.ValidationPost.Titre)" />
+						</div>
+						<MudTextField @bind-Value="ViewModel.ValidationPost.Titre" 
+									Label="Titre" 
+									Variant="Variant.Outlined"></MudTextField>
+					</div>
+					
+					<div>
+						<MudTextField T="string" 
+									Label="Article" 
+									Variant="Variant.Outlined" 
+									@bind-Text="ViewModel.ValidationPost.Content"
+									Lines="20" />
+					</div>
+				</EditForm>
+			</div>
+		</MudPaper>
+    </MudTabPanel>
+
+    <MudTabPanel Text="Preview" Icon="@Icons.Filled.RemoveRedEye">
+		 <MudPaper Elevation="5">
+			 <div class="padding-10px">
+				<MudMarkdown Value="@ViewModel.ValidationPost.Content" 
+						CodeBlockTheme="CodeBlockTheme.AtomOneDark" />
+			</div>
+		</MudPaper>
+    </MudTabPanel>
+</MudTabs>
+</div>
+
+	<div class="col-2 background-super-light-gray">
+		<MudStack>
+			<br />
+			<MudButton StartIcon="@Icons.Filled.Save" 
+							Variant="Variant.Filled"
+							Color="Color.Primary"
+							OnClick="@ViewModel.SavePost">Enregistrer</MudButton>
+
+			<MudButton StartIcon="@Icons.Filled.Publish" 
+					Size="Size.Small"
+					Variant="Variant.Filled"
+					Color="Color.Success"
+					OnClick="@ViewModel.PublishPost">
+					@if (@ViewModel.ValidationPost.Published)
+					{
+						<div>Mettre à jour</div>
+					}
+					else
+					{
+						<div>Publier</div>
+					}
+				</MudButton>
+					
+			<MudImage Src="@ViewModel.ImageEnAvant"
+					  Alt="Définir l'image mis en avant"
+							Elevation="25" 
+							Fluid="true"
+							ObjectFit="ObjectFit.Cover"
+							Class="rounded-lg background-gray"
+							@onclick="ViewModel.OpenGalerie" />
+		</MudStack>
+	</div>
+</div>
+
+@code{
+	[Parameter]
+	public int idPost { get; set; }
+
+	protected override async void OnParametersSet()
+    {
+		await ViewModel.LoadPost(idPost);
+        base.OnParametersSet();
+    }	
+}
