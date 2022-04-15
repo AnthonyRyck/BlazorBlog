@@ -38,7 +38,7 @@ namespace BlazorBlog.AccessData
 		public async Task<List<Post>> GetPostsAsync(string userId)
 		{
 			var commandText = @"SELECT idpost, title, posted, updateat, userid "
-							 + $"FROM posts WHERE userid='{userId}';";
+							 + $"FROM posts WHERE userid='{userId}' ORDER BY posted DESC;";
 
 			Func<MySqlCommand, Task<List<Post>>> funcCmd = async (cmd) =>
 			{
@@ -107,7 +107,8 @@ namespace BlazorBlog.AccessData
 		{
 			var commandText = @"SELECT idpost, title, image, posted, userid "
 							 + "FROM posts "
-							 + "WHERE ispublished=1;";
+							 + "WHERE ispublished=1 "
+							 + "ORDER BY posted DESC;";
 
 			Func<MySqlCommand, Task<List<Post>>> funcCmd = async (cmd) =>
 			{

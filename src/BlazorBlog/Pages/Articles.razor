@@ -6,17 +6,22 @@
 
 <MudDataGrid T="Post" 
             Items="@ViewModel.AllPosts"
+			 QuickFilter="@ViewModel.FiltrerPost"
             ReadOnly="true"
-            Bordered="true" 
+            Bordered="true"
+			 Sortable="true"
             Dense="true" >
 
-
-@*	<ToolBarContent>
+	<ToolBarContent>
         <MudText Typo="Typo.h6">Liste des articles</MudText>
         <MudSpacer />
-        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-    </ToolBarContent>*@
+        <MudTextField @bind-Value="@ViewModel.PostRecherche" 
+                        Placeholder="Recherche" 
+                        Adornment="Adornment.Start" 
+                        Immediate="true"
+                        AdornmentIcon="@Icons.Material.Filled.Search" 
+                        IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
     <Columns>
         <Column T="Post" Field="Title" Title="Titre" IsEditable="false" />
         <Column T="Post" Field="UserId" Title="Auteur" IsEditable="false" />

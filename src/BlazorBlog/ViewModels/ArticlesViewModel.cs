@@ -10,10 +10,10 @@ namespace BlazorBlog.ViewModels
 		private readonly string UserId;
 		private readonly ISnackbar snack;
 		private readonly NavigationManager Nav;
-		private readonly DialogService DialogSvc;
+		private readonly IDialogService DialogSvc;
 
 		public ArticlesViewModel(BlogContext blogContext, IHttpContextAccessor httpContextAccessor, ISnackbar snackbar,
-								NavigationManager navigationManager, DialogService dialogService)
+								NavigationManager navigationManager, IDialogService dialogService)
 		{
 			Context = blogContext;
 			snack = snackbar;
@@ -21,12 +21,24 @@ namespace BlazorBlog.ViewModels
 			Nav = navigationManager;
 			AllPosts = new List<Post>();
 			DialogSvc = dialogService;
+			FiltrerPost = Recherche;
+			PostRecherche = String.Empty;
+		}
+
+		private bool Recherche(Post post)
+		{
+			if (string.IsNullOrEmpty(PostRecherche))
+				return true;
+
+			return post.Title.Contains(PostRecherche, StringComparison.OrdinalIgnoreCase);
 		}
 
 		#region IArticlesViewModel
-		
+
 		public List<Post> AllPosts { get; private set; }
 		
+		public Func<Post, bool> FiltrerPost { get; private set; }
+		public string PostRecherche { get; set; }
 
 		public async Task GetArticles()
 		{

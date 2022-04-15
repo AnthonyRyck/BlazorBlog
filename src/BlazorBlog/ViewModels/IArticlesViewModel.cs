@@ -26,5 +26,15 @@
 		/// <param name="idPost"></param>
 		/// <returns></returns>
 		Task EditPost(int idPost);
+
+		/// <summary>
+		/// Nom de post recherché
+		/// </summary>
+		string PostRecherche { get; set; }
+
+		/// <summary>
+		/// Méthode de recherche
+		/// </summary>
+		Func<Post, bool> FiltrerPost { get; }
 	}
 }
