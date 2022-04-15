@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorBlog.Composants;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace BlazorBlog.ViewModels
@@ -9,15 +10,17 @@ namespace BlazorBlog.ViewModels
 		private readonly string UserId;
 		private readonly ISnackbar snack;
 		private readonly NavigationManager Nav;
+		private readonly DialogService DialogSvc;
 
 		public ArticlesViewModel(BlogContext blogContext, IHttpContextAccessor httpContextAccessor, ISnackbar snackbar,
-								NavigationManager navigationManager)
+								NavigationManager navigationManager, DialogService dialogService)
 		{
 			Context = blogContext;
 			snack = snackbar;
 			UserId = httpContextAccessor.HttpContext.User.Identity.Name;
 			Nav = navigationManager;
 			AllPosts = new List<Post>();
+			DialogSvc = dialogService;
 		}
 
 		#region IArticlesViewModel
@@ -43,8 +46,19 @@ namespace BlazorBlog.ViewModels
 		{
 			try
 			{
-				await Context.DeletePostAsync(idPost);
-				snack.Add("Article supprimé", Severity.Success);
+				var parameters = new DialogParameters();
+				parameters.Add("ContentText", "Etes vous sur de vouloir supprimer cet article ? Pas de retour en arrière possible.");
+				parameters.Add("ButtonText", "Supprimer");
+				parameters.Add("Color", Color.Error);
+				var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+				var dialog = DialogSvc.Show<DialogTemplate>("Suppression", parameters, options);
+				var result = await dialog.Result;
+				if (!result.Cancelled)
+				{
+					await Context.DeletePostAsync(idPost);
+					snack.Add("Article supprimé", Severity.Success);
+				}
 			}
 			catch (Exception ex)
 			{
