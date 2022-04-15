@@ -3,7 +3,7 @@
 	public class DisplayPostViewModel : IDisplayPostViewModel
 	{
 		private readonly BlogContext Context;
-
+		
 		public DisplayPostViewModel(BlogContext blogContext)
 		{
 			Context = blogContext;

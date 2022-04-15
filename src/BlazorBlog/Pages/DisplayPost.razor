@@ -8,6 +8,20 @@
 }
 else
 {
+    @if(viewModel.Article == null)
+    {
+    	<h3>Oups</h3>
+    
+    <MudText Typo="Typo.body1">Aucun article trouvé à cette adresse.</MudText>
+    
+    <div class="d-flex justify-center">
+    	<MudImage Src="images/nothing.jpg" 
+    			Class="rounded-lg"
+    			ObjectPosition="ObjectPosition.Center" />
+    </div>
+    }
+    else
+    {
     <div class="center-content post-title" style="background-image:url(@viewModel.Article.Image)">
         <h1>@viewModel.Article.Title</h1>
 		<span>@viewModel.Article.UserId / @viewModel.Article.Posted.Value.ToString("D")</span>
@@ -17,14 +31,23 @@ else
         <MudMarkdown Value="@viewModel.Article.Content" 
 	        		CodeBlockTheme="CodeBlockTheme.AtomOneDark" />
     </div>
+    }
 }
+
+
+
 @code {
-	[Parameter]
+    [Parameter]
     public int idPost { get; set; }
-    
-    protected override async void OnParametersSet()
+
+    //protected override async void OnParametersSet()
+    //{
+    //    await viewModel.LoadPost(idPost);
+    //    base.OnParametersSet();
+    //}
+
+    protected async override Task OnInitializedAsync()
     {
 		await viewModel.LoadPost(idPost);
-        base.OnParametersSet();
     }
 }
