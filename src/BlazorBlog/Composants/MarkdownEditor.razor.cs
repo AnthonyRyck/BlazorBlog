@@ -3,7 +3,7 @@ using MudBlazor;
 
 namespace BlazorBlog.Composants
 {
-	partial class EditorMarkdown
+	partial class MarkdownEditor
 	{
 		[Parameter]
 		public string Content { get; set; }
