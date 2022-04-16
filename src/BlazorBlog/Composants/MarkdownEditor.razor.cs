@@ -1,9 +1,10 @@
 ﻿using Microsoft.JSInterop;
 using MudBlazor;
+using Toolbelt.Blazor.HotKeys;
 
 namespace BlazorBlog.Composants
 {
-	partial class MarkdownEditor
+	partial class MarkdownEditor : IDisposable
 	{
 		[Parameter]
 		public string Content { get; set; }
@@ -11,6 +12,25 @@ namespace BlazorBlog.Composants
 		[Parameter]
 		public EventCallback<string> ContentChanged { get; set; }
 
+		[Inject]
+		private HotKeys HotKeysContext { get; set; }
+
+		public async void Dispose()
+		{
+			await HotKeysContext.DisposeAsync();
+		}
+
+
+		protected override void OnInitialized()
+		{
+			HotKeysContext.CreateContext()
+					.Add(ModKeys.Ctrl, Keys.B, OnClickBold, "Pour mettre en gras.", Exclude.ContentEditable)
+					.Add(ModKeys.Ctrl, Keys.I, OnClickItalic, "Pour mettre en italique.", Exclude.ContentEditable)
+					.Add(ModKeys.Ctrl, Keys.Q, OnClickQuote, "Pour mettre en quote", Exclude.ContentEditable)
+					.Add(ModKeys.Ctrl, Keys.C, OnClickBlockCode, "Pour faire un bloc de code", Exclude.ContentEditable)
+					.Add(ModKeys.Ctrl | ModKeys.Alt, Keys.I, OnClickImage, "Pour mettre une image", Exclude.ContentEditable)
+					.Add(ModKeys.Ctrl, Keys.K, OnClickLink, "Pour mettre un lien.", Exclude.ContentEditable);
+		}
 
 		public MudTextField<string> Text { get; set; }
 
@@ -72,10 +92,6 @@ namespace BlazorBlog.Composants
 			}
 
 			await Insert(markdown);
-			await Text.FocusAsync();
-
-
-			await Insert("![]()");
 			await Text.FocusAsync();
 		}
 
