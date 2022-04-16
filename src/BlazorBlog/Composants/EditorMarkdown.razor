@@ -1,0 +1,45 @@
+﻿@inject IJSRuntime JSRuntime
+
+<MudPaper Elevation="2">
+    <MudPaper Elevation="2">
+		<MudTooltip Text="Bold (CTRL-B)">
+            <MudIconButton Icon="@Icons.Filled.FormatBold"
+                            OnClick="@OnClickBold"/>
+		</MudTooltip>
+        
+        <MudTooltip Text="Italic (CTRL-I)">
+            <MudIconButton Icon="@Icons.Filled.FormatItalic"
+                            OnClick="@OnClickItalic"/>
+		</MudTooltip>
+		
+        <MudTooltip Text="Quote (CTRL-Q)">
+            <MudIconButton Icon="@Icons.Filled.FormatQuote"
+                            OnClick="@OnClickQuote"/>
+        </MudTooltip>
+		
+		<MudTooltip Text="Code (CTRL-C)">
+            <MudIconButton Icon="@Icons.Filled.Code"
+                            OnClick="@OnClickBlockCode" />
+		</MudTooltip>
+		
+		<MudTooltip Text="Image (CTRL-ALT-I)">
+            <MudIconButton Icon="@Icons.Filled.Image"
+                            OnClick="@OnClickImage" />
+        </MudTooltip>
+		
+        <MudTooltip Text="Créer un lien (CTRL-K)">
+            <MudIconButton Icon="@Icons.Filled.AddLink"
+					OnClick="@OnClickLink"/>
+        </MudTooltip>
+    </MudPaper>
+	<br />
+
+<MudTextField T="string"
+				  @ref="@Text"
+            id="texteditor"
+			Label="Article" 
+			Variant="Variant.Outlined"
+			Text="@Content"
+			Lines="20"
+			TextChanged="OnTextChanged"/>
+</MudPaper>

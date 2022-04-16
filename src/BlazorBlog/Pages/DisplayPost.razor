@@ -34,17 +34,9 @@ else
     }
 }
 
-
-
 @code {
     [Parameter]
     public int idPost { get; set; }
-
-    //protected override async void OnParametersSet()
-    //{
-    //    await viewModel.LoadPost(idPost);
-    //    base.OnParametersSet();
-    //}
 
     protected async override Task OnInitializedAsync()
     {
