@@ -103,7 +103,7 @@ namespace BlazorBlog.AccessData
 		/// Récupère tous les posts qui sont publiés
 		/// </summary>
 		/// <returns></returns>
-		public async Task<IEnumerable<Post>> GetPublishedPostsAsync()
+		public async Task<List<Post>> GetPublishedPostsAsync()
 		{
 			var commandText = @"SELECT idpost, title, image, posted, userid "
 							 + "FROM posts "

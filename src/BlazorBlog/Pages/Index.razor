@@ -5,7 +5,7 @@
 
 <MudStack Row="true" Justify="Justify.FlexStart" Class="flex-wrap">
 
-    @foreach (Post post in ViewModel.Posts)
+    @foreach (Post post in ViewModel.PostsToDisplay)
     {
        <CardPost Image="@post.Image"
                 Titre="@post.Title"
@@ -15,6 +15,14 @@
     }
 
 </MudStack>
+
+<div class="d-flex flex-column align-center">
+    <MudPagination ShowFirstButton="true" 
+                    ShowLastButton="true" 
+                    Count="ViewModel.CounterPage"
+                    SelectedChanged="ViewModel.PageChanged"
+                    Class="mt-4"/>
+</div>
 
 @code{
 
