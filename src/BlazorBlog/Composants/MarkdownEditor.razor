@@ -17,19 +17,45 @@
                             OnClick="@OnClickQuote"/>
         </MudTooltip>
 		
-		<MudTooltip Text="Code (CTRL-C)">
+		<MudTooltip Text="Block code (CTRL-C)">
             <MudIconButton Icon="@Icons.Filled.Code"
                             OnClick="@OnClickBlockCode" />
 		</MudTooltip>
-		
-		<MudTooltip Text="Image (CTRL-ALT-I)">
+        		
+		<MudTooltip Text="Image (ALT-I)">
             <MudIconButton Icon="@Icons.Filled.Image"
                             OnClick="@OnClickImage" />
         </MudTooltip>
 		
+		<MudTooltip Text="Code en ligne (ALT-C)">
+            <MudIconButton Icon="@Icons.Filled.Code"
+                            OnClick="@OnClickBlockCode" />
+		</MudTooltip>
+		
         <MudTooltip Text="Créer un lien (CTRL-K)">
             <MudIconButton Icon="@Icons.Filled.AddLink"
 					OnClick="@OnClickLink"/>
+        </MudTooltip>
+
+        <MudTooltip Text="Créer une liste (CTRL-L)">
+            <MudIconButton Icon="@Icons.Filled.FormatListBulleted"
+					OnClick="@OnClickList" />
+        </MudTooltip>
+
+		<MudTooltip Text="Créer une liste (ALT-L)">
+            <MudIconButton Icon="@Icons.Filled.FormatListNumbered"
+					OnClick="@OnClickListOrdered" />
+        </MudTooltip>
+
+        <MudTooltip Text="Créer un tableau (ALT-T)">
+            <MudIconButton Icon="@Icons.Filled.CalendarViewMonth"
+					OnClick="@OnClickTableau" />
+        </MudTooltip>
+
+		<MudTooltip Text="Aide - Markdown Guide">
+            <MudIconButton Icon="@Icons.Filled.Help" 
+                    Href="https://www.markdownguide.org/basic-syntax" 
+                    Target="_blank" />
         </MudTooltip>
     </MudPaper>
 	<br />

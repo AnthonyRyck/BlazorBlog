@@ -28,8 +28,12 @@ namespace BlazorBlog.Composants
 					.Add(ModKeys.Ctrl, Keys.I, OnClickItalic, "Pour mettre en italique.", Exclude.ContentEditable)
 					.Add(ModKeys.Ctrl, Keys.Q, OnClickQuote, "Pour mettre en quote", Exclude.ContentEditable)
 					.Add(ModKeys.Ctrl, Keys.C, OnClickBlockCode, "Pour faire un bloc de code", Exclude.ContentEditable)
-					.Add(ModKeys.Ctrl | ModKeys.Alt, Keys.I, OnClickImage, "Pour mettre une image", Exclude.ContentEditable)
-					.Add(ModKeys.Ctrl, Keys.K, OnClickLink, "Pour mettre un lien.", Exclude.ContentEditable);
+					.Add(ModKeys.Alt, Keys.C, OnClickCodeInLine, "Pour faire une ligne de code", Exclude.ContentEditable)
+					.Add(ModKeys.Alt, Keys.I, OnClickImage, "Pour mettre une image", Exclude.ContentEditable)
+					.Add(ModKeys.Ctrl, Keys.K, OnClickLink, "Pour mettre un lien.", Exclude.ContentEditable)
+					.Add(ModKeys.Ctrl, Keys.L, OnClickList, "Pour mettre une liste non ordonnée.", Exclude.ContentEditable)
+					.Add(ModKeys.Alt, Keys.L, OnClickListOrdered, "Pour mettre une liste ordonnée.", Exclude.ContentEditable)
+					.Add(ModKeys.Alt, Keys.T, OnClickListOrdered, "Pour mettre un tableau.", Exclude.ContentEditable);
 		}
 
 		public MudTextField<string> Text { get; set; }
@@ -42,95 +46,90 @@ namespace BlazorBlog.Composants
 		private async void OnClickLink()
 		{
 			string value = await GetSelection();
-			string markdown = string.Empty;
-
-			if (string.IsNullOrEmpty(value))
-			{
-				markdown = "[]()";
-			}
-			else
-			{
-				markdown = $"[{value}]()";
-			}
-
+			string markdown = string.IsNullOrEmpty(value)
+				? ConstantesApp.MARKDOWN_SYNTAX_LINK
+				: $"{ConstantesApp.MARKDOWN_SYNTAX_LINK_START}{value}{ConstantesApp.MARKDOWN_SYNTAX_LINK_END}";
+			
 			await Insert(markdown);
 			await Text.FocusAsync();
 		}
 
 		private async void OnClickBold()
 		{
-			await BothSideWithMd("**");
+			await BothSideWithMd(ConstantesApp.MARKDOWN_SYNTAX_BOLD);
 		}
 
 		private async void OnClickItalic()
 		{
-			await BothSideWithMd("*");
+			await BothSideWithMd(ConstantesApp.MARKDOWN_SYNTAX_ITALIC);
 		}
 
 		private async void OnClickQuote()
 		{
-			await StartWithMd(">");
+			string value = await GetSelection();
+			await StartWithMd(ConstantesApp.MARKDOWN_SYNTAX_QUOTE, value);
 		}
 
 		private async void OnClickBlockCode()
 		{
-			await BothSideWithMd("```");
+			await BothSideWithMd(ConstantesApp.MARKDOWN_SYNTAX_BLOCK_CODE);
+		}
+
+		private async void OnClickCodeInLine()
+		{
+			await BothSideWithMd(ConstantesApp.MARKDOWN_SYNTAX_CODE_IN_LINE);
 		}
 
 		private async void OnClickImage()
 		{
 			string value = await GetSelection();
-			string markdown = string.Empty;
-
-			if (string.IsNullOrEmpty(value))
-			{
-				markdown = "![]()";
-			}
-			else
-			{
-				markdown = $"![{value}]()";
-			}
+			string markdown = string.IsNullOrEmpty(value)
+				? ConstantesApp.MARKDOWN_SYNTAX_IMAGE
+				: $"{ConstantesApp.MARKDOWN_SYNTAX_IMAGE_START}{value}{ConstantesApp.MARKDOWN_SYNTAX_IMAGE_END}";
 
 			await Insert(markdown);
 			await Text.FocusAsync();
+		}
+
+
+		private async void OnClickList()
+		{
+			await StartWithMd(ConstantesApp.MARKDOWN_SYNTAX_LIST_BULLET, string.Empty);
+		}
+
+		private async void OnClickListOrdered()
+		{
+			await StartWithMd(ConstantesApp.MARKDOWN_SYNTAX_LIST_ORDERED, string.Empty);
+		}
+
+		private async void OnClickTableau()
+		{
+			string MARKDOWN_SYNTAX_TABLEAU = "| Column 1 | Column 2 | Column 3 |" + Environment.NewLine
+											+ "| -------- | -------- | -------- |" + Environment.NewLine
+											+ "| Cell 1   | Cell 2   | Cell 3   |" + Environment.NewLine;
+			await StartWithMd(MARKDOWN_SYNTAX_TABLEAU, string.Empty);
 		}
 
 		private async Task BothSideWithMd(string markdownSymbol)
 		{
 			string value = await GetSelection();
-			string markdown = string.Empty;
-
-			if (string.IsNullOrEmpty(value))
-			{
-				markdown = $"{markdownSymbol} {markdownSymbol}";
-			}
-			else
-			{
-				markdown = markdownSymbol + value + markdownSymbol;
-			}
+			string markdown = string.IsNullOrEmpty(value)
+				? $"{markdownSymbol} {markdownSymbol}"
+				: $"{markdownSymbol}{value}{markdownSymbol}";
 
 			await Insert(markdown);
 			await Text.FocusAsync();
 		}
 
-		private async Task StartWithMd(string markdownSymbol)
+		private async Task StartWithMd(string markdownSymbol, string value)
 		{
-			string value = await GetSelection();
-			string markdown = string.Empty;
-
-			if (string.IsNullOrEmpty(value))
-			{
-				markdown = markdownSymbol;
-			}
-			else
-			{
-				markdown = $"{markdownSymbol} {value}";
-			}
-
+			string markdown = string.IsNullOrEmpty(value)
+				? markdownSymbol
+				: $"{markdownSymbol}{value}";
+				
 			await Insert(markdown);
 			await Text.FocusAsync();
 		}
-
 
 		private async Task Insert(string markdown)
 		{
