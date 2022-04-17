@@ -15,17 +15,24 @@
 
     <main>
 		<AuthorizeView Roles="Admin, Compositeur">
-        <div class="top-row px-4 auth">
+        <div class="top-bar">
             <LoginDisplay />
-            <a href="https://github.com/AnthonyRyck/BlazorBlog" target="_blank">
-                <MudIcon Icon="@Icons.Custom.Brands.GitHub" Title="GitHub" />
-                Github
-            </a>
+            <MudIconButton Icon="@Icons.Custom.Brands.GitHub" 
+                            Title="GitHub" 
+                            Color="Color.Primary"
+                            Href="https://github.com/AnthonyRyck/BlazorBlog" Target="_blank" />
         </div>
 		 </AuthorizeView>
 
         <article class="content px-4">
             @Body
         </article>
+
+        <div class="bottom-bar">
+             <MudIconButton Icon="@Icons.Custom.Brands.GitHub" 
+                            Title="GitHub" 
+                            Color="Color.Primary"
+                            Href="https://github.com/AnthonyRyck/BlazorBlog" Target="_blank" />
+        </div>
     </main>
 </div>

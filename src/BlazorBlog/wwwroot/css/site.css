@@ -138,3 +138,23 @@ a, .btn-link {
     margin-left: auto;
     word-break: break-word;
 }
+
+/*******************************/
+/*CSS pour top/bottom barre    */
+/*******************************/
+
+.top-bar {
+    background-color: #282828;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.bottom-bar {
+    background-color: #282828;
+    height: 3.5rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

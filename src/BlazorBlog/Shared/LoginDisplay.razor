@@ -1,13 +1,18 @@
 ﻿<AuthorizeView Roles="Admin">
-     <a href="Identity/Account/Register">Inscription</a>
+     @*<a href="Identity/Account/Register">Inscription</a>*@
+     <MudLink Href="Identity/Account/Register">Inscription</MudLink>
 </AuthorizeView>
 
 <AuthorizeView>
     <Authorized>
-        <a href="Identity/Account/Manage">Bonjour, @context.User.Identity?.Name</a>
+        <MudLink Href="Identity/Account/Manage">Bonjour, @context.User.Identity?.Name</MudLink>
 
         <form method="post" action="Identity/Account/LogOut">
-            <button type="submit" class="nav-link btn btn-link">Déconnexion</button>
+            <MudFab StartIcon="@Icons.Filled.Logout" 
+                    Label="Déconnexion" 
+                    ButtonType="ButtonType.Submit" 
+                    Color="Color.Secondary" 
+                    Size="Size.Small" />
         </form>
     </Authorized>
 

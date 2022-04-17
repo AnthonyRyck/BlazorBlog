@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using MudBlazor
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -7,18 +8,21 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Bonjour @UserManager.GetUserName(User)!</a>
+        @*<a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Bonjour @UserManager.GetUserName(User)!</a>*@
+         <MudLink Href="Identity/Account/Manage">Bonjour @UserManager.GetUserName(User)!</MudLink>
     </li>
 
 	<AuthorizeView Roles="Admin">
 	<li class="nav-item">
-		<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Inscription</a>
+		@*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Inscription</a>*@
+        <MudLink Href="Identity/Account/Register">Inscription</MudLink>
 	</li>
 	</AuthorizeView>
 
     <li class="nav-item">
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Déconnexion</button>
+            @*<button id="logout" type="submit" class="nav-link btn btn-link text-dark">Déconnexion</button>*@
+            <MudFab StartIcon="@Icons.Filled.Logout" Label="Déconnexion" ButtonType="ButtonType.Submit" id="logout" />
         </form>
     </li>
 }
