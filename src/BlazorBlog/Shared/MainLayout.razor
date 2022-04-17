@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>BlazorSvrMySqlAuth</PageTitle>
+<PageTitle>BlazoBlog</PageTitle>
 
 <MudThemeProvider IsDarkMode=true />
 <MudDialogProvider/>
@@ -14,25 +14,26 @@
     </AuthorizeView>
 
     <main>
-		<AuthorizeView Roles="Admin, Compositeur">
         <div class="top-bar">
-            <LoginDisplay />
+		    <AuthorizeView Roles="Admin, Compositeur">
+                <LoginDisplay />
+		    </AuthorizeView>
+            
             <MudIconButton Icon="@Icons.Custom.Brands.GitHub" 
                             Title="GitHub" 
                             Color="Color.Primary"
                             Href="https://github.com/AnthonyRyck/BlazorBlog" Target="_blank" />
         </div>
-		 </AuthorizeView>
 
         <div class="content px-4">
             @Body
         </div>
 
-        <div class="bottom-bar">
+@*        <div class="bottom-bar">
              <MudIconButton Icon="@Icons.Custom.Brands.GitHub" 
                             Title="GitHub" 
                             Color="Color.Primary"
                             Href="https://github.com/AnthonyRyck/BlazorBlog" Target="_blank" />
-        </div>
+        </div>*@
     </main>
 </div>

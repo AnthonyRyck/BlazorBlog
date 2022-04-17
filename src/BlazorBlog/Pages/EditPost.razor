@@ -23,11 +23,7 @@
 					</div>
 					
 					<div>
-						<MudTextField T="string" 
-									Label="Article" 
-									Variant="Variant.Outlined" 
-									@bind-Text="ViewModel.ValidationPost.Content"
-									Lines="20" />
+						<MarkdownEditor @bind-Content="ViewModel.ValidationPost.Content" />
 					</div>
 				</EditForm>
 			</div>
