@@ -9,8 +9,12 @@ namespace BlazorBlog.ViewModels
 
 		EditContext EditContextValidation { get; set; }
 
+		string LogoSite { get; }
+
 		void LoadSettings();
 
 		Task SaveSettings();
+
+		Task OpenGalerie();
 	}
 }

@@ -8,6 +8,8 @@ namespace BlazorBlog.Data
 {
 	public class DataInitializer
 	{
+		private const string ROOT_USER = "root";
+
 		public static async Task InitData(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
 		{
 			var roles = Enum.GetNames(typeof(Role));
@@ -25,13 +27,13 @@ namespace BlazorBlog.Data
 			}
 
 			// Création de l'utilisateur Root.
-			var user = await userManager.FindByNameAsync("root");
+			var user = await userManager.FindByNameAsync(ROOT_USER);
 
 			if (user == null)
 			{
 				var poweruser = new IdentityUser
 				{
-					UserName = "root",
+					UserName = ROOT_USER,
 					Email = "root@email.com",
 					EmailConfirmed = true
 				};
@@ -40,6 +42,12 @@ namespace BlazorBlog.Data
 				if (createPowerUser.Succeeded)
 				{
 					await userManager.AddToRoleAsync(poweruser, Role.Admin.ToString());
+				}
+
+				string pathUser = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES, ROOT_USER);
+				if (!Directory.Exists(pathUser))
+				{
+					Directory.CreateDirectory(pathUser);
 				}
 			}
 		}

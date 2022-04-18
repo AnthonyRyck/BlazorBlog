@@ -26,8 +26,16 @@
 				                Variant="Variant.Outlined"
                               @bind-Value="ViewModel.Settings.BlogUrl" For="@(() => ViewModel.Settings.BlogUrl)" />
                 
-							@*TODO Faire l'image du blog*@
+				<MudText>Logo du blog :</MudText>
+				<MudImage Src="@ViewModel.LogoSite"
+					  Alt="Définir le logo du blog"
+							Elevation="25" 
+							Fluid="true"
+							ObjectFit="ObjectFit.Cover"
+							Class="rounded-lg background-gray"
+							@onclick="ViewModel.OpenGalerie" />
             </MudCardContent>
+			
             <MudCardActions>
                 <MudButton ButtonType="ButtonType.Submit" 
                             Variant="Variant.Filled" 

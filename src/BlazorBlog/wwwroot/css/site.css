@@ -146,16 +146,17 @@ a, .btn-link {
 
 .top-bar {
     background-color: #282828;
-    height: 3.5rem;
     display: flex;
     align-items: center;
     justify-content: flex-end;
 }
 
-.bottom-bar {
-    background-color: #282828;
-    height: 3rem;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+.color-aliceblue {
+	color: aliceblue;
+}
+
+.titre-logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }

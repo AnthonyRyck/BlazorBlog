@@ -22,11 +22,18 @@
                 </Authorized>
 						
 		        <NotAuthorized>
-                    <MudText>@settings.BlogName</MudText>
+					<div class="titre-logo">
+						<MudImage Height="60" Src="@settings.BlogImage" Class="rounded-lg" ObjectFit="ObjectFit.Fill" />
+    					<div class="color-aliceblue">
+                            <h2>@settings.BlogName</h2>
+    						<small>@settings.BlogDescription</small>
+                        </div>
+                    </div>
                 </NotAuthorized>
             </AuthorizeView>
 			<MudIconButton Icon="@Icons.Custom.Brands.GitHub"
 						   Class="object-right"
+						    Size="Size.Large"
                           Title="GitHub" 
                           Color="Color.Primary"
                           Href="https://github.com/AnthonyRyck/BlazorBlog" Target="_blank" />

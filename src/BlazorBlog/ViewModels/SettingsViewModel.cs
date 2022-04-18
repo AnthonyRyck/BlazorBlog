@@ -1,4 +1,5 @@
-﻿using BlazorBlog.ValidationModels;
+﻿using BlazorBlog.Composants;
+using BlazorBlog.ValidationModels;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 
@@ -8,11 +9,16 @@ namespace BlazorBlog.ViewModels
 	{
 		private readonly ISnackbar Snack;
 		private readonly SettingsSvc SvcSettings;
+		private readonly IDialogService DialogService;
+		private readonly DialogOptions FullScreenOption;
 
-		public SettingsViewModel(ISnackbar snackbar, SettingsSvc settingsSvc)
+		public SettingsViewModel(ISnackbar snackbar, SettingsSvc settingsSvc, IDialogService dialogService)
 		{
 			Snack = snackbar;
 			SvcSettings = settingsSvc;
+
+			FullScreenOption = new DialogOptions() { FullScreen = true, CloseButton = true };			
+			DialogService = dialogService;
 			LoadSettings();
 
 			EditContextValidation = new EditContext(Settings);
@@ -22,7 +28,9 @@ namespace BlazorBlog.ViewModels
 
 		public SettingsValidation Settings { get; private set; }
 		public EditContext EditContextValidation { get; set; }
-		
+
+		public string LogoSite { get; private set; }
+
 		public void LoadSettings()
 		{
 			Settings = new SettingsValidation();
@@ -68,7 +76,7 @@ namespace BlazorBlog.ViewModels
 					Settings settingImage = new Settings()
 					{
 						SettingName = ConstantesApp.SETTINGS_BLOG_IMAGE,
-						Value = Settings.BlogImage
+						Value = Settings.BlogImage.Replace("../", Settings.BlogUrl)
 					};
 					settings.Add(settingImage);
 
@@ -80,6 +88,20 @@ namespace BlazorBlog.ViewModels
 					Snack.Add("Erreur sur la sauvegarde du post", Severity.Error);
 					Log.Error(ex, "NewPostViewModel - SavePost");
 				}
+			}
+		}
+
+
+
+		public async Task OpenGalerie()
+		{
+			var dialog = DialogService.Show<GalerieComponent>("Galerie", FullScreenOption);
+			var result = await dialog.Result;
+
+			if (!result.Cancelled)
+			{
+				LogoSite = result.Data.ToString();
+				Settings.BlogImage = LogoSite;
 			}
 		}
 
