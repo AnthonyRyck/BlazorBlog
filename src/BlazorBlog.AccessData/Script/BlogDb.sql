@@ -1,4 +1,4 @@
-﻿CREATE TABLE posts
+CREATE TABLE IF NOT EXISTS posts
 (idpost int NOT NULL AUTO_INCREMENT,
 title VARCHAR(30) NOT NULL,
 content LONGTEXT,
@@ -8,3 +8,8 @@ updateat DATETIME NOT NULL,
 userid VARCHAR(256) NOT NULL,
 ispublished BIT(1) NOT NULL DEFAULT 0,
 PRIMARY KEY(idpost));
+
+CREATE TABLE IF NOT EXISTS settings
+(settingname VARCHAR(100) NOT NULL,
+settingvalue VARCHAR(250) NOT NULL,
+PRIMARY KEY(settingname));

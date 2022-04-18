@@ -291,6 +291,112 @@ namespace BlazorBlog.AccessData
 
 		#endregion
 
+		#region Settings
+
+		public async Task<List<Settings>> GetSettings()
+		{
+			var commandText = @"SELECT settingname, settingvalue "
+							 + "FROM settings;";
+
+			Func<MySqlCommand, Task<List<Settings>>> funcCmd = async (cmd) =>
+			{
+				List<Settings> allSettings = new List<Settings>();
+
+				using (var reader = await cmd.ExecuteReaderAsync())
+				{
+					while (reader.Read())
+					{
+						var setting = new Settings()
+						{
+							SettingName = reader.GetString(0),
+							Value = reader.GetString(1)
+						};
+
+						allSettings.Add(setting);
+					}
+				}
+
+				return allSettings;
+			};
+			List<Settings> settings;
+
+			try
+			{
+				settings = await GetCoreAsync(commandText, funcCmd);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			return settings;
+		}
+
+
+		public async Task AddDefaultSettings(List<Settings> settings)
+		{
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					string command = "INSERT INTO settings (settingname, settingvalue)"
+									+ " VALUES(@settingname, @settingvalue);";
+
+					using (var cmd = new MySqlCommand(command, conn))
+					{
+						conn.Open();
+						foreach (var item in settings)
+						{
+							if (cmd.Parameters.Count > 0)
+							{
+								cmd.Parameters.Clear();
+							}
+
+							cmd.Parameters.AddWithValue("@settingname", item.SettingName);
+							cmd.Parameters.AddWithValue("@settingvalue", item.Value);
+
+							await cmd.ExecuteNonQueryAsync();
+						}
+						
+						conn.Close();
+					}
+				}
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+		
+		public async Task UpdateSettings(List<Settings> settings)
+		{
+			using (var conn = new MySqlConnection(ConnectionString))
+			{
+				var commandUpdateCompetence = @$"UPDATE settings SET settingvalue=@settingvalue"
+									  + " WHERE settingname=@settingName;";
+
+				using (var cmd = new MySqlCommand(commandUpdateCompetence, conn))
+				{
+					conn.Open();
+					foreach (var item in settings)
+					{
+						if (cmd.Parameters.Count > 0)
+						{
+							cmd.Parameters.Clear();
+						}
+
+						cmd.Parameters.AddWithValue("@settingName", item.SettingName);
+						cmd.Parameters.AddWithValue("@settingvalue", item.Value);
+
+						await cmd.ExecuteNonQueryAsync();
+					}
+					conn.Close();
+				}
+			}
+		}
+
+		#endregion
+
 		#region Private methods
 
 		private async Task<List<T>> GetCoreAsync<T>(string commandSql, Func<MySqlCommand, Task<List<T>>> func)

@@ -1,0 +1,44 @@
+﻿@page "/settings"
+@attribute [Authorize(Roles = "Admin")]
+@inject ISettingsViewModel ViewModel
+
+<MudText Typo="Typo.h3" Align="Align.Left">
+    Paramètres
+</MudText>
+
+<EditForm OnValidSubmit="@ViewModel.SaveSettings"
+        EditContext="@ViewModel.EditContextValidation">
+<DataAnnotationsValidator/>
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="Nom du blog" HelperText="Max. 50 caractères"
+				                Variant="Variant.Outlined"
+                              @bind-Value="ViewModel.Settings.BlogName" For="@(() => ViewModel.Settings.BlogName)"/>
+							
+                <MudTextField Label="Description" Class="mt-3" HelperText="Courte description du blog"
+                                Variant="Variant.Outlined"
+                              @bind-Value="ViewModel.Settings.BlogDescription" For="@(() => ViewModel.Settings.BlogDescription)"/>
+                
+                <MudTextField Label="URL du Blog" HelperText="ex: https://www.monsuperblog.net" Class="mt-3"
+				                Variant="Variant.Outlined"
+                              @bind-Value="ViewModel.Settings.BlogUrl" For="@(() => ViewModel.Settings.BlogUrl)" />
+                
+							@*TODO Faire l'image du blog*@
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" 
+                            Variant="Variant.Filled" 
+                            Color="Color.Primary" 
+                            Class="ml-auto">Sauvegarder</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+</EditForm>
+
+@code {
+
+}

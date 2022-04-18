@@ -47,6 +47,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 
 // Service de l'application
 builder.Services.AddSingleton(new BlogContext(connectionDb));
+builder.Services.AddSingleton<SettingsSvc>();
 
 // MudBlazor Services
 builder.Services.AddMudServices(config =>
@@ -67,6 +68,7 @@ builder.Services.AddHotKeys();
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddScoped<ISettingsViewModel, SettingsViewModel>();
 builder.Services.AddScoped<INewPostViewModel, NewPostViewModel>();
 builder.Services.AddScoped<IDisplayPostViewModel, DisplayPostViewModel>();
 builder.Services.AddScoped<IGalerieViewModel, GalerieViewModel>();
@@ -123,12 +125,11 @@ using (var scope = scopeFactory.CreateScope())
 
 		// Ajout dans la base de l'utilisateur "root"
 		await DataInitializer.InitData(roleManager, userManager);
-
-        var blogCtx = scope.ServiceProvider.GetService<BlogContext>();
-
-		string pathSql = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Script", "BlogDb.sql");
-		await blogCtx.CreateTablesAsync(pathSql);
     }
+	
+    var blogCtx = scope.ServiceProvider.GetService<BlogContext>();
+	string pathSql = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Script", "BlogDb.sql");
+	await blogCtx.CreateTablesAsync(pathSql);
 }
 
 // Pour les logs.

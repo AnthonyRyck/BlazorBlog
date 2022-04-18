@@ -5,7 +5,6 @@
 		public const string IMAGES = "images";
 		public const string USERIMG = "/userimg";
 
-
 		#region Markdown Syntax
 
 		public const string MARKDOWN_SYNTAX_BOLD = "**";
@@ -49,6 +48,15 @@
 		public const string MARKDOWN_SYNTAX_LIST_BULLET = "- ";
 
 		public const string MARKDOWN_SYNTAX_LIST_ORDERED = "1. ";
+
+		#endregion
+
+		#region Settings
+
+		public const string SETTINGS_BLOG_NAME = "blogname";
+		public const string SETTINGS_BLOG_DESCRIPTION = "blogdescription";
+		public const string SETTINGS_BLOG_IMAGE = "blogimage";
+		public const string SETTINGS_BLOG_URL = "blogurl";
 
 		#endregion
 	}
