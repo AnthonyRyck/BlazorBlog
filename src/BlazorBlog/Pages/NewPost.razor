@@ -4,14 +4,14 @@
 
 <h3>Nouvel article</h3>
 
+<EditForm EditContext="@viewModel.EditContextValidation">
+<DataAnnotationsValidator />
 <div class="row">
 	<div class="col-10">
 <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" Outlined="true">
     <MudTabPanel Text="Edition" Icon="@Icons.Filled.EditNote">
         <MudPaper Elevation="3">
 			<div class="padding-10px">
-				<EditForm EditContext="@viewModel.EditContextValidation">
-					<DataAnnotationsValidator />
 					
 					<div>
 						<div>
@@ -25,7 +25,6 @@
 					<div>
 						<MarkdownEditor @bind-Content="viewModel.ValidationPost.Content" />
 					</div>
-				</EditForm>
 			</div>
 		</MudPaper>
     </MudTabPanel>
@@ -55,6 +54,9 @@
 					Color="Color.Success"
 					OnClick="@viewModel.PublishPost">Publier</MudButton>
 					
+			<div>
+				<ValidationMessage For="@(() => viewModel.ValidationPost.Image)" />
+			</div>
 			<MudImage Src="@viewModel.ImageEnAvant"
 					  Alt="Définir l'image mis en avant"
 							Elevation="25" 
@@ -65,3 +67,4 @@
 		</MudStack>
 	</div>
 </div>
+</EditForm>

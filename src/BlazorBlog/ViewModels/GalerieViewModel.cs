@@ -43,7 +43,7 @@ namespace BlazorBlog.ViewModels
 
 		private string SetUrlImageName(string imageName)
 		{
-			return $"..{ConstantesApp.USERIMG}/" + UserName + "/" + imageName;
+			return $"..{ConstantesApp.USERIMG}/{UserName}/{imageName}";
 		}
 
 		#region IGalerieViewModel

@@ -10,6 +10,8 @@ namespace BlazorBlog.ModelsValidation
 		public string Titre { get; set; }
 
 		public string Content { get; set; }
+
+		[Required(ErrorMessage = "Il faut une image de mise en avant")]
 		public string Image { get; internal set; }
 
 		public bool Published { get; set; }
