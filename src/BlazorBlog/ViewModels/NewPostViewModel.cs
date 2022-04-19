@@ -62,7 +62,7 @@ namespace BlazorBlog.ViewModels
 					if (PublishDisabled)
 					{
 						PostEnCours = ValidationPost.ToPost(LoginUser);
-						await ContextBlog.AddPostAsync(PostEnCours);
+						PostEnCours.Id = await ContextBlog.AddPostAsync(PostEnCours);
 						Snack.Add("Sauvegarde du post - OK", Severity.Success);
 						PublishDisabled = false;
 					}

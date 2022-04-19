@@ -26,8 +26,8 @@ namespace BlazorBlog.Composants
 			HotKeysContext.CreateContext()
 					.Add(ModKeys.Ctrl, Keys.B, OnClickBold, "Pour mettre en gras.", Exclude.ContentEditable)
 					.Add(ModKeys.Ctrl, Keys.I, OnClickItalic, "Pour mettre en italique.", Exclude.ContentEditable)
-					.Add(ModKeys.Ctrl, Keys.Q, OnClickQuote, "Pour mettre en quote", Exclude.ContentEditable)
-					.Add(ModKeys.Ctrl, Keys.C, OnClickBlockCode, "Pour faire un bloc de code", Exclude.ContentEditable)
+					.Add(ModKeys.Alt, Keys.Q, OnClickQuote, "Pour mettre en quote", Exclude.ContentEditable)
+					.Add(ModKeys.Alt, Keys.K, OnClickBlockCode, "Pour faire un bloc de code", Exclude.ContentEditable)
 					.Add(ModKeys.Alt, Keys.C, OnClickCodeInLine, "Pour faire une ligne de code", Exclude.ContentEditable)
 					.Add(ModKeys.Alt, Keys.I, OnClickImage, "Pour mettre une image", Exclude.ContentEditable)
 					.Add(ModKeys.Ctrl, Keys.K, OnClickLink, "Pour mettre un lien.", Exclude.ContentEditable)
@@ -42,7 +42,7 @@ namespace BlazorBlog.Composants
 		{
 			await ContentChanged.InvokeAsync(newValue);
 		}
-
+		
 		private async void OnClickLink()
 		{
 			string value = await GetSelection();

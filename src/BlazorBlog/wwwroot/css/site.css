@@ -91,7 +91,7 @@ a, .btn-link {
 }
 
 .background-super-light-gray {
-    background-color: Gainsboro;
+	background-color: #747474;
 }
 
 .card-post {
@@ -166,4 +166,9 @@ a, .btn-link {
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.scroll {
+    overflow-y: scroll;
+	height: 75vh;
 }

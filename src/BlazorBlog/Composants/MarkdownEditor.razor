@@ -12,12 +12,12 @@
                             OnClick="@OnClickItalic"/>
 		</MudTooltip>
 		
-        <MudTooltip Text="Quote (CTRL-Q)">
+        <MudTooltip Text="Quote (ALT-Q)">
             <MudIconButton Icon="@Icons.Filled.FormatQuote"
                             OnClick="@OnClickQuote"/>
         </MudTooltip>
 		
-		<MudTooltip Text="Block code (CTRL-C)">
+		<MudTooltip Text="Block code (ALT-K)">
             <MudIconButton Icon="@Icons.Filled.Code"
                             OnClick="@OnClickBlockCode" />
 		</MudTooltip>
@@ -58,8 +58,8 @@
                     Target="_blank" />
         </MudTooltip>
     </MudPaper>
+    <MudText Typo="Typo.caption"><u>Note</u> : Après chaque utilisation des raccourcis Markdown, ajouter n'importe quel caractère pour que le serveur prenne la modification en compte.</MudText>
 	<br />
-
 <MudTextField T="string"
 		    @ref="@Text"
             id="texteditor"

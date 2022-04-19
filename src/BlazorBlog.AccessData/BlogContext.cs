@@ -199,8 +199,8 @@ namespace BlazorBlog.AccessData
 		/// Ajout d'un nouveau post
 		/// </summary>
 		/// <param name="nouveauPost"></param>
-		/// <returns></returns>
-		public async Task<Post> AddPostAsync(Post nouveauPost)
+		/// <returns>Retourne l'ID du post</returns>
+		public async Task<int> AddPostAsync(Post nouveauPost)
 		{
 			try
 			{
@@ -228,14 +228,12 @@ namespace BlazorBlog.AccessData
 				}
 
 				string commandId = " SELECT LAST_INSERT_ID();";
-				nouveauPost.Id = await GetIntCore(commandId);
+				return await GetIntCore(commandId);
 			}
 			catch (Exception)
 			{
 				throw;
 			}
-
-			return nouveauPost;
 		}
 
 		/// <summary>
