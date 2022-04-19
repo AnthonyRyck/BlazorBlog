@@ -9,6 +9,7 @@
 		{
 			Context = blogContext;
 			Settings = settingSvc;
+			DisabledShare = true;
 		}
 
 
@@ -18,6 +19,14 @@
 
 		public Post Article { get; private set; }
 
+		public string UrlShareLinkedIn { get; private set; }
+
+		public string UrlShareTwitter { get; private set; }
+
+		public string UrlShareFacebook { get; private set; }
+
+		public bool DisabledShare { get; private set; }
+
 		public async Task LoadPost(int idpost)
 		{
 			IsLoading = true;
@@ -25,6 +34,17 @@
 			temp.Image = Settings.GetUrlImagePost(temp.Image);
 
 			Article = temp;
+
+			if(!string.IsNullOrEmpty(Settings.BlogUrl))
+			{
+				string urlPost = Settings.BlogUrl + "post/" + idpost;
+				UrlShareLinkedIn = "https://www.linkedin.com/sharing/share-offsite/?url=" + urlPost;
+				UrlShareTwitter = "https://twitter.com/intent/tweet?url=" + urlPost;
+				UrlShareFacebook = "https://facebook.com/sharer.php?u=" + urlPost;
+
+				DisabledShare = false;
+			}
+
 			IsLoading = false;
 		}
 

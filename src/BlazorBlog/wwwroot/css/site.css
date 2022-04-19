@@ -140,6 +140,13 @@ a, .btn-link {
     word-break: break-word;
 }
 
+.post-share {
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+    padding-left: 115px;
+}
+
 /*******************************/
 /*CSS pour top/bottom barre    */
 /*******************************/

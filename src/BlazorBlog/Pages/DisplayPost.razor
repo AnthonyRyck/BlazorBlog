@@ -30,7 +30,34 @@ else
 	<div class="post-content">
         <MudMarkdown Value="@viewModel.Article.Content" 
 	        		CodeBlockTheme="CodeBlockTheme.AtomOneDark" />
+
+		<div class="post-share">
+		    <MudText Typo="Typo.body1">Partager sur : </MudText>
+			<MudIconButton Icon="@Icons.Custom.Brands.LinkedIn"
+						    Size="Size.Small"
+                          Title="LinkedIn" 
+						    Color="Color.Default"
+                          Href="@viewModel.UrlShareLinkedIn" 
+                          Target="_blank"
+                          Disabled="@viewModel.DisabledShare" />
+
+            <MudIconButton Icon="@Icons.Custom.Brands.Twitter"
+						    Size="Size.Small"
+                          Title="Twitter" 
+                          Color="Color.Default"
+                          Href="@viewModel.UrlShareTwitter" 
+                          Target="_blank" />						
+
+            <MudIconButton Icon="@Icons.Custom.Brands.Facebook"
+						    Size="Size.Small"
+                          Title="Facebook" 
+                          Color="Color.Default"
+                          Href="@viewModel.UrlShareFacebook" 
+                          Target="_blank" />						
+        </div>
     </div>
+
+
     }
 }
 

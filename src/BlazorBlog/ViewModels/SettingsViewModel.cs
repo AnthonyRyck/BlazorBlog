@@ -24,6 +24,20 @@ namespace BlazorBlog.ViewModels
 			EditContextValidation = new EditContext(Settings);
 		}
 
+		/// <summary>
+		/// Vérifie que le dernier caratère à bien le "/"
+		/// </summary>
+		/// <param name="url"></param>
+		/// <returns></returns>
+		private string VerifyUrl(string url)
+		{
+			url = url.Last() == '/' 
+					? url
+					: url + '/';
+
+			return url;
+		}
+
 		#region ISettingsViewModel
 
 		public SettingsValidation Settings { get; private set; }
@@ -69,7 +83,7 @@ namespace BlazorBlog.ViewModels
 					Settings settingUrl = new Settings()
 					{
 						SettingName = ConstantesApp.SETTINGS_BLOG_URL,
-						Value = Settings.BlogUrl
+						Value = VerifyUrl(Settings.BlogUrl)
 					};
 					settings.Add(settingUrl);
 
