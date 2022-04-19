@@ -83,6 +83,7 @@
 		public async Task UpadateSettings(List<Settings> settings)
 		{
 			await Context.UpdateSettings(settings);
+			AllSettings = settings;
 		}
 
 
