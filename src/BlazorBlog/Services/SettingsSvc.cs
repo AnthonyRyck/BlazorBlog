@@ -84,5 +84,13 @@
 		{
 			await Context.UpdateSettings(settings);
 		}
+
+
+		public string GetUrlImagePost(string imageName)
+		{
+			return !string.IsNullOrEmpty(BlogUrl)
+				? imageName.Replace("../", BlogUrl)
+				: imageName;
+		}
 	}
 }

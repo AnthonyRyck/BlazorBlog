@@ -3,10 +3,12 @@
 	public class DisplayPostViewModel : IDisplayPostViewModel
 	{
 		private readonly BlogContext Context;
-		
-		public DisplayPostViewModel(BlogContext blogContext)
+		private readonly SettingsSvc Settings;
+
+		public DisplayPostViewModel(BlogContext blogContext, SettingsSvc settingSvc)
 		{
 			Context = blogContext;
+			Settings = settingSvc;
 		}
 
 
@@ -19,7 +21,10 @@
 		public async Task LoadPost(int idpost)
 		{
 			IsLoading = true;
-			Article = await Context.GetPostAsync(idpost);
+			var temp = await Context.GetPostAsync(idpost);
+			temp.Image = Settings.GetUrlImagePost(temp.Image);
+
+			Article = temp;
 			IsLoading = false;
 		}
 
