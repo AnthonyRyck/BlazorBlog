@@ -21,6 +21,11 @@ namespace BlazorBlog.ViewModels
 		string ImageEnAvant { get; }
 
 		/// <summary>
+		/// Indication si le post est sauvegardé.
+		/// </summary>
+		bool PublishDisabled { get; }
+
+		/// <summary>
 		/// Sauvegarde le post ou ses changements
 		/// </summary>
 		/// <returns></returns>

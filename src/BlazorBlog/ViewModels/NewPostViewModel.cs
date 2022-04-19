@@ -26,10 +26,9 @@ namespace BlazorBlog.ViewModels
 
 			FullScreenOption = new DialogOptions() { FullScreen = true, CloseButton = true };
 
-			PostEnCours = new Post()
-			{
-				Id = -1
-			};
+			PostEnCours = new Post();
+			PublishDisabled = true;
+			
 			ValidationPost = new PostValidation();
 			EditContextValidation = new EditContext(ValidationPost);
 			Snack = snackbar;
@@ -44,7 +43,8 @@ namespace BlazorBlog.ViewModels
 
 		public EditContext EditContextValidation { get; set; }
 
-		
+		public bool PublishDisabled { get; private set; }
+
 		public string ImageEnAvant { get; private set; }
 
 
@@ -59,11 +59,12 @@ namespace BlazorBlog.ViewModels
 				try
 				{
 					// Post pas encore sauvegardé en base
-					if (PostEnCours.Id == -1)
+					if (PublishDisabled)
 					{
 						PostEnCours = ValidationPost.ToPost(LoginUser);
 						await ContextBlog.AddPostAsync(PostEnCours);
 						Snack.Add("Sauvegarde du post - OK", Severity.Success);
+						PublishDisabled = false;
 					}
 					else
 					{
@@ -92,22 +93,21 @@ namespace BlazorBlog.ViewModels
 			{
 				try
 				{
-					// Post pas encore sauvegardé en base
-					if (PostEnCours.Id == -1)
+					if(!PublishDisabled)
 					{
 						PostEnCours = ValidationPost.ToPost(LoginUser);
+						PostEnCours.Content = ValidationPost.Content;
+						PostEnCours.Title = ValidationPost.Titre;
+						PostEnCours.Posted = DateTime.Now;
+						PostEnCours.IsPublished = true;
+						
+						await ContextBlog.PublishPostAsync(PostEnCours);
+						Snack.Add($"Post publié {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);
 					}
 					else
 					{
-						PostEnCours.Content = ValidationPost.Content;
-						PostEnCours.Title = ValidationPost.Titre;
+						Snack.Add($"Il faut enregistrer le post avant de le publier.", Severity.Warning);
 					}
-
-					PostEnCours.Posted = DateTime.Now;
-					PostEnCours.IsPublished = true;
-					await ContextBlog.PublishPostAsync(PostEnCours);
-
-					Snack.Add($"Post publié {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);
 				}
 				catch (Exception ex)
 				{

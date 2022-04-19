@@ -69,6 +69,7 @@ namespace BlazorBlog.ViewModels
 				if (!result.Cancelled)
 				{
 					await Context.DeletePostAsync(idPost);
+					AllPosts.RemoveAll(x => x.Id == idPost);
 					snack.Add("Article supprimé", Severity.Success);
 				}
 			}
