@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>BlazoBlog</PageTitle>
+@*<Link rel="icon" href=""></Link>*@
 
 <MudThemeProvider IsDarkMode=true />
 <MudDialogProvider/>
@@ -8,13 +8,6 @@
 
 <div class="page">
     <main>
-@*        <div class="top-row px-4 auth">
-            <a href="https://github.com/AnthonyRyck/BlazorBlog" target="_blank">
-                <MudIcon Icon="@Icons.Custom.Brands.GitHub" Title="GitHub" />
-                Github
-            </a>
-        </div>
-*@
         <article class="content px-4">
             @Body
         </article>

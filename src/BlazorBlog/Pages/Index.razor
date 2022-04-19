@@ -1,7 +1,8 @@
 ﻿@page "/"
 @inject IIndexViewModel ViewModel
+@inject SettingsSvc SvcSettings
 
-<PageTitle>Accueil</PageTitle>
+<Title Value="@SvcSettings.BlogName" />
 
 <MudStack Row="true" Justify="Justify.FlexStart" Class="flex-wrap">
 

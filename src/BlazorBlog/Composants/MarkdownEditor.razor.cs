@@ -56,12 +56,12 @@ namespace BlazorBlog.Composants
 
 		private async void OnClickBold()
 		{
-			await BothSideWithMd(ConstantesApp.MARKDOWN_SYNTAX_BOLD);
+			await BothSideWithMd(ConstantesApp.MARKDOWN_SYNTAX_BOLD, "PutYourWord");
 		}
 
 		private async void OnClickItalic()
 		{
-			await BothSideWithMd(ConstantesApp.MARKDOWN_SYNTAX_ITALIC);
+			await BothSideWithMd(ConstantesApp.MARKDOWN_SYNTAX_ITALIC, "PutYourWord");
 		}
 
 		private async void OnClickQuote()
@@ -72,12 +72,12 @@ namespace BlazorBlog.Composants
 
 		private async void OnClickBlockCode()
 		{
-			await BothSideWithMd(ConstantesApp.MARKDOWN_SYNTAX_BLOCK_CODE);
+			await BothSideWithMd(ConstantesApp.MARKDOWN_SYNTAX_BLOCK_CODE, Environment.NewLine + "PutYourBlockCode" + Environment.NewLine);
 		}
 
 		private async void OnClickCodeInLine()
 		{
-			await BothSideWithMd(ConstantesApp.MARKDOWN_SYNTAX_CODE_IN_LINE);
+			await BothSideWithMd(ConstantesApp.MARKDOWN_SYNTAX_CODE_IN_LINE, "code");
 		}
 
 		private async void OnClickImage()
@@ -110,11 +110,11 @@ namespace BlazorBlog.Composants
 			await StartWithMd(MARKDOWN_SYNTAX_TABLEAU, string.Empty);
 		}
 
-		private async Task BothSideWithMd(string markdownSymbol)
+		private async Task BothSideWithMd(string markdownSymbol, string defaultWord)
 		{
 			string value = await GetSelection();
 			string markdown = string.IsNullOrEmpty(value)
-				? $"{markdownSymbol} {markdownSymbol}"
+				? $"{markdownSymbol}{defaultWord}{markdownSymbol}"
 				: $"{markdownSymbol}{value}{markdownSymbol}";
 
 			await Insert(markdown);

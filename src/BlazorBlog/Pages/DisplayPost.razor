@@ -4,12 +4,14 @@
 
 @if(viewModel.IsLoading)
 {
+	<Title Value="Chargement..." />
 	<div>Chargement de l'article...</div>
 }
 else
 {
     @if(viewModel.Article == null)
     {
+        <Title Value="Oups" />
     	<h3>Oups</h3>
     
     <MudText Typo="Typo.body1">Aucun article trouvé à cette adresse.</MudText>
@@ -22,6 +24,8 @@ else
     }
     else
     {
+		<Title Value="@viewModel.Article.Title" />
+		
     <div class="center-content post-title" style="background-image:url(@viewModel.Article.Image)">
         <h1>@viewModel.Article.Title</h1>
 		<span>@viewModel.Article.UserId / @viewModel.Article.Posted.Value.ToString("D")</span>
