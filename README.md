@@ -2,7 +2,7 @@
 Application de blog simple en .NET 6 Blazor Server. J'utilise [MudBlazor](https://github.com/MudBlazor/MudBlazor/) pour l'interface.
 
 ## Installation
----------------------
+
 Exemple de commande Docker :   
 ```
 docker run -d -p 3030:80 \
