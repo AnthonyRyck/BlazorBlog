@@ -59,5 +59,17 @@
 		public const string SETTINGS_BLOG_URL = "blogurl";
 
 		#endregion
+
+		#region Extensions Image
+
+		public const string EXTENSION_IMAGE_JPG = ".jpg";
+		public const string EXTENSION_IMAGE_JPEG = ".jpeg";
+		public const string EXTENSION_IMAGE_PNG = ".png";
+		public const string EXTENSION_IMAGE_GIF = ".gif";
+		public const string EXTENSION_IMAGE_BMP = ".bmp";
+		public const string EXTENSION_IMAGE_ICO = ".ico";
+		public const string EXTENSION_IMAGE_SVG = ".svg";
+		
+		#endregion
 	}
 }

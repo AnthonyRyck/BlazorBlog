@@ -61,12 +61,24 @@ namespace BlazorBlog.ViewModels
 
                 try
                 {
-                    using FileStream fs = new(pathImage, FileMode.Create);
-                    // Max 3 Mo
-                    await file.OpenReadStream(3000000).CopyToAsync(fs);
+                    string extensionFile = new FileInfo(file.Name).Extension.ToLower();
 
-                    Snack.Add($"Upload de {file.Name} réussi", Severity.Success);
-                    PathImages.Add(SetUrlImageName(file.Name));
+                    if (extensionFile == ConstantesApp.EXTENSION_IMAGE_JPEG
+                        || extensionFile == ConstantesApp.EXTENSION_IMAGE_PNG
+                        || extensionFile == ConstantesApp.EXTENSION_IMAGE_JPG)
+                    {
+                        using FileStream fs = new(pathImage, FileMode.Create);
+                        // Max 3 Mo
+                        await file.OpenReadStream(3000000).CopyToAsync(fs);
+
+                        Snack.Add($"Upload de {file.Name} réussi", Severity.Success);
+                        PathImages.Add(SetUrlImageName(file.Name));
+                    }
+                    else
+                    {
+                        Snack.Add($"Il faut une image JPG ou JPEG ou PNG", Severity.Warning);
+                        return;
+                    }
                 }
                 catch (Exception ex)
                 {

@@ -38,13 +38,12 @@
 			if(!string.IsNullOrEmpty(Settings.BlogUrl))
 			{
 				string urlPost = Settings.BlogUrl + "post/" + idpost;
-				UrlShareLinkedIn = "https://www.linkedin.com/sharing/share-offsite/?url=" + urlPost;
+				UrlShareLinkedIn = "https://www.linkedin.com/shareArticle?mini=true&url=" + urlPost;
 				UrlShareTwitter = "https://twitter.com/intent/tweet?url=" + urlPost;
-				UrlShareFacebook = "https://facebook.com/sharer.php?u=" + urlPost;
+				UrlShareFacebook = "https://www.facebook.com/sharer.php?u=" + urlPost;
 
 				DisabledShare = false;
 			}
-
 			IsLoading = false;
 		}
 
