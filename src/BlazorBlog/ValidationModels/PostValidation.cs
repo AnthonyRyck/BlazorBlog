@@ -6,7 +6,7 @@ namespace BlazorBlog.ModelsValidation
 	public class PostValidation
 	{
 		[Required(ErrorMessage = "Il faut un titre")]
-		[MaxLength(30, ErrorMessage ="Maximum 30 caractères")]
+		[MaxLength(60, ErrorMessage ="Maximum 60 caractères")]
 		public string Titre { get; set; }
 
 		public string Content { get; set; }
