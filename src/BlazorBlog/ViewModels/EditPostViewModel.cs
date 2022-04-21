@@ -64,6 +64,7 @@ namespace BlazorBlog.ViewModels
 					PostEnCours.Content = ValidationPost.Content;
 					PostEnCours.Title = ValidationPost.Titre;
 					PostEnCours.UpdatedAt = DateTime.Now;
+					PostEnCours.Image = ValidationPost.Image;
 					await ContextBlog.UpdatePostAsync(PostEnCours);
 					Snack.Add($"Post mis à jour {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);
 				}
@@ -87,8 +88,9 @@ namespace BlazorBlog.ViewModels
 				{
 					PostEnCours.Content = ValidationPost.Content;
 					PostEnCours.Title = ValidationPost.Titre;
-
+					PostEnCours.Image = ValidationPost.Image;
 					PostEnCours.Posted = DateTime.Now;
+					PostEnCours.UpdatedAt = DateTime.Now;
 					PostEnCours.IsPublished = true;
 					await ContextBlog.PublishPostAsync(PostEnCours);
 

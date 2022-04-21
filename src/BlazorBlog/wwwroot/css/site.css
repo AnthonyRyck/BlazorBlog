@@ -154,10 +154,15 @@ a, .btn-link {
     padding-left: 115px;
 }
 
+.imagefade {
+    height: 400px;
+    background: rgba(20,20,20, 0.6); 
+}
+
+
 /*******************************/
 /*CSS pour top/bottom barre    */
 /*******************************/
-
 .top-bar {
     background-color: #282828;
     display: flex;
