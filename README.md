@@ -48,6 +48,7 @@ L'utilisateur **root** est créé au lancement de l'application. Il a le rôle d
 * ![check](https://github.com/AnthonyRyck/ctrl-alt-suppr/blob/main/ImgBlog/check.png) Page d'accueil pour afficher les articles publiés  
 * ![check](https://github.com/AnthonyRyck/ctrl-alt-suppr/blob/main/ImgBlog/check.png) Partager l'article via Facebook, Twitter, LinkedIn  
 * ![check](https://github.com/AnthonyRyck/ctrl-alt-suppr/blob/main/ImgBlog/check.png) Changement des titres dans la barre du browser de façon dynamique  
+* Un système pour compter le nombre de vue sur chaque article  
 * Ajouter le système de catégorie pour les articles  
 * Faire une page pour gérer les images de la galerie  
 * Intégrer des vidéos dans l'article  
