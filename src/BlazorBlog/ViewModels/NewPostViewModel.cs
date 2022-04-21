@@ -61,8 +61,13 @@ namespace BlazorBlog.ViewModels
 					// Post pas encore sauvegardé en base
 					if (PublishDisabled)
 					{
-						PostEnCours = ValidationPost.ToPost(LoginUser);
+						PostEnCours.Title = ValidationPost.Titre;
+						PostEnCours.Content = ValidationPost.Content;
+						PostEnCours.UpdatedAt = DateTime.Now;
+						PostEnCours.UserId = LoginUser;
+						PostEnCours.Image = ValidationPost.Image;
 						PostEnCours.Id = await ContextBlog.AddPostAsync(PostEnCours);
+						
 						Snack.Add("Sauvegarde du post - OK", Severity.Success);
 						PublishDisabled = false;
 					}
@@ -70,6 +75,7 @@ namespace BlazorBlog.ViewModels
 					{
 						PostEnCours.Content = ValidationPost.Content;
 						PostEnCours.Title = ValidationPost.Titre;
+						PostEnCours.Image = ValidationPost.Image;						
 						PostEnCours.UpdatedAt = DateTime.Now;
 						await ContextBlog.UpdatePostAsync(PostEnCours);
 						Snack.Add($"Post mis à jour {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);
@@ -95,10 +101,11 @@ namespace BlazorBlog.ViewModels
 				{
 					if(!PublishDisabled)
 					{
-						PostEnCours = ValidationPost.ToPost(LoginUser);
-						PostEnCours.Content = ValidationPost.Content;
 						PostEnCours.Title = ValidationPost.Titre;
+						PostEnCours.Content = ValidationPost.Content;
 						PostEnCours.Posted = DateTime.Now;
+						PostEnCours.UpdatedAt = DateTime.Now;
+						PostEnCours.Image = ValidationPost.Image;
 						PostEnCours.IsPublished = true;
 						
 						await ContextBlog.PublishPostAsync(PostEnCours);

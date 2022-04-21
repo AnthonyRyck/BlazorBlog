@@ -204,6 +204,7 @@ namespace BlazorBlog.AccessData
 		{
 			try
 			{
+				int idNewPost = 0;
 				using (var conn = new MySqlConnection(ConnectionString))
 				{
 					string command = "INSERT INTO posts (title, content, image, posted, updateat, userid, ispublished)"
@@ -223,12 +224,17 @@ namespace BlazorBlog.AccessData
 
 						conn.Open();
 						await cmd.ExecuteNonQueryAsync();
+
+						// Récupération de l'ID.
+						string commandId = "SELECT LAST_INSERT_ID();";
+						cmd.CommandText = commandId;
+						idNewPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+
 						conn.Close();
 					}
 				}
 
-				string commandId = " SELECT LAST_INSERT_ID();";
-				return await GetIntCore(commandId);
+				return idNewPost;
 			}
 			catch (Exception)
 			{

@@ -16,20 +16,4 @@ namespace BlazorBlog.ModelsValidation
 
 		public bool Published { get; set; }
 	}
-
-
-	public static class PostValidationExtension
-	{
-		public static Post ToPost(this PostValidation source, string userId)
-		{
-			return new Post()
-			{
-				Content = source.Content,
-				UpdatedAt = DateTime.Now,
-				Title = source.Titre,
-				UserId = userId,
-				Image = source.Image
-			};
-		}
-	}
 }
