@@ -97,8 +97,15 @@ a, .btn-link {
 .card-post {
     height: 350px;
     width: 450px;
-    color: white;
+    
     background-size: cover;
+}
+
+.imgfade {
+    height: 350px;
+    width: 450px;
+    color: white;
+    background: linear-gradient(180deg, rgba(20,20,20, 1) 0%, rgba(20,20,20, 0.8) 30%, rgba(20,20,20, 0.8) 50%, rgba(20,20,20, 0) 100%);
 }
 
 .grow {

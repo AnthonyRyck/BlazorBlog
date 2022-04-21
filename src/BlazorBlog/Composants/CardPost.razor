@@ -1,8 +1,10 @@
-﻿<div class="card-post grow" style="background-image: url(@Image);" @onclick="OnClickPost">
-     <div class="padding-25px">
+﻿<div class="card-post grow" @onclick="OnClickPost" style="background-image: url(@Image);">
+    <div  class="imgfade">
+    <div class="padding-25px">
          <h2>@Titre</h2>
          <div>par @User - @Date.ToString("d")</div>
      </div>
+    </div> 
 </div>
 
 @code {
