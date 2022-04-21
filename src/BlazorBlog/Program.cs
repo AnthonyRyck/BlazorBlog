@@ -74,6 +74,11 @@ builder.Services.AddScoped<IIndexViewModel, IndexViewModel>();
 builder.Services.AddScoped<IArticlesViewModel, ArticlesViewModel>();
 builder.Services.AddScoped<IEditPostViewModel, EditPostViewModel>();
 
+// Augmentation de la taille des messages pour des posts très long.
+builder.Services.AddSignalR(e => {
+    e.MaximumReceiveMessageSize = 102400000;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
