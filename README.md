@@ -35,7 +35,8 @@ blazorblog:
 ```
 
 ## Utilisation
-L'utilisateur **root** est créé au lancement de l'application. Il a le rôle d'administrateur. Il permet de configurer le blog.
+L'utilisateur **root** est créé au lancement de l'application. Il a le rôle d'administrateur. Il permet de configurer le blog.  
+URL de connexion : https://YOUR-DOMAIN/Identity/Account/Login  
 ![Paramètre](https://github.com/AnthonyRyck/BlazorBlog/blob/main/ImgRessources/Parametres.png)  
 
 ## Roadmap
