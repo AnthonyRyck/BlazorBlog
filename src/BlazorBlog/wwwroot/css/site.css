@@ -184,3 +184,11 @@ a, .btn-link {
     overflow-y: scroll;
 	height: 75vh;
 }
+
+/***********/
+/*Autres  */
+/***********/
+
+.separator {
+    border: 1px solid black;
+}

@@ -1,4 +1,4 @@
-﻿using BlazorBlog.ModelsValidation;
+﻿using BlazorBlog.ValidationModels;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace BlazorBlog.ViewModels
@@ -16,6 +16,16 @@ namespace BlazorBlog.ViewModels
 		EditContext EditContextValidation { get; set; }
 
 		/// <summary>
+		/// Entité de validation pour une catégorie
+		/// </summary>
+		CategorieValidation ValidationCategorie { get; set; }
+
+		/// <summary>
+		/// Permet la validation du Forms
+		/// </summary>
+		EditContext EditCtxCategorie { get; set; }
+
+		/// <summary>
 		/// Image mis en avant.
 		/// </summary>
 		string ImageEnAvant { get; }
@@ -24,6 +34,17 @@ namespace BlazorBlog.ViewModels
 		/// Indication si le post est sauvegardé.
 		/// </summary>
 		bool PublishDisabled { get; }
+
+		/// <summary>
+		/// Liste des catégories pour le post
+		/// </summary>
+		List<Categorie> Categories {get; }
+
+		/// <summary>
+		/// Ajoute une nouvelle catégorie
+		/// </summary>
+		/// <returns></returns>
+		Task AjouterCategorie();
 
 		/// <summary>
 		/// Sauvegarde le post ou ses changements
@@ -42,5 +63,6 @@ namespace BlazorBlog.ViewModels
 		/// </summary>
 		/// <returns></returns>
 		Task OpenGalerie();
+
 	}
 }

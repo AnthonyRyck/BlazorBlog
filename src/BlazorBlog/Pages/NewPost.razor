@@ -4,7 +4,7 @@
 
 <h3>Nouvel article</h3>
 
-<EditForm EditContext="@viewModel.EditContextValidation">
+<EditForm EditContext="@viewModel.EditContextValidation" Context="PourPost">
 <DataAnnotationsValidator />
 <div class="row">
 	<div class="col-10">
@@ -40,7 +40,8 @@
 </MudTabs>
 </div>
 
-	<div class="col-2 background-super-light-gray">
+	@*Menu sur le coté*@
+	<MudPaper Elevation=5 Class="col-2">
 		<MudStack>
 			<br />
 			<MudButton StartIcon="@Icons.Filled.Save" 
@@ -65,7 +66,39 @@
 							ObjectFit="ObjectFit.Cover"
 							Class="rounded-lg background-gray"
 							@onclick="viewModel.OpenGalerie" />
+
+			<hr class="separator" />
+			
+			<div><h5>Catégories : </h5></div>
+				<MudStack Style="Height:250px;">
+				   @foreach (var category in viewModel.Categories)
+					{
+						<MudCheckBox Label="@category.Nom" 
+									@bind-Checked="@category.IsSelected" />
+						
+					}
+				</MudStack>
+				
+				<EditForm EditContext="@viewModel.EditCtxCategorie" Context="PourCategorie">
+				<DataAnnotationsValidator />
+					
+				<MudStack Spacing="2">
+					<div>
+					<ValidationMessage For="@(() => viewModel.ValidationCategorie.Nom)" />
+					</div>
+					<MudTextField @bind-Value="viewModel.ValidationCategorie.Nom" 
+									Label="Nom de la nouvelle catégorie" 
+									Variant="Variant.Outlined"></MudTextField>
+
+					<MudButton OnClick="@viewModel.AjouterCategorie"
+								Variant="Variant.Filled"
+								Size="Size.Small"
+								Color="Color.Primary">Ajouter la catégorie</MudButton>
+
+				</MudStack>
+				</EditForm>
+			
 		</MudStack>
-	</div>
+	</MudPaper>
 </div>
 </EditForm>

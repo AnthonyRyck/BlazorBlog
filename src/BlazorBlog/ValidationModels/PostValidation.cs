@@ -1,7 +1,6 @@
-﻿using BlazorBlog.Core;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorBlog.ModelsValidation
+namespace BlazorBlog.ValidationModels
 {
 	public class PostValidation
 	{

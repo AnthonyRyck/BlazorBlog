@@ -13,3 +13,15 @@ CREATE TABLE IF NOT EXISTS settings
 (settingname VARCHAR(100) NOT NULL,
 settingvalue VARCHAR(250) NOT NULL,
 PRIMARY KEY(settingname));
+
+CREATE TABLE IF NOT EXISTS categories
+(idcategorie INT UNSIGNED NOT NULL AUTO_INCREMENT,
+nom VARCHAR(100) NOT NULL,
+PRIMARY KEY(idcategorie));
+
+CREATE TABLE IF NOT EXISTS categorietopost
+(postid INT NOT NULL,
+categorieid INT UNSIGNED NOT NULL,
+PRIMARY KEY(postid, categorieid),
+FOREIGN KEY (postid) REFERENCES posts (idpost) ON DELETE CASCADE,
+FOREIGN KEY (categorieid) REFERENCES categories (idcategorie) ON DELETE CASCADE);

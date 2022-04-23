@@ -146,7 +146,7 @@ namespace BlazorBlog.AccessData
 
 			return posts;
 		}
-		
+
 		/// <summary>
 		/// Récupère le post par rapport à son id
 		/// </summary>
@@ -397,6 +397,162 @@ namespace BlazorBlog.AccessData
 					conn.Close();
 				}
 			}
+		}
+
+		#endregion
+
+		#region Categories
+
+		public async Task<List<Categorie>> GetCategories()
+		{
+			// Récupération de toutes les catégories
+			var commandText = @"SELECT idcategorie, nom "
+							 + "FROM categories;";
+
+			Func<MySqlCommand, Task<List<Categorie>>> funcCmd = async (cmd) =>
+			{
+				List<Categorie> categories = new List<Categorie>();
+
+				using (var reader = await cmd.ExecuteReaderAsync())
+				{
+					while (reader.Read())
+					{
+						var categorie = new Categorie()
+						{
+							IdCategorie = reader.GetInt32(0),
+							Nom = reader.GetString(1)
+						};
+
+						categories.Add(categorie);
+					}
+				}
+
+				return categories;
+			};
+			List<Categorie> categories;
+			
+			try
+			{
+				categories = await GetCoreAsync(commandText, funcCmd);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			return categories;
+		}
+
+		public async Task<List<int>> GetCategoriesByPost(int idPost)
+		{
+			// Récupération de toutes les catégories
+			var commandText = @"SELECT categorieid "
+							 + "FROM categorietopost "
+							 + $"WHERE postid = {idPost};";
+
+			Func<MySqlCommand, Task<List<int>>> funcCmd = async (cmd) =>
+			{
+				List<int> idCategorie = new List<int>();
+
+				using (var reader = await cmd.ExecuteReaderAsync())
+				{
+					while (reader.Read())
+					{
+						int id = reader.GetInt32(0);
+						idCategorie.Add(id);
+					}
+				}
+
+				return idCategorie;
+			};
+			List<int> categories;
+
+			try
+			{
+				categories = await GetCoreAsync(commandText, funcCmd);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			return categories;
+		}
+
+		public async Task AddCategorieToPost(int idPost, IEnumerable<int> idCategorie)
+		{
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					// Suppression de toutes lec catégories pour ce post
+					string command = $"DELETE FROM categorietopost WHERE postid = {idPost};";
+					
+					using (var cmd = new MySqlCommand(command, conn))
+					{
+						conn.Open();
+						await cmd.ExecuteNonQueryAsync();
+
+						// Ajout des catégories pour le post.
+						string commandInsert = "INSERT INTO categorietopost (postid, categorieid)"
+									+ " VALUES(@idpost, @idcategorie);";
+
+						cmd.CommandText = commandInsert;
+						foreach (var categorie in idCategorie)
+						{
+							if (cmd.Parameters.Count > 0)
+							{
+								cmd.Parameters.Clear();
+							}
+
+							cmd.Parameters.AddWithValue("@idpost", idPost);
+							cmd.Parameters.AddWithValue("@idcategorie", categorie);
+
+							await cmd.ExecuteNonQueryAsync();
+						}
+
+						conn.Close();
+					}
+				}
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+
+		public async Task<int> AddCategorie(Categorie nouvelleCategorie)
+		{
+			int idNewCategorie = 0;
+
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					var command = @"INSERT INTO categories (nom) VALUES(@nom);";
+
+					using (var cmd = new MySqlCommand(command, conn))
+					{
+						cmd.Parameters.AddWithValue("@nom", nouvelleCategorie.Nom);
+
+						conn.Open();
+						await cmd.ExecuteNonQueryAsync();
+
+						// Récupération de l'ID.
+						string commandId = "SELECT LAST_INSERT_ID();";
+						cmd.CommandText = commandId;
+						idNewCategorie = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+
+						conn.Close();
+					}
+				}
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			return idNewCategorie;
 		}
 
 		#endregion

@@ -1,6 +1,6 @@
 ﻿using BlazorBlog.Composants;
 using BlazorBlog.Core;
-using BlazorBlog.ModelsValidation;
+using BlazorBlog.ValidationModels;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using Toolbelt.Blazor.HotKeys;
@@ -35,6 +35,26 @@ namespace BlazorBlog.ViewModels
 			KeysContext = hotKeys;
 			KeysContext.CreateContext()
 				.Add(ModKeys.Ctrl, Keys.S, SavePost, "Sauvegarde du post.", exclude: Exclude.ContentEditable);
+
+			InitViewModel().GetAwaiter().GetResult();
+			ValidationCategorie = new CategorieValidation();
+			EditCtxCategorie = new EditContext(ValidationCategorie);
+		}
+
+		private async Task InitViewModel()
+		{
+			List<Categorie> temp = await ContextBlog.GetCategories();
+			List<int> idCategoriesSelected = await ContextBlog.GetCategoriesByPost(PostEnCours.Id);
+
+			foreach (var item in temp)
+			{
+				if (idCategoriesSelected.Contains(item.IdCategorie))
+				{
+					item.IsSelected = true;
+				}
+			}
+
+			Categories = temp;
 		}
 
 		#region INewPostViewModel
@@ -47,6 +67,11 @@ namespace BlazorBlog.ViewModels
 
 		public string ImageEnAvant { get; private set; }
 
+		public List<Categorie> Categories { get; private set;  }
+		
+		public CategorieValidation ValidationCategorie { get; set; }
+		
+		public EditContext EditCtxCategorie { get; set; }
 
 		public async Task SavePost()
 		{
@@ -61,13 +86,18 @@ namespace BlazorBlog.ViewModels
 					// Post pas encore sauvegardé en base
 					if (PublishDisabled)
 					{
+						// Sauvegarde du post
 						PostEnCours.Title = ValidationPost.Titre;
 						PostEnCours.Content = ValidationPost.Content;
 						PostEnCours.UpdatedAt = DateTime.Now;
 						PostEnCours.UserId = LoginUser;
 						PostEnCours.Image = ValidationPost.Image;
 						PostEnCours.Id = await ContextBlog.AddPostAsync(PostEnCours);
-						
+
+						// Sauvegarde des catégories
+						var allCategoriesSelected = Categories.Where(x => x.IsSelected).Select(x => x.IdCategorie).ToList();
+						await ContextBlog.AddCategorieToPost(PostEnCours.Id, allCategoriesSelected);
+
 						Snack.Add("Sauvegarde du post - OK", Severity.Success);
 						PublishDisabled = false;
 					}
@@ -133,6 +163,36 @@ namespace BlazorBlog.ViewModels
 			{
 				ImageEnAvant = result.Data.ToString();
 				ValidationPost.Image = ImageEnAvant;
+			}
+		}
+
+		public async Task AjouterCategorie()
+		{
+			if (!EditCtxCategorie.Validate())
+			{
+				return;
+			}
+			else
+			{
+				try
+				{
+					var categorie = new Categorie()
+					{
+						Nom = ValidationCategorie.Nom
+					};
+
+					categorie.IdCategorie = await ContextBlog.AddCategorie(categorie);
+					categorie.IsSelected = true;
+					Snack.Add($"Catégorie {categorie.Nom} ajoutée", Severity.Success);
+
+					Categories.Add(categorie);
+					ValidationCategorie = new CategorieValidation();
+				}
+				catch (Exception ex)
+				{
+					Snack.Add("Erreur sur l'ajout de la catégorie", Severity.Error);
+					Log.Error(ex, "NewPostViewModel - AjouterCategorie");
+				}
 			}
 		}
 

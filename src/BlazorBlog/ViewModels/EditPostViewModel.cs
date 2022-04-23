@@ -1,5 +1,5 @@
 ﻿using BlazorBlog.Composants;
-using BlazorBlog.ModelsValidation;
+using BlazorBlog.ValidationModels;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using Toolbelt.Blazor.HotKeys;
