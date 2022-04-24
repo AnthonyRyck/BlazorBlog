@@ -2,6 +2,8 @@
 @attribute [Authorize(Roles = "Admin, Compositeur")]
 @inject INewPostViewModel viewModel
 
+<Title Value="Nouveau post" />
+
 <h3>Nouvel article</h3>
 
 <EditForm EditContext="@viewModel.EditContextValidation" Context="PourPost">
