@@ -53,4 +53,4 @@ URL de connexion : https://YOUR-DOMAIN/Identity/Account/Login
 * Ajouter le système de catégorie pour les articles  
 * Faire une page pour gérer les images de la galerie  
 * Intégrer des vidéos dans l'article  
-* Intégrer un "système" d'extraction d'article Wordpress en article Markdown
+* Faire une page sur l'auteur  
