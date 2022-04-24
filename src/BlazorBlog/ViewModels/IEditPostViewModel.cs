@@ -10,6 +10,10 @@ namespace BlazorBlog.ViewModels
 		string ImageEnAvant { get; }
 		PostValidation ValidationPost { get; set; }
 
+		List<Categorie> Categories { get; }
+		CategorieValidation ValidationCategorie { get; set; }
+		EditContext EditCtxCategorie { get; set; }
+
 		Task OpenGalerie();
 		Task PublishPost();
 		Task SavePost();
@@ -20,5 +24,7 @@ namespace BlazorBlog.ViewModels
 		/// <param name="idpost"></param>
 		/// <returns></returns>
 		Task LoadPost(int idpost);
+
+		Task AjouterCategorie();
 	}
 }

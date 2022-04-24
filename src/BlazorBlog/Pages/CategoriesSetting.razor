@@ -1,0 +1,45 @@
+﻿@page "/categories"
+@attribute [Authorize(Roles = "Admin, Compositeur")]
+@inject ICategoriesViewModel ViewModel
+
+<MudDataGrid T="Categorie" 
+            Items="@ViewModel.Categories"
+            Bordered="true"
+			 Sortable="true"
+            Dense="true" 
+            EditMode="DataGridEditMode.Form"
+            EditTrigger="DataGridEditTrigger.Manual"
+            CommittedItemChanges="@ViewModel.CommittedItemChanges">
+			 
+	<ToolBarContent>
+        <MudText Typo="Typo.h6">Liste des catégories</MudText>
+    </ToolBarContent>
+
+    <Columns>
+        <Column T="Categorie" Field="Nom" Title="Nom" IsEditable="true" />
+		
+        <Column T="Categorie" CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudIconButton Size="@Size.Small" 
+                                Icon="@Icons.Outlined.Edit"
+                                OnClick="@context.Actions.StartEditingItem" />
+            </CellTemplate>
+        </Column>
+		
+		<Column T="Categorie">
+            <CellTemplate>
+                <MudFab Color="Color.Secondary"
+						Size="Size.Small"
+                        StartIcon="@Icons.Material.Filled.DeleteForever" 
+                        OnClick="@(() => ViewModel.DeleteCategorie(context.Item.IdCategorie))" />
+            </CellTemplate>
+        </Column>
+    </Columns>
+</MudDataGrid>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.InitializeAsync();
+    }
+}

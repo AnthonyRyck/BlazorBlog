@@ -70,14 +70,15 @@
 			<hr class="separator" />
 			
 			<div><h5>Catégories : </h5></div>
-				<MudStack Style="Height:250px;">
+				<div class="scroll" style="height:250px;">
 				   @foreach (var category in viewModel.Categories)
 					{
-						<MudCheckBox Label="@category.Nom" 
-									@bind-Checked="@category.IsSelected" />
-						
+						<div>
+							<input type="checkbox" id="categorie-@category.IdCategorie" @bind="@category.IsSelected" />
+							<label for="categorie-@category.IdCategorie">@category.Nom</label>
+						</div>						
 					}
-				</MudStack>
+				</div>
 				
 				<EditForm EditContext="@viewModel.EditCtxCategorie" Context="PourCategorie">
 				<DataAnnotationsValidator />

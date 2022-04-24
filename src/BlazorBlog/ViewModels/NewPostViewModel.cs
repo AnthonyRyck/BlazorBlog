@@ -1,8 +1,6 @@
 ﻿using BlazorBlog.Composants;
-using BlazorBlog.Core;
 using BlazorBlog.ValidationModels;
 using Microsoft.AspNetCore.Components.Forms;
-using MudBlazor;
 using Toolbelt.Blazor.HotKeys;
 
 namespace BlazorBlog.ViewModels
@@ -133,11 +131,19 @@ namespace BlazorBlog.ViewModels
 					{
 						PostEnCours.Title = ValidationPost.Titre;
 						PostEnCours.Content = ValidationPost.Content;
-						PostEnCours.Posted = DateTime.Now;
+						if (PostEnCours.Posted == null)
+						{
+							// La date du post ne doit plus changer.
+							PostEnCours.Posted = DateTime.Now;
+						}
 						PostEnCours.UpdatedAt = DateTime.Now;
 						PostEnCours.Image = ValidationPost.Image;
 						PostEnCours.IsPublished = true;
-						
+
+						// Sauvegarde des catégories
+						var allCategoriesSelected = Categories.Where(x => x.IsSelected).Select(x => x.IdCategorie).ToList();
+						await ContextBlog.AddCategorieToPost(PostEnCours.Id, allCategoriesSelected);
+
 						await ContextBlog.PublishPostAsync(PostEnCours);
 						Snack.Add($"Post publié {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);
 					}

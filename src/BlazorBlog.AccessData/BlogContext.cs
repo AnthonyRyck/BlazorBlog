@@ -555,6 +555,51 @@ namespace BlazorBlog.AccessData
 			return idNewCategorie;
 		}
 
+		public async Task UpdateCategorie(Categorie item)
+		{
+			using (var conn = new MySqlConnection(ConnectionString))
+			{
+				var commandUpdateCompetence = @$"UPDATE categories SET nom=@name"
+									  + $" WHERE idcategorie=@idcat;";
+
+				using (var cmd = new MySqlCommand(commandUpdateCompetence, conn))
+				{
+					cmd.Parameters.AddWithValue("@name", item.Nom);
+					cmd.Parameters.AddWithValue("@idcat", item.IdCategorie);
+					
+					conn.Open();
+					await cmd.ExecuteNonQueryAsync();
+					conn.Close();
+				}
+			}
+		}
+
+		public async Task DeleteCategorie(int idCategorie)
+		{
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					// Suppression de la catégorie
+					string command = $"DELETE FROM categories WHERE idcategorie = @idcat;";
+
+					using (var cmd = new MySqlCommand(command, conn))
+					{
+						cmd.Parameters.AddWithValue("@idcat", idCategorie);
+
+						conn.Open();
+						await cmd.ExecuteNonQueryAsync();
+						conn.Close();
+					}
+				}
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+		
+
 		#endregion
 
 		#region Private methods

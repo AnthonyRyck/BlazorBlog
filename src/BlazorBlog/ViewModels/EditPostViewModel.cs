@@ -6,7 +6,7 @@ using Toolbelt.Blazor.HotKeys;
 
 namespace BlazorBlog.ViewModels
 {
-	public class EditPostViewModel : IEditPostViewModel
+	public class EditPostViewModel : IEditPostViewModel, IDisposable
 	{
 		private readonly BlogContext ContextBlog;
 		private Post PostEnCours;
@@ -29,6 +29,25 @@ namespace BlazorBlog.ViewModels
 			KeysContext = hotKeys;
 			KeysContext.CreateContext()
 				.Add(ModKeys.Ctrl, Keys.S, SavePost, "Sauvegarde du post.", exclude: Exclude.ContentEditable);
+
+			ValidationCategorie = new CategorieValidation();
+			EditCtxCategorie = new EditContext(ValidationCategorie);
+		}
+
+		private async Task InitViewModel()
+		{
+			List<Categorie> temp = await ContextBlog.GetCategories();
+			List<int> idCategoriesSelected = await ContextBlog.GetCategoriesByPost(PostEnCours.Id);
+
+			foreach (var item in temp)
+			{
+				if (idCategoriesSelected.Contains(item.IdCategorie))
+				{
+					item.IsSelected = true;
+				}
+			}
+
+			Categories = temp;
 		}
 
 		#region IEditPostViewModel
@@ -38,6 +57,11 @@ namespace BlazorBlog.ViewModels
 
 		public EditContext EditContextValidation { get; set; }
 
+		public List<Categorie> Categories { get; private set; }
+
+		public CategorieValidation ValidationCategorie { get; set; }
+
+		public EditContext EditCtxCategorie { get; set; }
 
 		public string ImageEnAvant { get; private set; }
 
@@ -49,6 +73,8 @@ namespace BlazorBlog.ViewModels
 			ValidationPost.Image = PostEnCours.Image;
 			ValidationPost.Published = PostEnCours.IsPublished;
 			ImageEnAvant = PostEnCours.Image;
+
+			await InitViewModel();
 		}
 
 		public async Task SavePost()
@@ -66,6 +92,11 @@ namespace BlazorBlog.ViewModels
 					PostEnCours.UpdatedAt = DateTime.Now;
 					PostEnCours.Image = ValidationPost.Image;
 					await ContextBlog.UpdatePostAsync(PostEnCours);
+
+					// Sauvegarde des catégories
+					var allCategoriesSelected = Categories.Where(x => x.IsSelected).Select(x => x.IdCategorie).ToList();
+					await ContextBlog.AddCategorieToPost(PostEnCours.Id, allCategoriesSelected);
+
 					Snack.Add($"Post mis à jour {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);
 				}
 				catch (Exception ex)
@@ -89,10 +120,17 @@ namespace BlazorBlog.ViewModels
 					PostEnCours.Content = ValidationPost.Content;
 					PostEnCours.Title = ValidationPost.Titre;
 					PostEnCours.Image = ValidationPost.Image;
-					PostEnCours.Posted = DateTime.Now;
+					if (PostEnCours.Posted == null)
+					{
+						PostEnCours.Posted = DateTime.Now;
+					}
 					PostEnCours.UpdatedAt = DateTime.Now;
 					PostEnCours.IsPublished = true;
 					await ContextBlog.PublishPostAsync(PostEnCours);
+
+					// Sauvegarde des catégories
+					var allCategoriesSelected = Categories.Where(x => x.IsSelected).Select(x => x.IdCategorie).ToList();
+					await ContextBlog.AddCategorieToPost(PostEnCours.Id, allCategoriesSelected);
 
 					Snack.Add($"Post publié {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);
 				}
@@ -114,6 +152,46 @@ namespace BlazorBlog.ViewModels
 				ImageEnAvant = result.Data.ToString();
 				ValidationPost.Image = ImageEnAvant;
 			}
+		}
+
+
+		public async Task AjouterCategorie()
+		{
+			if (!EditCtxCategorie.Validate())
+			{
+				return;
+			}
+			else
+			{
+				try
+				{
+					var categorie = new Categorie()
+					{
+						Nom = ValidationCategorie.Nom
+					};
+
+					categorie.IdCategorie = await ContextBlog.AddCategorie(categorie);
+					categorie.IsSelected = true;
+					Snack.Add($"Catégorie {categorie.Nom} ajoutée", Severity.Success);
+
+					Categories.Add(categorie);
+					ValidationCategorie = new CategorieValidation();
+				}
+				catch (Exception ex)
+				{
+					Snack.Add("Erreur sur l'ajout de la catégorie", Severity.Error);
+					Log.Error(ex, "NewPostViewModel - AjouterCategorie");
+				}
+			}
+		}
+
+		#endregion
+
+		#region IDisposable
+
+		public async void Dispose()
+		{
+			await KeysContext.DisposeAsync();
 		}
 
 		#endregion

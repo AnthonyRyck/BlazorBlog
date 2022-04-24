@@ -41,7 +41,7 @@
 </MudTabs>
 </div>
 
-	<div class="col-2 background-super-light-gray">
+	<MudPaper Elevation=5 Class="col-2">
 		<MudStack>
 			<br />
 			<MudButton StartIcon="@Icons.Filled.Save" 
@@ -71,8 +71,38 @@
 							ObjectFit="ObjectFit.Cover"
 							Class="rounded-lg background-gray"
 							@onclick="ViewModel.OpenGalerie" />
+
+			<div><h5>Catégories : </h5></div>
+			<div class="scroll" style="height:250px;">
+				   @foreach (var category in ViewModel.Categories)
+					{
+						<div>
+							<input type="checkbox" id="categorie-@category.IdCategorie" @bind="@category.IsSelected" />
+							<label for="categorie-@category.IdCategorie">@category.Nom</label>
+						</div>						
+					}
+				</div>
+				
+				<EditForm EditContext="@ViewModel.EditCtxCategorie" Context="PourCategorie">
+				<DataAnnotationsValidator />
+					
+				<MudStack Spacing="2">
+					<div>
+					<ValidationMessage For="@(() => ViewModel.ValidationCategorie.Nom)" />
+					</div>
+					<MudTextField @bind-Value="ViewModel.ValidationCategorie.Nom" 
+									Label="Nom de la nouvelle catégorie" 
+									Variant="Variant.Outlined"></MudTextField>
+
+					<MudButton OnClick="@ViewModel.AjouterCategorie"
+								Variant="Variant.Filled"
+								Size="Size.Small"
+								Color="Color.Primary">Ajouter la catégorie</MudButton>
+
+				</MudStack>
+				</EditForm>
 		</MudStack>
-	</div>
+	</MudPaper>
 </div>
 
 @code{
