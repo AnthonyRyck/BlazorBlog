@@ -19,7 +19,7 @@ namespace BlazorBlog.ViewModels
 			snack = snackbar;
 			UserId = httpContextAccessor.HttpContext.User.Identity.Name;
 			Nav = navigationManager;
-			AllPosts = new List<Post>();
+			AllPosts = new List<PostView>();
 			DialogSvc = dialogService;
 			FiltrerPost = Recherche;
 			PostRecherche = String.Empty;
@@ -35,9 +35,9 @@ namespace BlazorBlog.ViewModels
 
 		#region IArticlesViewModel
 
-		public List<Post> AllPosts { get; private set; }
+		public List<PostView> AllPosts { get; private set; }
 		
-		public Func<Post, bool> FiltrerPost { get; private set; }
+		public Func<PostView, bool> FiltrerPost { get; private set; }
 		public string PostRecherche { get; set; }
 
 		public async Task GetArticles()

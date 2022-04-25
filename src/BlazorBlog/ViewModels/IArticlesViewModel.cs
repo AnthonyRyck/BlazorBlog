@@ -5,7 +5,7 @@
 		/// <summary>
 		/// Tous les posts.
 		/// </summary>
-		List<Post> AllPosts { get; }
+		List<PostView> AllPosts { get; }
 
 		/// <summary>
 		/// Charge les articles de l'auteur
@@ -35,6 +35,6 @@
 		/// <summary>
 		/// Méthode de recherche
 		/// </summary>
-		Func<Post, bool> FiltrerPost { get; }
+		Func<PostView, bool> FiltrerPost { get; }
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using BlazorBlog.Core;
+using BlazorBlog.Core.EntityView;
 using MySql.Data.MySqlClient;
 
 namespace BlazorBlog.AccessData
@@ -35,29 +36,29 @@ namespace BlazorBlog.AccessData
 		/// Récupère tous les posts d'un auteur
 		/// </summary>
 		/// <returns></returns>
-		public async Task<List<Post>> GetPostsAsync(string userId)
+		public async Task<List<PostView>> GetPostsAsync(string userId)
 		{
 			var commandText = @"SELECT idpost, title, posted, updateat, userid "
 							 + $"FROM posts WHERE userid='{userId}' ORDER BY posted DESC;";
 
-			Func<MySqlCommand, Task<List<Post>>> funcCmd = async (cmd) =>
+			Func<MySqlCommand, Task<List<PostView>>> funcCmd = async (cmd) =>
 			{
-				List<Post> posts = new List<Post>();
+				List<PostView> posts = new List<PostView>();
 
 				using (var reader = await cmd.ExecuteReaderAsync())
 				{
 					while (reader.Read())
 					{
 						object tempDate = reader.GetValue(2);
-						DateTime? datePosted = ConvertFromDBVal<DateTime?>(tempDate);					
+						DateTime? datePosted = ConvertFromDBVal<DateTime?>(tempDate);
 
-						var post = new Post()
+						var post = new PostView()
 						{
 							Id = reader.GetInt32(0),
 							Title = reader.GetString(1),
 							Posted = datePosted,
 							UpdatedAt = reader.GetDateTime(3),
-							UserId = reader.GetString(4)
+							UserId = reader.GetString(4),
 						};
 
 						posts.Add(post);
@@ -67,11 +68,23 @@ namespace BlazorBlog.AccessData
 				return posts;
 			};
 
-			List<Post> posts = new List<Post>();
+			List<PostView> posts = new List<PostView>();
 
 			try
 			{
 				posts = await GetCoreAsync(commandText, funcCmd);
+
+				// Maintenant récupérer pour chaque post, les catégories associés
+				foreach (var post in posts)
+				{
+					post.Categories = new List<Categorie>();
+					List<int> allCategories = await GetCategoriesByPost(post.Id);
+					foreach (var idCategory in allCategories)
+					{
+						Categorie categorie = await GetCategorie(idCategory);
+						post.Categories.Add(categorie);
+					}
+				}
 			}
 			catch (Exception)
 			{
