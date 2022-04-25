@@ -38,5 +38,16 @@
 		/// Indique si le partage est possible.
 		/// </summary>
 		bool DisabledShare { get; }
+
+		/// <summary>
+		/// Liste toutes les catégories pour ce post.
+		/// </summary>
+		IEnumerable<Categorie> Categories { get; }
+
+		/// <summary>
+		/// Ouvre la page des posts pour cette catégorie.
+		/// </summary>
+		/// <param name="idCategorie"></param>
+		void OpenCategoriePosts(int idCategorie);
 	}
 }

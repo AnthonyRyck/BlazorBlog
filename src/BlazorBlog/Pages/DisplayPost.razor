@@ -26,10 +26,14 @@ else
     {
 		<Title Value="@viewModel.Article.Title" />
 		
-        <div class="center-content post-title" style="background-image:url(@viewModel.Article.Image)">
+    <div class="center-content post-title" style="background-image:url(@viewModel.Article.Image)">
 	    <div class="imagefade">
             <h1>@viewModel.Article.Title</h1>
     		<span>@viewModel.Article.UserId / @viewModel.Article.Posted.Value.ToString("D")</span>
+            @foreach (Categorie categorie in viewModel.Categories)
+            {
+             <MudChip Color="Color.Info" OnClick="(() => viewModel.OpenCategoriePosts(categorie.IdCategorie))">@categorie.Nom</MudChip>
+            }
         </div>
     </div>
 	
@@ -52,14 +56,16 @@ else
                           Title="Twitter" 
                           Color="Color.Default"
                           Href="@viewModel.UrlShareTwitter" 
-                          Target="_blank" />						
+                          Target="_blank"
+                          Disabled="@viewModel.DisabledShare"/>						
 
             <MudIconButton Icon="@Icons.Custom.Brands.Facebook"
 						    Size="Size.Small"
                           Title="Facebook" 
                           Color="Color.Default"
                           Href="@viewModel.UrlShareFacebook" 
-                          Target="_blank" />						
+                          Target="_blank"
+                          Disabled="@viewModel.DisabledShare"/>						
         </div>
     </div>
 

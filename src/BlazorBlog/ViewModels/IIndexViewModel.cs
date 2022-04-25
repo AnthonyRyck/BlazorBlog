@@ -8,10 +8,15 @@
 		IEnumerable<Post> PostsToDisplay { get; }
 
 		/// <summary>
+		/// Catégorie sélectionnée pour voir les posts
+		/// </summary>
+		Categorie CategorieSelected { get; }
+
+		/// <summary>
 		/// Charge tous les posts publiés
 		/// </summary>
 		/// <returns></returns>
-		Task GetAllPosts();
+		Task GetAllPosts(int? idCategorie);
 
 		/// <summary>
 		/// Ouvre la page de l'article

@@ -4,12 +4,14 @@
 	{
 		private readonly BlogContext Context;
 		private readonly SettingsSvc Settings;
+		private readonly NavigationManager NavigationManager;
 
-		public DisplayPostViewModel(BlogContext blogContext, SettingsSvc settingSvc)
+		public DisplayPostViewModel(BlogContext blogContext, SettingsSvc settingSvc, NavigationManager navigationManager)
 		{
 			Context = blogContext;
 			Settings = settingSvc;
 			DisabledShare = true;
+			NavigationManager = navigationManager;
 		}
 
 
@@ -27,6 +29,8 @@
 
 		public bool DisabledShare { get; private set; }
 
+		public IEnumerable<Categorie> Categories { get; private set; }
+
 		public async Task LoadPost(int idpost)
 		{
 			IsLoading = true;
@@ -34,8 +38,9 @@
 			temp.Image = Settings.GetUrlImagePost(temp.Image);
 
 			Article = temp;
+			Categories = await Context.GetCategories(idpost);
 
-			if(!string.IsNullOrEmpty(Settings.BlogUrl))
+			if (!string.IsNullOrEmpty(Settings.BlogUrl))
 			{
 				string urlPost = Settings.BlogUrl + "post/" + idpost;
 				UrlShareLinkedIn = "https://www.linkedin.com/shareArticle?mini=true&url=" + urlPost;
@@ -45,6 +50,11 @@
 				DisabledShare = false;
 			}
 			IsLoading = false;
+		}
+
+		public void OpenCategoriePosts(int idCategorie)
+		{
+			NavigationManager.NavigateTo($"/categorie/{idCategorie}", true);
 		}
 
 		#endregion

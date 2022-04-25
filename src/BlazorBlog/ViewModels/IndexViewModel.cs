@@ -34,9 +34,14 @@ namespace BlazorBlog.ViewModels
 
 		public int CounterPage { get; private set; }
 
-		public async Task GetAllPosts()
+		public Categorie CategorieSelected { get; private set; }
+
+		public async Task GetAllPosts(int? idCategorie = null)
 		{
-			AllPosts = await ContextBlog.GetPublishedPostsAsync();
+			AllPosts = await ContextBlog.GetPublishedPostsAsync(idCategorie);
+			if (idCategorie.HasValue)
+				CategorieSelected = await ContextBlog.GetCategorie(idCategorie.Value);
+			else CategorieSelected = null;
 
 			double tempCounter = Convert.ToDouble(AllPosts.Count()) / PageSize;
 			if ((tempCounter - Math.Truncate(tempCounter)) > 0)

@@ -103,12 +103,26 @@ namespace BlazorBlog.AccessData
 		/// Récupère tous les posts qui sont publiés
 		/// </summary>
 		/// <returns></returns>
-		public async Task<List<Post>> GetPublishedPostsAsync()
+		public async Task<List<Post>> GetPublishedPostsAsync(int? idCategorie = null)
 		{
-			var commandText = @"SELECT idpost, title, image, posted, userid "
-							 + "FROM posts "
-							 + "WHERE ispublished=1 "
-							 + "ORDER BY posted DESC;";
+			string commandText = string.Empty;
+			if (!idCategorie.HasValue)
+			{
+				commandText = @"SELECT idpost, title, image, posted, userid "
+								 + "FROM posts "
+								 + "WHERE ispublished=1 "
+								 + "ORDER BY posted DESC;";
+			}
+			else
+			{
+				commandText = @"SELECT article.idpost, article.title, article.image, article.posted, article.userid"
+								+ " FROM posts article"
+								+ " INNER JOIN categorietopost cat"
+								+ " ON article.idpost = cat.postid"
+								+ $" WHERE cat.categorieid={idCategorie.Value}"
+								+ " AND article.ispublished=1"
+								+ " ORDER BY posted DESC;";
+			}
 
 			Func<MySqlCommand, Task<List<Post>>> funcCmd = async (cmd) =>
 			{
@@ -443,6 +457,42 @@ namespace BlazorBlog.AccessData
 			return categories;
 		}
 
+		public async Task<Categorie> GetCategorie(int idCategorie)
+		{
+			// Récupération de toutes les catégories
+			var commandText = @"SELECT idcategorie, nom "
+							 + "FROM categories "
+							 + $"WHERE idcategorie={idCategorie}";
+
+			Func<MySqlCommand, Task<Categorie>> funcCmd = async (cmd) =>
+			{
+				Categorie categorie = new Categorie();
+
+				using (var reader = await cmd.ExecuteReaderAsync())
+				{
+					while (reader.Read())
+					{
+						categorie.IdCategorie = reader.GetInt32(0);
+						categorie.Nom = reader.GetString(1);
+					}
+				}
+
+				return categorie;
+			};
+			Categorie categorie;
+
+			try
+			{
+				categorie = await GetCoreAsync(commandText, funcCmd);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			return categorie;
+		}
+
 		public async Task<List<int>> GetCategoriesByPost(int idPost)
 		{
 			// Récupération de toutes les catégories
@@ -466,6 +516,49 @@ namespace BlazorBlog.AccessData
 				return idCategorie;
 			};
 			List<int> categories;
+
+			try
+			{
+				categories = await GetCoreAsync(commandText, funcCmd);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			return categories;
+		}
+
+		public async Task<List<Categorie>> GetCategories(int idPost)
+		{
+			// Récupération de toutes les catégories
+			var commandText = @"SELECT cat.idcategorie, cat.nom "
+							+ "FROM categorietopost cp "
+							+ "INNER JOIN categories cat "
+							+ "ON cp.categorieid = cat.idcategorie "
+							+ $"WHERE cp.postid = {idPost};";
+
+			Func<MySqlCommand, Task<List<Categorie>>> funcCmd = async (cmd) =>
+			{
+				List<Categorie> categories = new List<Categorie>();
+
+				using (var reader = await cmd.ExecuteReaderAsync())
+				{
+					while (reader.Read())
+					{
+						Categorie categorie = new Categorie()
+						{
+							IdCategorie = reader.GetInt32(0),
+							Nom = reader.GetString(1)
+						};
+
+						categories.Add(categorie);
+					}
+				}
+
+				return categories;
+			};
+			List<Categorie> categories;
 
 			try
 			{

@@ -1,8 +1,14 @@
 ﻿@page "/"
+@page "/categorie/{IdCategorie:int}"
 @inject IIndexViewModel ViewModel
 @inject SettingsSvc SvcSettings
 
 <Title Value="@SvcSettings.BlogName" />
+
+@if(ViewModel.CategorieSelected != null)
+{
+    <h1><u>Catégorie</u>: @ViewModel.CategorieSelected.Nom</h1>
+}
 
 <MudStack Row="true" Justify="Justify.FlexStart" Class="flex-wrap">
 
@@ -26,9 +32,12 @@
 </div>
 
 @code{
+    [Parameter]
+    public int? IdCategorie { get; set; }
+
 
     protected async override Task OnInitializedAsync()
     {
-        await ViewModel.GetAllPosts();
+        await ViewModel.GetAllPosts(IdCategorie);
     }
 }
