@@ -8,7 +8,7 @@
 
 
 
-        Task CommittedItemChanges(Categorie item);
+        Task EditCategorie(Categorie item);
 
         Task DeleteCategorie(int idCategorie);
 	}

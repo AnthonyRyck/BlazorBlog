@@ -1,0 +1,27 @@
+﻿<MudDialog>
+	<DialogContent>
+		<h3>Edit catégorie</h3>
+		
+		<MudTextField @bind-Value="CategorieToEdit.Nom" 
+					Label="Nom de la catégorie"
+					  HelperText="Pas plus de 100 caractères"
+					Variant="Variant.Filled" />
+	</DialogContent>
+
+	<DialogActions>
+		<MudButton OnClick="(() => Submit(CategorieToEdit))">Valider</MudButton>
+		<MudButton OnClick="Cancel">Cancel</MudButton>
+	</DialogActions>
+</MudDialog>
+
+
+@code {
+	[CascadingParameter] 
+	MudDialogInstance MudDialog { get; set; }
+
+	[Parameter]
+	public Categorie CategorieToEdit { get; set; }
+
+	void Submit(Categorie categorie) => MudDialog.Close(DialogResult.Ok(categorie));
+    void Cancel() => MudDialog.Cancel();
+}
