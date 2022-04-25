@@ -50,7 +50,7 @@ URL de connexion : https://YOUR-DOMAIN/Identity/Account/Login
 * ![check](https://github.com/AnthonyRyck/ctrl-alt-suppr/blob/main/ImgBlog/check.png) Partager l'article via Facebook, Twitter, LinkedIn  
 * ![check](https://github.com/AnthonyRyck/ctrl-alt-suppr/blob/main/ImgBlog/check.png) Changement des titres dans la barre du browser de façon dynamique  
 * Un système pour compter le nombre de vue sur chaque article  
-* Ajouter le système de catégorie pour les articles  
+* Ajouter le système de catégorie pour les articles *(sur les posts, page d'édition catégorie, affichage des posts par catégorie,...)*    
 * Faire une page pour gérer les images de la galerie  
 * Intégrer des vidéos dans l'article  
 * Faire une page sur l'auteur  
