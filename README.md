@@ -13,7 +13,7 @@ docker run -d -p 3030:80 \
 --name nameContainer anthonyryck/blazorblog:latest
 ```
 
-Exemple de docker compose avec une utilisation avec Traefik (pour les labels).
+Exemple de docker compose avec une utilisation avec [Traefik](https://github.com/traefik/traefik) (pour les labels).
 ```
 blazorblog:
      image: anthonyryck/blazorblog:latest
@@ -36,8 +36,13 @@ blazorblog:
 
 ## Utilisation
 L'utilisateur **root** est créé au lancement de l'application. Il a le rôle d'administrateur. Il permet de configurer le blog.  
-URL de connexion : https://YOUR-DOMAIN/Identity/Account/Login  
+URL de connexion : `https://YOUR-DOMAIN/Identity/Account/Login`  
 ![Paramètre](https://github.com/AnthonyRyck/BlazorBlog/blob/main/ImgRessources/Parametres.png)  
+* Choix du nom du blog  
+* Une description du blog
+* Choix du logo du blog  
+* Choix de l'icône du blog (le favicon)
+C'est l'utilisateur root qui peut créer des comptes **Auteur**.  
 
 ## Roadmap
 * :white_check_mark: Création de la base de donnée au démarrage de l'application  
