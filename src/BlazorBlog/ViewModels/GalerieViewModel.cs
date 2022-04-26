@@ -13,10 +13,17 @@ namespace BlazorBlog.ViewModels
 		{
 			UserName = httpContextAccessor.HttpContext.User.Identity.Name;
 			PathImagesUser = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES, UserName);
-            PathImages = GetFilesFromPath(PathImagesUser);
 
 			Snack = snackbar;
 		}
+
+        private IEnumerable<string> extensionsImage;
+
+        public void SetExtensions(string extensions)
+        {
+            extensionsImage = extensions.Split(", ");
+            PathImages = GetFilesFromPath(PathImagesUser);
+        }
 
         private List<string> GetFilesFromPath(string path)
         {
@@ -29,7 +36,8 @@ namespace BlazorBlog.ViewModels
                 
                 foreach (FileInfo file in filesInfo)
 				{
-					files.Add(SetUrlImageName(file.Name));
+                    if(extensionsImage.Contains(file.Extension))
+					    files.Add(SetUrlImageName(file.Name));
 				}
 			}
             catch (Exception ex)

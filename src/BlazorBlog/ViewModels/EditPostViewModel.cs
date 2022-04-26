@@ -144,7 +144,11 @@ namespace BlazorBlog.ViewModels
 
 		public async Task OpenGalerie()
 		{
-			var dialog = DialogService.Show<GalerieComponent>("Galerie", FullScreenOption);
+			string extensionImg = ".jpg, .jpeg, .png";
+			var parameters = new DialogParameters();
+			parameters.Add("AcceptExtensions", extensionImg);
+
+			var dialog = DialogService.Show<GalerieComponent>("Galerie", parameters, FullScreenOption);
 			var result = await dialog.Result;
 
 			if (!result.Cancelled)

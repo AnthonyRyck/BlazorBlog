@@ -7,5 +7,7 @@ namespace BlazorBlog.ViewModels
 		List<string> PathImages { get; }
 
 		Task OnInputFileChanged(InputFileChangeEventArgs e);
+
+		void SetExtensions(string extensions);
 	}
 }
