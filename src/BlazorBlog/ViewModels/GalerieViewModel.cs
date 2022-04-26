@@ -9,6 +9,8 @@ namespace BlazorBlog.ViewModels
 		private readonly string PathImagesUser;
         private readonly ISnackbar Snack;
 
+        private const int PageSize = 10;
+
         public GalerieViewModel(IHttpContextAccessor httpContextAccessor, ISnackbar snackbar)
 		{
 			UserName = httpContextAccessor.HttpContext.User.Identity.Name;
@@ -20,12 +22,31 @@ namespace BlazorBlog.ViewModels
         private IEnumerable<string> extensionsImage;
 
         public void SetExtensions(string extensions)
-        {
-            extensionsImage = extensions.Split(", ");
-            PathImages = GetFilesFromPath(PathImagesUser);
-        }
+		{
+			extensionsImage = extensions.Split(", ");
+			PathImages = GetFilesFromPath(PathImagesUser);
 
-        private List<string> GetFilesFromPath(string path)
+			SetImageToDisplay(PathImages);
+		}
+
+		private void SetImageToDisplay(List<string> listImage)
+		{
+			double tempCounter = Convert.ToDouble(listImage.Count()) / PageSize;
+			if ((tempCounter - Math.Truncate(tempCounter)) > 0)
+				CounterPage = Convert.ToInt32(Math.Truncate(tempCounter)) + 1;
+			else
+				CounterPage = Convert.ToInt32(Math.Truncate(tempCounter));
+
+            int end = 0;
+            if (listImage.Count < PageSize)
+                end = listImage.Count;
+            else
+                end = PageSize;
+
+            ImagesToDisplay = listImage.GetRange(0, end);
+		}
+
+		private List<string> GetFilesFromPath(string path)
         {
             List<string> files = new List<string>();
 
@@ -54,10 +75,40 @@ namespace BlazorBlog.ViewModels
 			return $"..{ConstantesApp.USERIMG}/{UserName}/{imageName}";
 		}
 
-		#region IGalerieViewModel
+        private List<string> SelectImage(int page, List<string> listeImg)
+        {
+            int start = (page - 1) * PageSize;
 
-		public List<string> PathImages { get; private set; } = new List<string>();
+            if ((start + PageSize) > listeImg.Count)
+                return listeImg.GetRange(start, listeImg.Count - start);
 
+            return listeImg.GetRange(start, PageSize);
+        }
+        
+        public List<string> PathImages { get; private set; } = new List<string>();
+
+        #region IGalerieViewModel
+
+		public List<string> ImagesToDisplay { get; private set; } = new List<string>();
+
+        public int CounterPage { get; private set; }
+
+        private string _imageRecherche;
+        public string ImageRecherche
+        {
+            get { return _imageRecherche; }
+            set { _imageRecherche = value;
+                RechecherImage();
+             }
+        }
+
+		private void RechecherImage()
+		{
+            ImageRecheche = PathImages.Where(result => result.ToUpper().Contains(_imageRecherche.ToUpper()))
+                           .ToList();
+
+            SetImageToDisplay(ImageRecheche);
+        }
 
 		public async Task OnInputFileChanged(InputFileChangeEventArgs e)
         {
@@ -101,6 +152,17 @@ namespace BlazorBlog.ViewModels
             }
         }
 
-        #endregion
-    }
+		public void PageChanged(int page)
+		{
+            // Aucune recherche
+            if (string.IsNullOrEmpty(_imageRecherche))
+                ImagesToDisplay = SelectImage(page, PathImages);
+            else
+                ImagesToDisplay = SelectImage(page, ImageRecheche);
+        }
+
+        private List<string> ImageRecheche = new List<string>();
+
+		#endregion
+	}
 }

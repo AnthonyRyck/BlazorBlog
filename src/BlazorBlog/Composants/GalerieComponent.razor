@@ -2,9 +2,7 @@
 
 <MudDialog>
     <DialogContent>
-        <MudGrid>
-            <MudItem xs="12">
-                <MudPaper @ondragenter="@SetDragClass" 
+        <MudPaper @ondragenter="@SetDragClass" 
                                     @ondragleave="@ClearDragClass" 
                                     @ondragend="@ClearDragClass" 
                                     Height="200px" 
@@ -16,20 +14,43 @@
                                         multiple accept="@AcceptExtensions" />
                             
                             <MudText Typo="Typo.h6">Déposez l'image (max 3 Mo) ou cliquez</MudText>
-                        </MudPaper>
-            </MudItem>
-             
-            @foreach(var img in ViewModel.PathImages)
-			{
-				<MudItem>
-					<MudImage src="@img" 
-                                ObjectFit="ObjectFit.ScaleDown" 
-                                Class="border-1-px-solid-black"
-                                Width="150" Height="150"
-								@onclick="(() => SubmitImage(img))" />
-				</MudItem>
+        </MudPaper>
+
+        <MudPaper>
+            <MudTextField @bind-Value="@ViewModel.ImageRecherche" 
+                        Placeholder="Rechercher une image" 
+                        Adornment="Adornment.Start" 
+                        AdornmentIcon="@Icons.Material.Filled.Search" 
+                        IconSize="Size.Medium" 
+                        />
+        </MudPaper>
+
+        @if(ViewModel.ImagesToDisplay.Count > 0)
+        {
+        <MudStack Row="true" Justify="Justify.FlexStart" Class="flex-wrap">
+           @foreach(var img in ViewModel.ImagesToDisplay)
+            {
+               <MudImage src="@img" 
+                        ObjectFit="ObjectFit.ScaleDown" 
+                        Class="border-1-px-solid-black"
+                        Width="150" Height="150"
+						click="(() => SubmitImage(img))" />
             }
-        </MudGrid>
+        
+        </MudStack>
+
+        <div class="d-flex flex-column align-center">
+            <MudPagination ShowFirstButton="true" 
+                            ShowLastButton="true" 
+                            Count="ViewModel.CounterPage"
+                            SelectedChanged="ViewModel.PageChanged"
+                            Class="mt-4"/>
+            </div>
+        }
+        else
+        {
+        <div>Aucune image de trouvée.</div>
+        }
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>

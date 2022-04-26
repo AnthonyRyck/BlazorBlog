@@ -2,7 +2,7 @@
 @attribute [Authorize(Roles = "Admin, Compositeur")]
 @inject ICategoriesViewModel ViewModel
 
-<Title Value="Catégorie" />
+<Title Value="Catégories" />
 
 <MudDataGrid T="Categorie" 
             Items="@ViewModel.Categories"
