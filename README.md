@@ -48,7 +48,7 @@ C'est l'utilisateur root qui peut créer des comptes **Auteur**.
 * :white_check_mark: Création de la base de donnée au démarrage de l'application  
 * :white_check_mark: Page pour créer un article  
 * :white_check_mark: Ajout d'un composant pour ajouter une galerie d'image  
-* :white_check_mark: Ajouter des raccourcis clavier pour ajouter des syntax Markdown  
+* :white_check_mark: Ajouter des raccourcis clavier pour ajouter des syntaxes Markdown  
 * :white_check_mark: Publier un article  
 * :white_check_mark: Page pour la gestion des articles  
 * :white_check_mark: Page d'accueil pour afficher les articles publiés  
