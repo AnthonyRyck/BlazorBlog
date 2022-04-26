@@ -45,6 +45,8 @@ namespace BlazorBlog.ViewModels
 
 		public string LogoSite { get; private set; }
 
+		public string IconSite { get; private set; }
+
 		public void LoadSettings()
 		{
 			Settings = new SettingsValidation();
@@ -52,6 +54,10 @@ namespace BlazorBlog.ViewModels
 			Settings.BlogDescription = SvcSettings.BlogDescription;
 			Settings.BlogUrl = SvcSettings.BlogUrl;
 			Settings.BlogImage = SvcSettings.BlogImage;
+			Settings.BlogIcone = SvcSettings.BlogIcon;
+
+			LogoSite = SvcSettings.BlogImage;
+			IconSite = SvcSettings.BlogIcon;
 		}
 
 		public async Task SaveSettings()
@@ -94,6 +100,13 @@ namespace BlazorBlog.ViewModels
 					};
 					settings.Add(settingImage);
 
+					Settings settingIcon = new Settings()
+					{
+						SettingName = ConstantesApp.SETTINGS_BLOG_ICONE,
+						Value = Settings.BlogIcone.Replace("../", String.Empty)
+					};
+					settings.Add(settingIcon);
+
 					await SvcSettings.UpadateSettings(settings);
 					Snack.Add("Sauvegarde des paramètres - OK", Severity.Success);
 				}
@@ -120,6 +133,22 @@ namespace BlazorBlog.ViewModels
 			{
 				LogoSite = result.Data.ToString();
 				Settings.BlogImage = LogoSite;
+			}
+		}
+
+		public async Task OpenGalerieIcon()
+		{
+			string extensionImg = ".ico";
+			var parameters = new DialogParameters();
+			parameters.Add("AcceptExtensions", extensionImg);
+
+			var dialog = DialogService.Show<GalerieComponent>("Galerie", parameters, FullScreenOption);
+			var result = await dialog.Result;
+
+			if (!result.Cancelled)
+			{
+				IconSite = result.Data.ToString();
+				Settings.BlogIcone = IconSite;
 			}
 		}
 

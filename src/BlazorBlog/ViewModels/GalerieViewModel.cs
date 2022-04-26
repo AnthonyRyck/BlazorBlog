@@ -73,7 +73,8 @@ namespace BlazorBlog.ViewModels
 
                     if (extensionFile == ConstantesApp.EXTENSION_IMAGE_JPEG
                         || extensionFile == ConstantesApp.EXTENSION_IMAGE_PNG
-                        || extensionFile == ConstantesApp.EXTENSION_IMAGE_JPG)
+                        || extensionFile == ConstantesApp.EXTENSION_IMAGE_JPG
+                        || extensionFile == ConstantesApp.EXTENSION_IMAGE_ICO)
                     {
                         using FileStream fs = new(pathImage, FileMode.Create);
                         // Max 3 Mo
@@ -84,7 +85,7 @@ namespace BlazorBlog.ViewModels
                     }
                     else
                     {
-                        Snack.Add($"Il faut une image JPG ou JPEG ou PNG", Severity.Warning);
+                        Snack.Add($"Il faut une image JPG ou JPEG ou PNG ou ICO", Severity.Warning);
                         return;
                     }
                 }

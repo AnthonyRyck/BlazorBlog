@@ -11,10 +11,14 @@ namespace BlazorBlog.ViewModels
 
 		string LogoSite { get; }
 
+		string IconSite { get; }
+
 		void LoadSettings();
 
 		Task SaveSettings();
 
 		Task OpenGalerie();
+
+		Task OpenGalerieIcon();
 	}
 }

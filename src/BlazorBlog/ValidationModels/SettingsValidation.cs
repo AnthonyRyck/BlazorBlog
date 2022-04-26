@@ -16,5 +16,7 @@ namespace BlazorBlog.ValidationModels
 		public string BlogUrl { get; set; }
 
 		public string BlogImage { get; set; }
+
+		public string BlogIcone { get; set; }
 	}
 }

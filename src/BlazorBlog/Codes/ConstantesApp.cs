@@ -37,6 +37,7 @@
 		public const string SETTINGS_BLOG_DESCRIPTION = "blogdescription";
 		public const string SETTINGS_BLOG_IMAGE = "blogimage";
 		public const string SETTINGS_BLOG_URL = "blogurl";
+		public const string SETTINGS_BLOG_ICONE = "blogicone";
 
 		#endregion
 

@@ -1,6 +1,7 @@
 ﻿@page "/settings"
 @attribute [Authorize(Roles = "Admin")]
 @inject ISettingsViewModel ViewModel
+@inject SettingsSvc settingsSvc
 
 <Title Value="Paramètres" />
 
@@ -10,7 +11,8 @@
 
 <EditForm OnValidSubmit="@ViewModel.SaveSettings"
         EditContext="@ViewModel.EditContextValidation">
-<DataAnnotationsValidator/>
+
+    <DataAnnotationsValidator/>
 
 <MudGrid>
     <MudItem xs="12" sm="7">
@@ -36,6 +38,17 @@
 							ObjectFit="ObjectFit.Cover"
 							Class="rounded-lg background-gray"
 							@onclick="ViewModel.OpenGalerie" />
+
+                <div>
+                    <MudText>Icone du blog :</MudText>
+                <MudImage Src="@ViewModel.IconSite"
+					  Alt="Définir l'icône du blog"
+							Elevation="25" 
+							Fluid="true"
+							ObjectFit="ObjectFit.Cover"
+							Class="rounded-lg background-gray"
+							@onclick="ViewModel.OpenGalerieIcon" />
+                </div>
             </MudCardContent>
 			
             <MudCardActions>
