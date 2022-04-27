@@ -3,20 +3,15 @@
 @inject IDisplayPostViewModel viewModel
 @inject SettingsSvc svcSetting
 
-    <meta property="og:title" content="@viewModel.Article.Title" />
-    <meta property="og:image" content="@viewModel.Article.Image"/>
-
-    <!-- Open Graph / Facebook -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="@viewModel.Article.Title">
-<meta property="og:image" content="@viewModel.Article.Image">
+<Meta name="og:image" content="@viewModel.Article.Image"/>
+<Meta name="og:title" content="@viewModel.Article.Title" />
+<!-- Open Graph / Facebook -->
+<Meta name="og:type" content="website" />
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:title" content="@viewModel.Article.Title">
-<meta property="twitter:image" content="@viewModel.Article.Image">
-
-
+<Meta name="twitter:card" content="summary_large_image" />
+<Meta name="twitter:title" content="@viewModel.Article.Title" />
+<Meta name="twitter:image" content="@viewModel.Article.Image" />
 
 @if(viewModel.IsLoading)
 {
