@@ -6,18 +6,18 @@
         private readonly string PathImagesUser;
 		private IEnumerable<string> extensionsImage;
 		private const int PageSize = 10;
-        private List<string> ImageRecheche = new List<string>();
+        private List<ImageSetting> ImageRecheche = new List<ImageSetting>();
         private readonly ISnackbar Snack;
+		private BlogContext _blogContext;
 
 
-
-		public GalerieSettingViewModel(IHttpContextAccessor httpContextAccessor, ISnackbar snackbar)
+		public GalerieSettingViewModel(IHttpContextAccessor httpContextAccessor, ISnackbar snackbar, BlogContext blogContext)
 		{
 			UserName = httpContextAccessor.HttpContext.User.Identity.Name;
 			PathImagesUser = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES, UserName);
 
 			Snack = snackbar;
-
+			_blogContext = blogContext;
 			extensionsImage = new List<string> 
 				{ 
 					ConstantesApp.EXTENSION_IMAGE_GIF, 
@@ -25,18 +25,11 @@
 					ConstantesApp.EXTENSION_IMAGE_PNG,
 					ConstantesApp.EXTENSION_IMAGE_BMP
 				};
-			
 		}
 
-		public void GetImages()
+		private async Task<List<ImageSetting>> GetFilesFromPath(string path)
 		{
-			PathImages = GetFilesFromPath(PathImagesUser);
-			SetImageToDisplay(PathImages);
-		}
-
-		private List<string> GetFilesFromPath(string path)
-		{
-			List<string> files = new List<string>();
+			List<ImageSetting> files = new List<ImageSetting>();
 
 			try
 			{
@@ -46,7 +39,18 @@
 				foreach (FileInfo file in filesInfo)
 				{
 					if (extensionsImage.Contains(file.Extension))
-						files.Add(SetUrlImageName(file.Name));
+					{
+						int counter = await _blogContext.GetCounterImage(file.Name);
+
+						string url = SetUrlImageName(file.Name);
+						ImageSetting imageSetting = new ImageSetting()
+						{
+							UrlImage = url,
+							CounterUse = counter
+						};
+
+						files.Add(imageSetting);
+					}
 				}
 			}
 			catch (Exception ex)
@@ -63,7 +67,7 @@
 			return $"..{ConstantesApp.USERIMG}/{UserName}/{imageName}";
 		}
 
-		private void SetImageToDisplay(List<string> listImage)
+		private void SetImageToDisplay(List<ImageSetting> listImage)
 		{
 			double tempCounter = Convert.ToDouble(listImage.Count()) / PageSize;
 			if ((tempCounter - Math.Truncate(tempCounter)) > 0)
@@ -82,13 +86,13 @@
 
 		private void RechecherImage()
 		{
-			ImageRecheche = PathImages.Where(result => result.ToUpper().Contains(_imageRecherche.ToUpper()))
+			ImageRecheche = PathImages.Where(result => result.UrlImage.ToUpper().Contains(_imageRecherche.ToUpper()))
 						   .ToList();
 
 			SetImageToDisplay(ImageRecheche);
 		}
 
-		private List<string> SelectImage(int page, List<string> listeImg)
+		private List<ImageSetting> SelectImage(int page, List<ImageSetting> listeImg)
 		{
 			int start = (page - 1) * PageSize;
 
@@ -101,9 +105,9 @@
 		#region IGalerieSettingViewModel
 
 
-		public List<string> PathImages { get; private set; } = new List<string>();
+		public List<ImageSetting> PathImages { get; private set; } = new List<ImageSetting>();
 
-		public List<string> ImagesToDisplay { get; private set; } = new List<string>();
+		public List<ImageSetting> ImagesToDisplay { get; private set; } = new List<ImageSetting>();
 
 		public int CounterPage { get; private set; }
 
@@ -127,9 +131,10 @@
 				ImagesToDisplay = SelectImage(page, ImageRecheche);
 		}
 
-		public void LoadImages()
+		public async Task LoadImages()
 		{
-			GetImages();
+			PathImages = await GetFilesFromPath(PathImagesUser);
+			SetImageToDisplay(PathImages);
 		}
 
 		#endregion

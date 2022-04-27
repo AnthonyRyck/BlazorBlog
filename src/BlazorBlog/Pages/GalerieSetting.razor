@@ -15,13 +15,15 @@
         @if(ViewModel.ImagesToDisplay.Count > 0)
         {
         <MudStack Row="true" Justify="Justify.FlexStart" Class="flex-wrap">
-           @foreach(var img in ViewModel.ImagesToDisplay)
+           @foreach(ImageSetting img in ViewModel.ImagesToDisplay)
             {
-               <MudImage Src="@img" 
+                <MudBadge Content="@img.CounterUse" Overlap="true" Class="mx-6 my-4" Color="Color.Primary">
+                       <MudImage Src="@img.UrlImage" 
                         ObjectFit="ObjectFit.ScaleDown" 
                         Class="border-1-px-solid-black"
                         Width="150" Height="150"
 						 />
+                 </MudBadge>
 
                          @* @onclick="@(() => SubmitImage(img))" *@
             }

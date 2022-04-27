@@ -320,6 +320,27 @@ namespace BlazorBlog.AccessData
 			}
 		}
 
+
+		public async Task<int> GetCounterImage(string name)
+		{
+			// Récupération de toutes les catégories
+			var commandText = "SELECT COUNT(idpost)" 
+							+ " FROM blogblazordb.posts"
+							+ $" WHERE image LIKE '%{name}';";
+			int counter;
+
+			try
+			{
+				counter = await GetIntCore(commandText);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			return counter;
+		}
+
 		#endregion
 
 		#region Settings
@@ -851,7 +872,7 @@ namespace BlazorBlog.AccessData
 					{
 						while (await reader.ReadAsync())
 						{
-							idTemp = (UInt64)reader[0];
+							idTemp = reader.GetUInt64(0);
 						}
 					}
 

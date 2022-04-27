@@ -2,9 +2,9 @@
 {
 	public interface IGalerieSettingViewModel
 	{
-		List<string> PathImages { get; }
+		List<ImageSetting> PathImages { get; }
 
-		List<string> ImagesToDisplay { get; }
+		List<ImageSetting> ImagesToDisplay { get; }
 
 		/// <summary>
 		/// Nombre de page
@@ -19,7 +19,7 @@
 
 		string ImageRecherche { get; set; }
 
-		void LoadImages();
+		Task LoadImages();
 
 
 	}

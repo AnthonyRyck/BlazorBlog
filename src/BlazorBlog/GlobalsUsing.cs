@@ -7,3 +7,4 @@ global using BlazorBlog.Core.EntityView;
 global using Microsoft.AspNetCore.Components;
 global using BlazorBlog.Services;
 global using MudBlazor;
+global using BlazorBlog.Models;
