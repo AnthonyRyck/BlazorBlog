@@ -325,7 +325,7 @@ namespace BlazorBlog.AccessData
 		{
 			// Récupération de toutes les catégories
 			var commandText = "SELECT COUNT(idpost)" 
-							+ " FROM blogblazordb.posts"
+							+ " FROM posts"
 							+ $" WHERE image LIKE '%{name}';";
 			int counter;
 
