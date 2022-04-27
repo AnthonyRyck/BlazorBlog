@@ -14,8 +14,8 @@
     <MudNavMenu Class="mud-width-full">
         <MudNavLink Href="" Icon="@Icons.Filled.Home">Accueil</MudNavLink>
         <MudNavLink Href="newpost" Icon="@Icons.Filled.PostAdd">Nouveau Post</MudNavLink>
-        <MudNavGroup Title="Settings" Icon="@Icons.Filled.Settings" Expanded="true">
-            <MudNavLink Href="articles" Icon="@Icons.Filled.Article">Articles</MudNavLink>
+        <MudNavGroup Title="Settings" Icon="@Icons.Filled.Settings">
+            <MudNavLink Href="articles" Icon="@Icons.Filled.Article" IconColor="Color.Primary">Articles</MudNavLink>
             <MudNavLink Href="categories" Icon="@Icons.Filled.Category" IconColor="Color.Success">Catégories</MudNavLink>
 
             <AuthorizeView Roles="Admin">
@@ -26,9 +26,7 @@
 </div>
 
 @code {
-    private bool collapeSettings = true;
-
-
+    
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
