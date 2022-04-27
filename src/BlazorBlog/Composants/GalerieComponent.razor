@@ -30,13 +30,12 @@
         <MudStack Row="true" Justify="Justify.FlexStart" Class="flex-wrap">
            @foreach(var img in ViewModel.ImagesToDisplay)
             {
-               <MudImage src="@img" 
+               <MudImage Src="@img" 
                         ObjectFit="ObjectFit.ScaleDown" 
                         Class="border-1-px-solid-black"
                         Width="150" Height="150"
-						click="(() => SubmitImage(img))" />
+						@onclick="@(() => SubmitImage(img))" />
             }
-        
         </MudStack>
 
         <div class="d-flex flex-column align-center">

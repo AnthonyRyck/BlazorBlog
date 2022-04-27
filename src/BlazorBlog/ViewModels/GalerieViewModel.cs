@@ -132,8 +132,14 @@ namespace BlazorBlog.ViewModels
                         await file.OpenReadStream(3000000).CopyToAsync(fs);
 
                         Snack.Add($"Upload de {file.Name} réussi", Severity.Success);
-                        PathImages.Add(SetUrlImageName(file.Name));
-                    }
+
+                        string urlImg = SetUrlImageName(file.Name);
+
+						// Pour qu'il soit connu dans le composant
+						PathImages.Add(urlImg);
+						// Pour qu'il soit affiché
+						ImagesToDisplay.Add(SetUrlImageName(file.Name));
+					}
                     else
                     {
                         Snack.Add($"Il faut une image JPG ou JPEG ou PNG ou ICO", Severity.Warning);
