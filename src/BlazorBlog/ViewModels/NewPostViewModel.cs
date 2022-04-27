@@ -103,7 +103,7 @@ namespace BlazorBlog.ViewModels
 					{
 						PostEnCours.Content = ValidationPost.Content;
 						PostEnCours.Title = ValidationPost.Titre;
-						PostEnCours.Image = ValidationPost.Image;						
+						PostEnCours.Image = ValidationPost.Image;
 						PostEnCours.UpdatedAt = DateTime.Now;
 						await ContextBlog.UpdatePostAsync(PostEnCours);
 						Snack.Add($"Post mis à jour {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);

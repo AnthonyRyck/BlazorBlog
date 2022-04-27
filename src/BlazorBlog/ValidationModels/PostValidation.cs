@@ -11,6 +11,7 @@ namespace BlazorBlog.ValidationModels
 		public string Content { get; set; }
 
 		[Required(ErrorMessage = "Il faut une image de mise en avant")]
+		[MaxLength(300, ErrorMessage = "La longueur max du chemin de l'image est trop long (300 caractères)")]
 		public string Image { get; internal set; }
 
 		public bool Published { get; set; }

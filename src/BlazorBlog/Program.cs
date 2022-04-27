@@ -135,6 +135,9 @@ using (var scope = scopeFactory.CreateScope())
     var blogCtx = scope.ServiceProvider.GetService<BlogContext>();
 	string pathSql = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Script", "BlogDb.sql");
 	await blogCtx.CreateTablesAsync(pathSql);
+
+    string updateSql = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Script", "BlogDbUpdate.sql");
+    await blogCtx.UpdateDatabaseAsync(updateSql);
 }
 
 // Pour les logs.

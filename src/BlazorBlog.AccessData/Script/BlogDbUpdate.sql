@@ -1,0 +1,1 @@
+﻿ALTER TABLE posts MODIFY COLUMN image VARCHAR(300);

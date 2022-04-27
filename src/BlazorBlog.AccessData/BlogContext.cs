@@ -30,6 +30,25 @@ namespace BlazorBlog.AccessData
 			}
 		}
 
+		/// <summary>
+		/// Permet d'éxécuter un script pour mettre à jour la base de donnée.
+		/// </summary>
+		/// <param name="pathSql"></param>
+		/// <returns></returns>
+		public async Task UpdateDatabaseAsync(string pathSql)
+		{
+			try
+			{
+				string cmd = await File.ReadAllTextAsync(pathSql);
+				await ExecuteCoreAsync(cmd);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+
+
 		#region Posts
 
 		/// <summary>

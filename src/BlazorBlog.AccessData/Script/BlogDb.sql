@@ -25,3 +25,5 @@ categorieid INT UNSIGNED NOT NULL,
 PRIMARY KEY(postid, categorieid),
 FOREIGN KEY (postid) REFERENCES posts (idpost) ON DELETE CASCADE,
 FOREIGN KEY (categorieid) REFERENCES categories (idcategorie) ON DELETE CASCADE);
+
+ALTER TABLE posts MODIFY COLUMN image VARCHAR(300);

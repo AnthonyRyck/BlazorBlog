@@ -8,10 +8,14 @@
 
   <ItemGroup>
     <None Remove="Script\BlogDb.sql" />
+    <None Remove="Script\BlogDbUpdate.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Script\BlogDb.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Script\BlogDbUpdate.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
