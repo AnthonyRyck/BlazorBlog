@@ -25,7 +25,20 @@
                         IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <Columns>
-        <Column T="PostView" Field="Title" Title="Titre" IsEditable="false" />
+        <Column T="PostView" Field="Title" Title="Titre" IsEditable="false">
+            <CellTemplate>
+                <MudPaper>
+                    @context.Item.Title
+                </MudPaper>
+                @if(context.Item.IsPublished)
+                {
+                <MudIconButton Icon="@Icons.Filled.RemoveRedEye" 
+                                    Size="Size.Small" 
+                                    Color="Color.Primary"
+                                    OnClick="(() => ViewModel.OpenPostToRead(context.Item.Id))" />
+                }
+            </CellTemplate>
+        </Column>
         
         <Column T="PostView" Field="Categories" Title="Catégorie" IsEditable="false" Sortable="false">
 	        <CellTemplate>

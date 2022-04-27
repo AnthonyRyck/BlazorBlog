@@ -36,5 +36,7 @@
 		/// Méthode de recherche
 		/// </summary>
 		Func<PostView, bool> FiltrerPost { get; }
+
+		void OpenPostToRead(int idPost);
 	}
 }

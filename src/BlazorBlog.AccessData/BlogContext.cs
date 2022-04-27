@@ -38,7 +38,7 @@ namespace BlazorBlog.AccessData
 		/// <returns></returns>
 		public async Task<List<PostView>> GetPostsAsync(string userId)
 		{
-			var commandText = @"SELECT idpost, title, posted, updateat, userid "
+			var commandText = @"SELECT idpost, title, posted, updateat, userid, ispublished "
 							 + $"FROM posts WHERE userid='{userId}' ORDER BY posted DESC;";
 
 			Func<MySqlCommand, Task<List<PostView>>> funcCmd = async (cmd) =>
@@ -59,6 +59,7 @@ namespace BlazorBlog.AccessData
 							Posted = datePosted,
 							UpdatedAt = reader.GetDateTime(3),
 							UserId = reader.GetString(4),
+							IsPublished = reader.GetBoolean(5)
 						};
 
 						posts.Add(post);

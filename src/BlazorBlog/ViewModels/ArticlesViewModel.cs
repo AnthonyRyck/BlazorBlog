@@ -1,5 +1,6 @@
 ﻿using BlazorBlog.Composants;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor;
 
 namespace BlazorBlog.ViewModels
@@ -11,9 +12,10 @@ namespace BlazorBlog.ViewModels
 		private readonly ISnackbar snack;
 		private readonly NavigationManager Nav;
 		private readonly IDialogService DialogSvc;
-
+		private readonly IJSRuntime JSRuntime;
+		
 		public ArticlesViewModel(BlogContext blogContext, IHttpContextAccessor httpContextAccessor, ISnackbar snackbar,
-								NavigationManager navigationManager, IDialogService dialogService)
+								NavigationManager navigationManager, IDialogService dialogService, IJSRuntime runtime )
 		{
 			Context = blogContext;
 			snack = snackbar;
@@ -23,6 +25,8 @@ namespace BlazorBlog.ViewModels
 			DialogSvc = dialogService;
 			FiltrerPost = Recherche;
 			PostRecherche = String.Empty;
+
+			JSRuntime = runtime;
 		}
 
 		private bool Recherche(Post post)
@@ -53,7 +57,6 @@ namespace BlazorBlog.ViewModels
 			}
 		}
 
-
 		public async Task DeletePost(int idPost)
 		{
 			try
@@ -80,6 +83,10 @@ namespace BlazorBlog.ViewModels
 			}
 		}
 
+		public async void OpenPostToRead(int idPost)
+		{
+			await JSRuntime.InvokeAsync<object>("open", $"/post/{idPost}", "_blank");
+		}
 
 		public async Task EditPost(int idPost)
 		{
