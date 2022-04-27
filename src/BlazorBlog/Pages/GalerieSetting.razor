@@ -19,13 +19,12 @@
             {
                 <MudBadge Content="@img.CounterUse" Overlap="true" Class="mx-6 my-4" Color="Color.Primary">
                        <MudImage Src="@img.UrlImage" 
-                        ObjectFit="ObjectFit.ScaleDown" 
-                        Class="border-1-px-solid-black"
-                        Width="150" Height="150"
-						 />
+                                ObjectFit="ObjectFit.ScaleDown" 
+                                Class="@img.BorderSelection"
+                                Width="150" Height="150"
+                                @onclick="@(() => ViewModel.SelectImage(img))" />
                  </MudBadge>
 
-                         @* @onclick="@(() => SubmitImage(img))" *@
             }
         </MudStack>
 

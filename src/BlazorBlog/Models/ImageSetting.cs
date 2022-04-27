@@ -11,5 +11,15 @@
 		/// Nombre d'utilisation de cette image dans les posts
 		/// </summary>
 		public int CounterUse { get; set; }
+
+		/// <summary>
+		/// Indicateur si l'image est sélectionné
+		/// </summary>
+		public bool IsSelected { get; set; }
+
+		/// <summary>
+		/// Donne le style CSS si l'image est sélectionnée ou non
+		/// </summary>
+		public string BorderSelection { get { return IsSelected ? "border-2-px-solid-red" : "border-1-px-solid-black"; } }
 	}
 }

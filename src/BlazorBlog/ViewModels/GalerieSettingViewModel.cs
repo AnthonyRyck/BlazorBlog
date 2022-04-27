@@ -137,6 +137,23 @@
 			SetImageToDisplay(PathImages);
 		}
 
+		public void SelectImage(ImageSetting image)
+		{
+			var img = ImagesToDisplay.FirstOrDefault(x => x.UrlImage == image.UrlImage);
+			if(img != null)
+			{
+				img.IsSelected = !img.IsSelected;
+			}
+
+			var imgSelected = PathImages.FirstOrDefault(x => x.UrlImage == img.UrlImage);
+			if(img == null && imgSelected != null)
+			{
+				// Si déjà mis à jour dans ImageToDisplay, pas la peine de mettre à
+				// jour dans PathImages --> passage par référence.
+				imgSelected.IsSelected = !img.IsSelected;
+			}
+		}
+
 		#endregion
 	}
 }

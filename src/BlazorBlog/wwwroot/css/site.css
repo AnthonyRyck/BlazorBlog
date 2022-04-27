@@ -86,6 +86,11 @@ a, .btn-link {
     border-color: black;
 }
 
+.border-2-px-solid-red {
+    border: 2px solid;
+    border-color: red;
+}
+
 .background-gray {
     background-color: gray;
 }
