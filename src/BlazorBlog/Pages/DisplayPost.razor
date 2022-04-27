@@ -1,11 +1,27 @@
 ﻿@page "/post/{idPost:int}"
 @layout UserLayout
 @inject IDisplayPostViewModel viewModel
+@inject SettingsSvc svcSetting
+
+    <meta property="og:title" content="@viewModel.Article.Title" />
+    <meta property="og:image" content="@viewModel.Article.Image"/>
+
+    <!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="@viewModel.Article.Title">
+<meta property="og:image" content="@viewModel.Article.Image">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:title" content="@viewModel.Article.Title">
+<meta property="twitter:image" content="@viewModel.Article.Image">
+
+
 
 @if(viewModel.IsLoading)
 {
 	<Title Value="Chargement..." />
-	<div>Chargement de l'article...</div>
+	<div>Chargement de l'article...</div>   
 }
 else
 {
