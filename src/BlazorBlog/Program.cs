@@ -74,6 +74,7 @@ builder.Services.AddScoped<IIndexViewModel, IndexViewModel>();
 builder.Services.AddScoped<IArticlesViewModel, ArticlesViewModel>();
 builder.Services.AddScoped<IEditPostViewModel, EditPostViewModel>();
 builder.Services.AddScoped<ICategoriesViewModel, CategoriesViewModel>();
+builder.Services.AddScoped<IGalerieSettingViewModel, GalerieSettingViewModel>();
 
 // Augmentation de la taille des messages pour des posts très long.
 builder.Services.AddSignalR(e => {

@@ -1,0 +1,62 @@
+﻿@page "/galeriesetting"
+@attribute [Authorize(Roles = "Admin, Compositeur")]
+@inject IGalerieSettingViewModel ViewModel
+
+<h3>Gestion des images</h3>
+        <MudPaper>
+            <MudTextField @bind-Value="@ViewModel.ImageRecherche" 
+                        Placeholder="Rechercher une image" 
+                        Adornment="Adornment.Start" 
+                        AdornmentIcon="@Icons.Material.Filled.Search" 
+                        IconSize="Size.Medium" 
+                        />
+        </MudPaper>
+
+        @if(ViewModel.ImagesToDisplay.Count > 0)
+        {
+        <MudStack Row="true" Justify="Justify.FlexStart" Class="flex-wrap">
+           @foreach(var img in ViewModel.ImagesToDisplay)
+            {
+               <MudImage Src="@img" 
+                        ObjectFit="ObjectFit.ScaleDown" 
+                        Class="border-1-px-solid-black"
+                        Width="150" Height="150"
+						 />
+
+                         @* @onclick="@(() => SubmitImage(img))" *@
+            }
+        </MudStack>
+
+        <div class="d-flex flex-column align-center">
+            <MudPagination ShowFirstButton="true" 
+                            ShowLastButton="true" 
+                            Count="ViewModel.CounterPage"
+                            SelectedChanged="ViewModel.PageChanged"
+                            Class="mt-4"/>
+            </div>
+        }
+        else
+        {
+        <div>Aucune image de trouvée.</div>
+        }
+
+
+@code {
+    private static string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
+    private string DragClass = DefaultDragClass;
+    private void SetDragClass()
+    {
+        DragClass = $"{DefaultDragClass} mud-border-primary";
+    }
+
+    private void ClearDragClass()
+    {
+        DragClass = DefaultDragClass;
+    }
+
+    protected override void OnInitialized()
+    {
+        ViewModel.LoadImages();
+        base.OnInitialized();
+    }
+}
