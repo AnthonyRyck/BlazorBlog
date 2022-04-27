@@ -3,15 +3,13 @@
 @inject IDisplayPostViewModel viewModel
 @inject SettingsSvc svcSetting
 
-<Meta name="og:image" content="@viewModel.Article.Image"/>
-<Meta name="og:title" content="@viewModel.Article.Title" />
-<!-- Open Graph / Facebook -->
-<Meta name="og:type" content="website" />
+<Meta property="og:title" content="@viewModel.Article.Title" />
+<Meta property="og:image" content="@viewModel.Article.Image"/>
 
 <!-- Twitter -->
-<Meta name="twitter:card" content="summary_large_image" />
-<Meta name="twitter:title" content="@viewModel.Article.Title" />
-<Meta name="twitter:image" content="@viewModel.Article.Image" />
+<Meta property="twitter:card" content="summary_large_image" />
+<Meta property="twitter:title" content="@viewModel.Article.Title" />
+<Meta property="twitter:image" content="@viewModel.Article.Image" />
 
 @if(viewModel.IsLoading)
 {
@@ -68,15 +66,7 @@ else
                           Color="Color.Default"
                           Href="@viewModel.UrlShareTwitter" 
                           Target="_blank"
-                          Disabled="@viewModel.DisabledShare"/>						
-
-            <MudIconButton Icon="@Icons.Custom.Brands.Facebook"
-						    Size="Size.Small"
-                          Title="Facebook" 
-                          Color="Color.Default"
-                          Href="@viewModel.UrlShareFacebook" 
-                          Target="_blank"
-                          Disabled="@viewModel.DisabledShare"/>						
+                          Disabled="@viewModel.DisabledShare"/>					
         </div>
     </div>
 

@@ -30,11 +30,6 @@
 		string UrlShareTwitter { get; }
 
 		/// <summary>
-		/// URL pour partager sur Facebook
-		/// </summary>
-		string UrlShareFacebook { get; }
-
-		/// <summary>
 		/// Indique si le partage est possible.
 		/// </summary>
 		bool DisabledShare { get; }

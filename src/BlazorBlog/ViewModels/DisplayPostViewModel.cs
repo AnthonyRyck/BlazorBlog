@@ -25,8 +25,6 @@
 
 		public string UrlShareTwitter { get; private set; }
 
-		public string UrlShareFacebook { get; private set; }
-
 		public bool DisabledShare { get; private set; }
 
 		public IEnumerable<Categorie> Categories { get; private set; }
@@ -45,7 +43,6 @@
 				string urlPost = Settings.BlogUrl + "post/" + idpost;
 				UrlShareLinkedIn = "https://www.linkedin.com/shareArticle?mini=true&url=" + urlPost;
 				UrlShareTwitter = "https://twitter.com/intent/tweet?url=" + urlPost;
-				UrlShareFacebook = "https://www.facebook.com/sharer.php?u=" + urlPost;
 
 				DisabledShare = false;
 			}
