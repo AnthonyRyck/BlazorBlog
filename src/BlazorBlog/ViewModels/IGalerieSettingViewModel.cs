@@ -7,6 +7,11 @@
 		List<ImageSetting> ImagesToDisplay { get; }
 
 		/// <summary>
+		/// Liste des images à supprimer
+		/// </summary>
+		List<ImageSetting> ImagesSelectedToDelete { get; }
+
+		/// <summary>
 		/// Nombre de page
 		/// </summary>
 		int CounterPage { get; }
@@ -26,5 +31,9 @@
 		/// </summary>
 		/// <param name="image"></param>
 		void SelectImage(ImageSetting image);
+
+		void DeleteImage();
+
+		void ResetSelection();
 	}
 }

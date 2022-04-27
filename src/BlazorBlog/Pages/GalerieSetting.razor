@@ -12,21 +12,23 @@
                         />
         </MudPaper>
 
+        <MudGrid>
+        <MudItem xs="9">
+
         @if(ViewModel.ImagesToDisplay.Count > 0)
         {
-        <MudStack Row="true" Justify="Justify.FlexStart" Class="flex-wrap">
-           @foreach(ImageSetting img in ViewModel.ImagesToDisplay)
-            {
-                <MudBadge Content="@img.CounterUse" Overlap="true" Class="mx-6 my-4" Color="Color.Primary">
-                       <MudImage Src="@img.UrlImage" 
-                                ObjectFit="ObjectFit.ScaleDown" 
-                                Class="@img.BorderSelection"
-                                Width="150" Height="150"
-                                @onclick="@(() => ViewModel.SelectImage(img))" />
-                 </MudBadge>
-
-            }
-        </MudStack>
+            <MudStack Row="true" Justify="Justify.FlexStart" Class="flex-wrap">
+               @foreach(ImageSetting img in ViewModel.ImagesToDisplay)
+                {
+                    <MudBadge Content="@img.CounterUse" Overlap="true" Class="mx-6 my-4" Color="@img.Couleur">
+                           <MudImage Src="@img.UrlImage" 
+                                    ObjectFit="ObjectFit.ScaleDown" 
+                                    Class="@img.BorderSelection"
+                                    Width="150" Height="150"
+                                    @onclick="@(() => ViewModel.SelectImage(img))" />
+                     </MudBadge>
+                }
+            </MudStack>
 
         <div class="d-flex flex-column align-center">
             <MudPagination ShowFirstButton="true" 
@@ -34,12 +36,39 @@
                             Count="ViewModel.CounterPage"
                             SelectedChanged="ViewModel.PageChanged"
                             Class="mt-4"/>
-            </div>
+        </div>
         }
         else
         {
-        <div>Aucune image de trouvée.</div>
+             <MudPaper Elevation="5">Aucune image de trouvée.</MudPaper>
         }
+
+        </MudItem>
+        <MudItem xs="3">
+            @if(@ViewModel.ImagesSelectedToDelete.Count > 0)
+            {
+            <div>
+               <MudFab Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="ViewModel.DeleteImage" />
+               <MudFab Color="Color.Primary" StartIcon="@Icons.Filled.Cancel" OnClick="ViewModel.ResetSelection" />
+               <MudPaper>Sélection : @ViewModel.ImagesSelectedToDelete.Count</MudPaper>
+            </div>
+            <div class="scroll" style="max-height: 500px;">
+                @foreach(ImageSetting imgToDelete in ViewModel.ImagesSelectedToDelete)
+                {
+                    <MudPaper Elevation="3" Style="margin-bottom:3px; margin-top:3px;">
+                        <div>
+                            <b>Nom</b> : @imgToDelete.FileName
+                        </div>
+                        <div>
+                            <b>Utilisé</b> : @imgToDelete.CounterUse
+                        </div>
+                    </MudPaper>
+                }
+            </div>
+            }
+        </MudItem>
+        
+        </MudGrid>
 
 
 @code {

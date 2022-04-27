@@ -45,6 +45,7 @@
 						string url = SetUrlImageName(file.Name);
 						ImageSetting imageSetting = new ImageSetting()
 						{
+							FileName = file.Name,
 							UrlImage = url,
 							CounterUse = counter
 						};
@@ -109,6 +110,8 @@
 
 		public List<ImageSetting> ImagesToDisplay { get; private set; } = new List<ImageSetting>();
 
+		public List<ImageSetting> ImagesSelectedToDelete { get; private set; } = new List<ImageSetting>();
+
 		public int CounterPage { get; private set; }
 
 		private string _imageRecherche;
@@ -143,6 +146,10 @@
 			if(img != null)
 			{
 				img.IsSelected = !img.IsSelected;
+
+				if(img.IsSelected)
+					ImagesSelectedToDelete.Add(img);
+				else ImagesSelectedToDelete.Remove(img);
 			}
 
 			var imgSelected = PathImages.FirstOrDefault(x => x.UrlImage == img.UrlImage);
@@ -150,9 +157,45 @@
 			{
 				// Si déjà mis à jour dans ImageToDisplay, pas la peine de mettre à
 				// jour dans PathImages --> passage par référence.
-				imgSelected.IsSelected = !img.IsSelected;
+				imgSelected.IsSelected = !imgSelected.IsSelected;
+
+				if (imgSelected.IsSelected)
+					ImagesSelectedToDelete.Add(imgSelected);
+				else ImagesSelectedToDelete.Remove(imgSelected);
 			}
 		}
+
+		public void DeleteImage()
+		{
+			foreach (var img in PathImages.Where(x => x.IsSelected))
+			{
+				string imageToDelete = Path.Combine(PathImagesUser, img.FileName);
+				File.Delete(imageToDelete);
+			}
+
+			PathImages.RemoveAll(x => x.IsSelected);
+			Snack.Add($"Suppression de {ImagesSelectedToDelete.Count} images", Severity.Success);
+			ImagesSelectedToDelete = new List<ImageSetting>();
+
+			SetImageToDisplay(PathImages);
+		}
+
+		public void ResetSelection()
+		{
+			ImagesSelectedToDelete = new List<ImageSetting>();
+			var imgToDisplayReset = ImagesToDisplay.Where(x => x.IsSelected);
+			foreach (var item in imgToDisplayReset)
+			{
+				item.IsSelected = false;
+			}
+
+			var imgTotal = PathImages.Where(x => x.IsSelected);
+			foreach (var item in imgTotal)
+			{
+				item.IsSelected=false;
+			}
+		}
+
 
 		#endregion
 	}
