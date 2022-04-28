@@ -1,19 +1,7 @@
 ﻿@page "/post/{idPost:int}"
 @layout UserLayout
 @inject IDisplayPostViewModel viewModel
-@inject SettingsSvc svcSetting
 
-<Meta property="og:title" content="@viewModel.Article.Title" />
-<Meta property="og:description" content="Pour essai de description" />
-<Meta property="og:author" content="@viewModel.Article.UserId" />
-<Meta property="og:image" content="@viewModel.Article.Image"/>
-<Meta property="og:type" content="article" />
-<Meta property="og:image:type" content="image/jpeg" />
-
-<!-- Twitter -->
-<Meta property="twitter:card" content="summary_large_image" />
-<Meta property="twitter:title" content="@viewModel.Article.Title" />
-<Meta property="twitter:image" content="@viewModel.Article.Image" />
 
 @if(viewModel.IsLoading)
 {
@@ -37,6 +25,19 @@ else
     }
     else
     {
+    <HeadContent>
+		@* OpenGraph meta tags *@
+        <meta property="og:title" content="@viewModel.Article.Title" />
+        <meta property="og:author" content="@viewModel.Article.UserId" />
+        <meta property="og:image" content="@viewModel.Article.Image"/>
+        
+        @*Twitter specific meta tags *@
+		<meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:title" content="@viewModel.Article.Title">
+        <meta property="twitter:image" content="@viewModel.Article.Image">
+    </HeadContent>
+		
+
 		<Title Value="@viewModel.Article.Title" />
 		
     <div class="center-content post-title" style="background-image:url(@viewModel.Article.Image)">
