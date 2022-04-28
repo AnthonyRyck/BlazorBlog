@@ -37,6 +37,10 @@
                                     Color="Color.Primary"
                                     OnClick="(() => ViewModel.OpenPostToRead(context.Item.Id))" />
                 }
+                <MudIconButton Icon="@Icons.Filled.SaveAlt" 
+                                Size="Size.Small" 
+                                Color="Color.Primary"
+                                OnClick="(() => ViewModel.SaveThePost(context.Item.Id))" />
             </CellTemplate>
         </Column>
         

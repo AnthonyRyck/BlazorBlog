@@ -9,6 +9,7 @@ using BlazorBlog.ViewModels;
 using MudBlazor;
 using Microsoft.Extensions.FileProviders;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using BlazorDownloadFile;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,6 +76,8 @@ builder.Services.AddScoped<IArticlesViewModel, ArticlesViewModel>();
 builder.Services.AddScoped<IEditPostViewModel, EditPostViewModel>();
 builder.Services.AddScoped<ICategoriesViewModel, CategoriesViewModel>();
 builder.Services.AddScoped<IGalerieSettingViewModel, GalerieSettingViewModel>();
+builder.Services.AddBlazorDownloadFile(ServiceLifetime.Scoped);
+
 
 // Augmentation de la taille des messages pour des posts très long.
 builder.Services.AddSignalR(e => {

@@ -37,6 +37,17 @@
 		/// </summary>
 		Func<PostView, bool> FiltrerPost { get; }
 
+		/// <summary>
+		/// Ouvre le post dans un nouvel onglet
+		/// </summary>
+		/// <param name="idPost"></param>
 		void OpenPostToRead(int idPost);
+
+		/// <summary>
+		/// Sauvegarde le post
+		/// </summary>
+		/// <param name="idPost"></param>
+		/// <returns></returns>
+		Task SaveThePost(int idPost);
 	}
 }

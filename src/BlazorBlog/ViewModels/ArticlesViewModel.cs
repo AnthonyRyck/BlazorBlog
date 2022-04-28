@@ -1,7 +1,9 @@
 ﻿using BlazorBlog.Composants;
+using BlazorDownloadFile;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
+using System.Text;
 
 namespace BlazorBlog.ViewModels
 {
@@ -13,9 +15,11 @@ namespace BlazorBlog.ViewModels
 		private readonly NavigationManager Nav;
 		private readonly IDialogService DialogSvc;
 		private readonly IJSRuntime JSRuntime;
-		
+		private readonly IBlazorDownloadFileService downloadSvc;
+
 		public ArticlesViewModel(BlogContext blogContext, IHttpContextAccessor httpContextAccessor, ISnackbar snackbar,
-								NavigationManager navigationManager, IDialogService dialogService, IJSRuntime runtime )
+								NavigationManager navigationManager, IDialogService dialogService, IJSRuntime runtime,
+								IBlazorDownloadFileService svcDownload)
 		{
 			Context = blogContext;
 			snack = snackbar;
@@ -25,7 +29,7 @@ namespace BlazorBlog.ViewModels
 			DialogSvc = dialogService;
 			FiltrerPost = Recherche;
 			PostRecherche = String.Empty;
-
+			downloadSvc = svcDownload;
 			JSRuntime = runtime;
 		}
 
@@ -93,6 +97,16 @@ namespace BlazorBlog.ViewModels
 			Nav.NavigateTo($"/editpost/{idPost}", true);
 		}
 
+		public async Task SaveThePost(int idPost)
+		{
+			var postToSave = await Context.GetPostAsync(idPost);
+			string nomDuFichier = postToSave.Title.Replace(' ', '-') + ".md";
+
+			// créer un fichier
+			byte[] content = Encoding.UTF8.GetBytes(postToSave.Content);
+			await downloadSvc.DownloadFile(nomDuFichier, content, "application/octet-stream");
+		}
+		
 		#endregion
 
 	}
