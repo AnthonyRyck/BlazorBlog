@@ -53,9 +53,10 @@ C'est l'utilisateur root qui peut créer des comptes **Auteur**.
 * :white_check_mark: Page pour la gestion des articles  
 * :white_check_mark: Page d'accueil pour afficher les articles publiés  
 * :white_check_mark: Partager l'article via Facebook, Twitter, LinkedIn  
+* :white_check_mark: Pouvoir sauvegarder un article
 * :white_check_mark: Changement des titres dans la barre du browser de façon dynamique  
 * :black_square_button: Un système pour compter le nombre de vue sur chaque article  
 * :white_check_mark: Ajouter le système de catégorie pour les articles *(sur les posts, page d'édition catégorie, affichage des posts par catégorie,...)*    
-* :black_square_button: Faire une page pour gérer les images de la galerie  
+* :white_check_mark: Faire une page pour gérer les images de la galerie  
 * :black_square_button: Intégrer des vidéos dans l'article  
 * :black_square_button: Faire une page sur l'auteur  
