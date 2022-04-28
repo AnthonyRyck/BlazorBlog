@@ -1,5 +1,5 @@
 # BlazorBlog
-Application de blog simple en .NET 6 Blazor Server. J'utilise [MudBlazor](https://github.com/MudBlazor/MudBlazor/) pour l'interface.
+Application de blog simple en .NET 6 Blazor Server. J'utilise [MudBlazor](https://github.com/MudBlazor/MudBlazor/) pour l'interface. Pour l'écriture des articles, je suis partie sur une écriture "fluide" avec du MarkDown.  
 
 ## Installation
 
