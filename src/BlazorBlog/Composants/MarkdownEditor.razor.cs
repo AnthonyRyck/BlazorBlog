@@ -15,6 +15,9 @@ namespace BlazorBlog.Composants
 		[Inject]
 		private HotKeys HotKeysContext { get; set; }
 
+		private string urlYoutube;
+		private bool IsYoutubeDisplayed;
+
 		public async void Dispose()
 		{
 			await HotKeysContext.DisposeAsync();
@@ -108,6 +111,40 @@ namespace BlazorBlog.Composants
 											+ "| -------- | -------- | -------- |" + Environment.NewLine
 											+ "| Cell 1   | Cell 2   | Cell 3   |" + Environment.NewLine;
 			await StartWithMd(MARKDOWN_SYNTAX_TABLEAU, string.Empty);
+		}
+
+		private async void OnClickVideoYoutube()
+		{
+			IsYoutubeDisplayed = !IsYoutubeDisplayed;
+		}
+
+		private async Task AddYoutubeVideo()
+		{
+			// Extraire l'id de la vidéo.
+			// Exemple : https://www.youtube.com/watch?v=1qOXCpCwmJ4&pp=ugMICgJmchABGAE%3D
+
+			var splited = urlYoutube.Split("?v=");
+			string url = string.Empty;
+			string idvideo = string.Empty;
+
+			if (splited.Length > 1)
+			{
+				idvideo = splited[1];
+				url = urlYoutube;
+			}
+			else
+			{
+				idvideo = "METTRE_ID_VIDEO";
+				url = "METTRE_URL_YOUTUBE";
+			}
+
+			string MARKDOWN_SYNTAX_YOUTUBE = Environment.NewLine
+				 + "  " + Environment.NewLine
+				 + "**Clique sur l'image ouvrir la vidéo Youtube**  " + Environment.NewLine
+				 + $"[![](https://i.ytimg.com/vi/{idvideo}/hqdefault.jpg)]({url})" + Environment.NewLine
+				 + "  " + Environment.NewLine;
+			await StartWithMd(MARKDOWN_SYNTAX_YOUTUBE, string.Empty);
+			OnClickVideoYoutube();
 		}
 
 		private async Task BothSideWithMd(string markdownSymbol, string defaultWord)

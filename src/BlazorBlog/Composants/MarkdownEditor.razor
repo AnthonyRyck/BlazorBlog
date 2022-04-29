@@ -52,12 +52,32 @@
 					OnClick="@OnClickTableau" />
         </MudTooltip>
 
+        <MudTooltip Text="Ajouter vidéo Youtube">
+            <MudIconButton Icon="@Icons.Custom.Brands.YouTube"
+					OnClick="@OnClickVideoYoutube" />
+        </MudTooltip>
+
 		<MudTooltip Text="Aide - Markdown Guide">
             <MudIconButton Icon="@Icons.Filled.Help" 
                     Href="https://www.markdownguide.org/basic-syntax" 
                     Target="_blank" />
         </MudTooltip>
     </MudPaper>
+
+    @if(IsYoutubeDisplayed)
+    {
+    <MudTextField T=String Placeholder="URL d'une vidéo Youtube - ex : https://www.youtube.com/watch?v=1qOXCpCwmJ4&pp=ugMICgJmchABGAE%3D" 
+                Adornment="Adornment.End"
+                Label="Vidéo Youtube"
+                AdornmentIcon="@Icons.Material.Filled.Search" 
+                IconSize="Size.Medium"
+                @bind-Value="urlYoutube"
+                HelperText="Valider avec le bouton de recherche --->"
+                HelperTextOnFocus="true"
+                OnAdornmentClick="AddYoutubeVideo" />
+    <br />
+    }
+
     <MudText Typo="Typo.caption"><u>Note</u> : Après chaque utilisation des raccourcis Markdown, ajouter n'importe quel caractère pour que le serveur prenne la modification en compte.</MudText>
 	<br />
 <MudTextField T="string"
