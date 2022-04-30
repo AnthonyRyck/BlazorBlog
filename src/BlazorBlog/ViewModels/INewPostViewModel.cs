@@ -64,5 +64,10 @@ namespace BlazorBlog.ViewModels
 		/// <returns></returns>
 		Task OpenGalerie();
 
+		/// <summary>
+		/// Ouvre un onglet pour voir une preview du post
+		/// </summary>
+		/// <returns></returns>
+		Task OpenPreview();
 	}
 }

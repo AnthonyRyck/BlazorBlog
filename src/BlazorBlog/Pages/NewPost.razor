@@ -57,7 +57,15 @@
 					Color="Color.Success"
 					Disabled="@viewModel.PublishDisabled"
 					OnClick="@viewModel.PublishPost">Publier</MudButton>
-					
+			
+			<MudButton StartIcon="@Icons.Filled.RemoveRedEye" 
+					Size="Size.Small"
+					Variant="Variant.Filled"
+					Color="Color.Info"
+					Disabled="@viewModel.PublishDisabled"
+					OnClick="@viewModel.OpenPreview">Preview</MudButton>
+
+
 			<div>
 				<ValidationMessage For="@(() => viewModel.ValidationPost.Image)" />
 			</div>

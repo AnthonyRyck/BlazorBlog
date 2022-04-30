@@ -29,13 +29,14 @@
 
 		public IEnumerable<Categorie> Categories { get; private set; }
 
-		public async Task LoadPost(int idpost)
+		public async Task LoadPost(int idpost, bool isPreview)
 		{
 			IsLoading = true;
 			var temp = await Context.GetPostAsync(idpost);
 
 			// Cas ou le post n'est pas publié
-			if (!temp.IsPublished)
+			// et n'est pas une vue en preview
+			if (!temp.IsPublished && !isPreview)
 			{
 				Article = null;
 				IsLoading = false;

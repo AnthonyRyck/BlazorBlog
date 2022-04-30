@@ -1,6 +1,7 @@
 ﻿using BlazorBlog.Composants;
 using BlazorBlog.ValidationModels;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.JSInterop;
 using Toolbelt.Blazor.HotKeys;
 
 namespace BlazorBlog.ViewModels
@@ -14,13 +15,15 @@ namespace BlazorBlog.ViewModels
 		private readonly IDialogService DialogService;
 		private readonly DialogOptions FullScreenOption;
 		private readonly string LoginUser;
+		private readonly IJSRuntime JSRuntime;
 
 		public NewPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys, IDialogService dialogService, 
-								IHttpContextAccessor httpContextAccessor)
+								IHttpContextAccessor httpContextAccessor, IJSRuntime js)
 		{
 			ContextBlog = blogContext;
 			DialogService = dialogService;
 			LoginUser = httpContextAccessor.HttpContext.User.Identity.Name;
+			JSRuntime = js;
 
 			FullScreenOption = new DialogOptions() { FullScreen = true, CloseButton = true };
 
@@ -204,6 +207,13 @@ namespace BlazorBlog.ViewModels
 					Log.Error(ex, "NewPostViewModel - AjouterCategorie");
 				}
 			}
+		}
+
+
+		public async Task OpenPreview()
+		{
+			await SavePost();
+			await JSRuntime.InvokeAsync<object>("open", $"/preview/{PostEnCours.Id}", "_blank");
 		}
 
 		#endregion

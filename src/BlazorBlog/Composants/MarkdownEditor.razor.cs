@@ -15,6 +15,9 @@ namespace BlazorBlog.Composants
 		[Inject]
 		private HotKeys HotKeysContext { get; set; }
 
+		[Inject]
+		private IJSRuntime JSRuntime { get; set; }
+
 		private string urlYoutube;
 		private bool IsYoutubeDisplayed;
 

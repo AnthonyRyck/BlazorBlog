@@ -1,7 +1,7 @@
 ﻿using BlazorBlog.Composants;
 using BlazorBlog.ValidationModels;
 using Microsoft.AspNetCore.Components.Forms;
-using MudBlazor;
+using Microsoft.JSInterop;
 using Toolbelt.Blazor.HotKeys;
 
 namespace BlazorBlog.ViewModels
@@ -14,12 +14,14 @@ namespace BlazorBlog.ViewModels
 		private readonly HotKeys KeysContext;
 		private readonly IDialogService DialogService;
 		private readonly DialogOptions FullScreenOption;
+		private readonly IJSRuntime JSRuntime;
 
-
-		public EditPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys, IDialogService dialogService)
+		public EditPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys, IDialogService dialogService,
+							IJSRuntime js)
 		{
 			ContextBlog = blogContext;
 			DialogService = dialogService;
+			JSRuntime = js;
 
 			FullScreenOption = new DialogOptions() { FullScreen = true, CloseButton = true };
 
@@ -187,6 +189,13 @@ namespace BlazorBlog.ViewModels
 					Log.Error(ex, "NewPostViewModel - AjouterCategorie");
 				}
 			}
+		}
+
+
+		public async Task OpenPreview()
+		{
+			await SavePost();
+			await JSRuntime.InvokeAsync<object>("open", $"/preview/{PostEnCours.Id}", "_blank");
 		}
 
 		#endregion

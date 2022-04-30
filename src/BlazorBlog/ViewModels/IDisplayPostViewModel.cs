@@ -16,8 +16,9 @@
 		/// Charge le post demandé.
 		/// </summary>
 		/// <param name="idpost"></param>
+		/// <param name="isPreview"></param>
 		/// <returns></returns>
-		Task LoadPost(int idpost);
+		Task LoadPost(int idpost, bool isPreview);
 
 		/// <summary>
 		/// URL pour partager sur LinkedIn
