@@ -33,6 +33,15 @@
 		{
 			IsLoading = true;
 			var temp = await Context.GetPostAsync(idpost);
+
+			// Cas ou le post n'est pas publié
+			if (!temp.IsPublished)
+			{
+				Article = null;
+				IsLoading = false;
+				return; 
+			}
+
 			temp.Image = Settings.GetUrlImagePost(temp.Image);
 
 			Article = temp;
