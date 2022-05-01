@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
-using MudBlazor;
 
 namespace BlazorBlog.ViewModels
 {
@@ -8,11 +7,13 @@ namespace BlazorBlog.ViewModels
 		private readonly string UserName;
 		private readonly string PathImagesUser;
         private readonly ISnackbar Snack;
+		private readonly IServiceImage ImageService;
 
-        private const int PageSize = 10;
+		private const int PageSize = 10;
 
-        public GalerieViewModel(IHttpContextAccessor httpContextAccessor, ISnackbar snackbar)
+		public GalerieViewModel(IHttpContextAccessor httpContextAccessor, ISnackbar snackbar, IServiceImage imageService)
 		{
+            ImageService = imageService;
 			UserName = httpContextAccessor.HttpContext.User.Identity.Name;
 			PathImagesUser = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES, UserName);
 
@@ -110,55 +111,89 @@ namespace BlazorBlog.ViewModels
             SetImageToDisplay(ImageRecheche);
         }
 
-		public async Task OnInputFileChanged(InputFileChangeEventArgs e)
+        public async Task OnInputFileChanged(InputFileChangeEventArgs e)
         {
             var files = e.GetMultipleFiles(1);
-            
+
             foreach (var file in files)
             {
-                string pathImage = Path.Combine(PathImagesUser, file.Name);
-
                 try
                 {
-                    string extensionFile = new FileInfo(file.Name).Extension.ToLower();
+                    string imgUrl = await ImageService.SaveImage(file);
 
-                    if (extensionFile == ConstantesApp.EXTENSION_IMAGE_JPEG
-                        || extensionFile == ConstantesApp.EXTENSION_IMAGE_PNG
-                        || extensionFile == ConstantesApp.EXTENSION_IMAGE_JPG
-                        || extensionFile == ConstantesApp.EXTENSION_IMAGE_ICO)
-                    {
-                        using FileStream fs = new(pathImage, FileMode.Create);
-                        // Max 3 Mo
-                        await file.OpenReadStream(3000000).CopyToAsync(fs);
-
+				    if (imgUrl != "NOT_GOOD_EXTENSION")
+				    {
                         Snack.Add($"Upload de {file.Name} réussi", Severity.Success);
 
-                        string urlImg = SetUrlImageName(file.Name);
-
-						// Pour qu'il soit connu dans le composant
-						PathImages.Add(urlImg);
-						// Pour qu'il soit affiché
-						ImagesToDisplay.Add(SetUrlImageName(file.Name));
-					}
+                        // Pour qu'il soit connu dans le composant
+                        PathImages.Add(imgUrl);
+                        // Pour qu'il soit affiché
+                        ImagesToDisplay.Add(imgUrl);						
+                    }
                     else
-                    {
+				    {
                         Snack.Add($"Il faut une image JPG ou JPEG ou PNG ou ICO", Severity.Warning);
                         return;
                     }
                 }
                 catch (Exception ex)
                 {
-					if (File.Exists(pathImage))
-					{
-						File.Delete(pathImage);
-					}
                     Log.Error(ex, "Error OnInputFileChanged");
                     Snack.Add("Erreur lors de l'upload de l'image - Max 3 Mo", Severity.Error);
-				}
+                }
             }
         }
 
-		public void PageChanged(int page)
+        // A GARDER 
+        //public async Task OnInputFileChanged(InputFileChangeEventArgs e)
+        //      {
+        //          var files = e.GetMultipleFiles(1);
+
+        //          foreach (var file in files)
+        //          {
+        //              string pathImage = Path.Combine(PathImagesUser, file.Name);
+
+        //              try
+        //              {
+        //                  string extensionFile = new FileInfo(file.Name).Extension.ToLower();
+
+        //                  if (extensionFile == ConstantesApp.EXTENSION_IMAGE_JPEG
+        //                      || extensionFile == ConstantesApp.EXTENSION_IMAGE_PNG
+        //                      || extensionFile == ConstantesApp.EXTENSION_IMAGE_JPG
+        //                      || extensionFile == ConstantesApp.EXTENSION_IMAGE_ICO)
+        //                  {
+        //                      using FileStream fs = new(pathImage, FileMode.Create);
+        //                      // Max 3 Mo
+        //                      await file.OpenReadStream(3000000).CopyToAsync(fs);
+
+        //                      Snack.Add($"Upload de {file.Name} réussi", Severity.Success);
+
+        //                      string urlImg = SetUrlImageName(file.Name);
+
+        //				// Pour qu'il soit connu dans le composant
+        //				PathImages.Add(urlImg);
+        //				// Pour qu'il soit affiché
+        //				ImagesToDisplay.Add(SetUrlImageName(file.Name));
+        //			}
+        //                  else
+        //                  {
+        //                      Snack.Add($"Il faut une image JPG ou JPEG ou PNG ou ICO", Severity.Warning);
+        //                      return;
+        //                  }
+        //              }
+        //              catch (Exception ex)
+        //              {
+        //			if (File.Exists(pathImage))
+        //			{
+        //				File.Delete(pathImage);
+        //			}
+        //                  Log.Error(ex, "Error OnInputFileChanged");
+        //                  Snack.Add("Erreur lors de l'upload de l'image - Max 3 Mo", Severity.Error);
+        //		}
+        //          }
+        //      }
+
+        public void PageChanged(int page)
 		{
             // Aucune recherche
             if (string.IsNullOrEmpty(_imageRecherche))

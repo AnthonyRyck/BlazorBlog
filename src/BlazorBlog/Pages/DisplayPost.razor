@@ -1,4 +1,5 @@
 ﻿@page "/post/{idPost:int}"
+@page "/preview/{idPostPreview:int}"
 @layout UserLayout
 @inject IDisplayPostViewModel viewModel
 
@@ -21,29 +22,36 @@ else
     	<MudImage Src="images/nothing.jpg" 
     			Class="rounded-lg"
     			ObjectPosition="ObjectPosition.Center" />
-    </div>
+        </div>
     }
     else
     {
-    <HeadContent>
-		@* OpenGraph meta tags *@
-        <meta property="og:title" content="@viewModel.Article.Title" />
-        <meta property="og:author" content="@viewModel.Article.UserId" />
-        <meta property="og:image" content="@viewModel.Article.Image"/>
-        
-        @*Twitter specific meta tags *@
-        <meta property="twitter:title" content="@viewModel.Article.Title">
-		<meta property="twitter:card" content="summary_large_image">
-        <meta property="twitter:image" content="@viewModel.Article.Image">
-    </HeadContent>
-		
+        @if (!IsPreview)
+        {
+            <HeadContent>
+                @* OpenGraph meta tags *@
+                <meta property="og:title" content="@viewModel.Article.Title" />
+                <meta property="og:author" content="@viewModel.Article.UserId" />
+                <meta property="og:image" content="@viewModel.Article.Image"/>
+
+                @*Twitter specific meta tags *@
+                <meta property="twitter:title" content="@viewModel.Article.Title">
+                <meta property="twitter:card" content="summary_large_image">
+                <meta property="twitter:image" content="@viewModel.Article.Image">
+            </HeadContent>
+        }	
 
 		<Title Value="@viewModel.Article.Title" />
 		
     <div class="center-content post-title" style="background-image:url(@viewModel.Article.Image)">
 	    <div class="imagefade">
             <h1>@viewModel.Article.Title</h1>
+            
+            @if (!IsPreview)
+            {
     		<span>@viewModel.Article.UserId / @viewModel.Article.Posted.Value.ToString("D")</span>
+            }
+
             @foreach (Categorie categorie in viewModel.Categories)
             {
              <MudChip Color="Color.Info" OnClick="(() => viewModel.OpenCategoriePosts(categorie.IdCategorie))">@categorie.Nom</MudChip>
@@ -54,28 +62,28 @@ else
 	<div class="post-content">
         <MudMarkdown Value="@viewModel.Article.Content" 
 	        		CodeBlockTheme="CodeBlockTheme.AtomOneDark" />
+        @if (!IsPreview)
+        {
+            <div class="post-share">
+                <MudText Typo="Typo.body1">Partager sur : </MudText>
+                <MudIconButton Icon="@Icons.Custom.Brands.LinkedIn"
+		                Size="Size.Small"
+                      Title="LinkedIn" 
+		    Color="Color.Default"
+                      Href="@viewModel.UrlShareLinkedIn" 
+                      Target="_blank"
+                      Disabled="@viewModel.DisabledShare" />
 
-		<div class="post-share">
-		    <MudText Typo="Typo.body1">Partager sur : </MudText>
-			<MudIconButton Icon="@Icons.Custom.Brands.LinkedIn"
-						    Size="Size.Small"
-                          Title="LinkedIn" 
-						    Color="Color.Default"
-                          Href="@viewModel.UrlShareLinkedIn" 
-                          Target="_blank"
-                          Disabled="@viewModel.DisabledShare" />
-
-            <MudIconButton Icon="@Icons.Custom.Brands.Twitter"
-						    Size="Size.Small"
-                          Title="Twitter" 
-                          Color="Color.Default"
-                          Href="@viewModel.UrlShareTwitter" 
-                          Target="_blank"
-                          Disabled="@viewModel.DisabledShare"/>					
+                <MudIconButton Icon="@Icons.Custom.Brands.Twitter"
+		                Size="Size.Small"
+                      Title="Twitter" 
+                      Color="Color.Default"
+                      Href="@viewModel.UrlShareTwitter" 
+                      Target="_blank"
+                      Disabled="@viewModel.DisabledShare"/>					
+            </div>
+        }
         </div>
-    </div>
-
-
     }
 }
 
@@ -83,8 +91,23 @@ else
     [Parameter]
     public int idPost { get; set; }
 
+    [Parameter]
+    public int idPostPreview { get; set; }
+
+    private bool IsPreview { get; set; }
+
     protected async override Task OnInitializedAsync()
     {
-		await viewModel.LoadPost(idPost);
+        if(idPost > 0 && idPostPreview == 0)
+        {
+            await viewModel.LoadPost(idPost, false);
+            IsPreview = false;
+        }
+
+        if(idPost == 0 && idPostPreview > 0)
+        {
+            await viewModel.LoadPost(idPostPreview, true);
+            IsPreview = true;
+        }
     }
 }

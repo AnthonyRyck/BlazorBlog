@@ -70,6 +70,7 @@ builder.Services.AddHotKeys();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<ISettingsViewModel, SettingsViewModel>();
+builder.Services.AddScoped<IServiceImage, ImageService>();
 builder.Services.AddTransient<INewPostViewModel, NewPostViewModel>();
 builder.Services.AddScoped<IDisplayPostViewModel, DisplayPostViewModel>();
 builder.Services.AddScoped<IGalerieViewModel, GalerieViewModel>();

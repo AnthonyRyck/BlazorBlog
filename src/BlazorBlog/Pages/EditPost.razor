@@ -25,7 +25,9 @@
 					</div>
 					
 					<div>
-						<MarkdownEditor @bind-Content="ViewModel.ValidationPost.Content" />
+						<MarkdownEditor @bind-Content="ViewModel.ValidationPost.Content"
+										ImageInput="ViewModel.AddImage"
+										@bind-ImageUploaded="ViewModel.ImageUploaded" />
 					</div>
 				
 			</div>
@@ -65,6 +67,12 @@
 						<div>Publier</div>
 					}
 				</MudButton>
+
+			<MudButton StartIcon="@Icons.Filled.RemoveRedEye" 
+					Size="Size.Small"
+					Variant="Variant.Filled"
+					Color="Color.Info"
+					OnClick="@ViewModel.OpenPreview">Preview</MudButton>
 					
 			<div>
 				<ValidationMessage For="@(() => ViewModel.ValidationPost.Image)" />

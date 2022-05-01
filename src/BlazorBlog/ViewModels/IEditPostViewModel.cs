@@ -26,5 +26,16 @@ namespace BlazorBlog.ViewModels
 		Task LoadPost(int idpost);
 
 		Task AjouterCategorie();
+
+		/// <summary>
+		/// Ouvre un onglet pour voir une preview du post
+		/// </summary>
+		/// <returns></returns>
+		Task OpenPreview();
+
+
+		Task AddImage(IBrowserFile file);
+
+		string ImageUploaded { get; set; }
 	}
 }

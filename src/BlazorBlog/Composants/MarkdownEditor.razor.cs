@@ -1,4 +1,6 @@
-﻿using Microsoft.JSInterop;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MudBlazor;
 using Toolbelt.Blazor.HotKeys;
 
@@ -12,8 +14,21 @@ namespace BlazorBlog.Composants
 		[Parameter]
 		public EventCallback<string> ContentChanged { get; set; }
 
+		[Parameter]
+		public EventCallback<IBrowserFile> ImageInput { get; set; }
+
+		[Parameter]
+		public string ImageUploaded { get; set; }
+
+		[Parameter]
+		public EventCallback<string> ImageUploadedChanged { get; set; }
+
+
 		[Inject]
 		private HotKeys HotKeysContext { get; set; }
+
+		[Inject]
+		private IJSRuntime JSRuntime { get; set; }
 
 		private string urlYoutube;
 		private bool IsYoutubeDisplayed;
@@ -184,6 +199,59 @@ namespace BlazorBlog.Composants
 				var test = ex;
 				throw;
 			}
+		}
+
+
+		private void OnDropEnter(DragEventArgs args)
+		{
+			var files = args.DataTransfer.Types;
+			if (files?.Any(x => x == "Files") == true)
+			{
+				if (args.DataTransfer.Items.Any(x => x.Type == ConstantesApp.MIME_JPEG 
+												|| x.Type == ConstantesApp.MIME_PNG
+												|| x.Type == ConstantesApp.MIME_JPG
+												|| x.Type == ConstantesApp.MIME_GIF))
+				{
+					isDragItem = true;
+				}
+			}
+		}
+
+		private void OnDragLeave(DragEventArgs args)
+		{
+			isDragItem = false;
+		}
+
+		public bool isDragItem { get; set; } = false;
+
+
+		public async Task OnInputFileChanged(InputFileChangeEventArgs e)
+		{
+			if (e.File != null)
+			{
+				await ImageInput.InvokeAsync(e.File);
+				isDragItem = false;
+				StateHasChanged();
+				
+				string markdown = Environment.NewLine + "![](" + ImageUploaded + ")" + Environment.NewLine;
+				await Insert(markdown);
+			}
+		}
+
+
+
+
+		private static string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
+		private string DragClass = DefaultDragClass;
+		private void SetDragClass()
+		{
+			DragClass = $"{DefaultDragClass} mud-border-primary";
+		}
+
+		private void ClearDragClass()
+		{
+			isDragItem = false;
+			DragClass = DefaultDragClass;
 		}
 	}
 }

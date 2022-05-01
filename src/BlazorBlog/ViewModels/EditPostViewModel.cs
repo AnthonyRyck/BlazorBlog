@@ -1,7 +1,7 @@
 ﻿using BlazorBlog.Composants;
 using BlazorBlog.ValidationModels;
 using Microsoft.AspNetCore.Components.Forms;
-using MudBlazor;
+using Microsoft.JSInterop;
 using Toolbelt.Blazor.HotKeys;
 
 namespace BlazorBlog.ViewModels
@@ -14,12 +14,16 @@ namespace BlazorBlog.ViewModels
 		private readonly HotKeys KeysContext;
 		private readonly IDialogService DialogService;
 		private readonly DialogOptions FullScreenOption;
+		private readonly IJSRuntime JSRuntime;
+		private readonly IServiceImage ImageService;
 
-
-		public EditPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys, IDialogService dialogService)
+		public EditPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys, IDialogService dialogService,
+							IJSRuntime js, IServiceImage imageService)
 		{
 			ContextBlog = blogContext;
 			DialogService = dialogService;
+			JSRuntime = js;
+			ImageService = imageService;
 
 			FullScreenOption = new DialogOptions() { FullScreen = true, CloseButton = true };
 
@@ -188,6 +192,38 @@ namespace BlazorBlog.ViewModels
 				}
 			}
 		}
+
+
+		public async Task OpenPreview()
+		{
+			await SavePost();
+			await JSRuntime.InvokeAsync<object>("open", $"/preview/{PostEnCours.Id}", "_blank");
+		}
+
+		public async Task AddImage(IBrowserFile fileImage)
+		{
+			try
+			{
+				string urlImage = await ImageService.SaveImage(fileImage);
+
+				if (urlImage != "NOT_GOOD_EXTENSION")
+				{
+					ImageUploaded = urlImage;
+					Snack.Add($"Ajout de l'image - OK", Severity.Success);
+				}
+				else
+				{
+					Snack.Add($"Il faut une image, extension - jpg, gif, png", Severity.Warning);
+				}
+			}
+			catch (Exception ex)
+			{
+				Snack.Add($"Erreur sur l'ajout de l'image", Severity.Error);
+				Log.Error(ex, "Error AddImage");
+			}
+		}
+
+		public string ImageUploaded { get; set; }
 
 		#endregion
 
