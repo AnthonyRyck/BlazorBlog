@@ -16,12 +16,14 @@ namespace BlazorBlog.ViewModels
 		private readonly DialogOptions FullScreenOption;
 		private readonly string LoginUser;
 		private readonly IJSRuntime JSRuntime;
+		private readonly IServiceImage ImageService;
 
 		public NewPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys, IDialogService dialogService, 
-								IHttpContextAccessor httpContextAccessor, IJSRuntime js)
+								IHttpContextAccessor httpContextAccessor, IJSRuntime js, IServiceImage imageService)
 		{
 			ContextBlog = blogContext;
 			DialogService = dialogService;
+			ImageService = imageService;
 			LoginUser = httpContextAccessor.HttpContext.User.Identity.Name;
 			JSRuntime = js;
 
@@ -215,6 +217,31 @@ namespace BlazorBlog.ViewModels
 			await SavePost();
 			await JSRuntime.InvokeAsync<object>("open", $"/preview/{PostEnCours.Id}", "_blank");
 		}
+
+		public async Task AddImage(IBrowserFile fileImage)
+		{
+			try
+			{
+				string urlImage = await ImageService.SaveImage(fileImage);
+				
+				if(urlImage != "NOT_GOOD_EXTENSION")
+				{
+					ImageUploaded = urlImage;
+					Snack.Add($"Ajout de l'image - OK", Severity.Success);
+				}
+				else
+				{
+					Snack.Add($"Il faut une image, extension - jpg, gif, png", Severity.Warning);
+				}
+			}
+			catch (Exception ex)
+			{
+				Snack.Add($"Erreur sur l'ajout de l'image" , Severity.Error);
+				Log.Error(ex, "Error AddImage");
+			}
+		}
+		
+		public string ImageUploaded { get; set; }
 
 		#endregion
 

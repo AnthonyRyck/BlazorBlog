@@ -76,14 +76,39 @@
     <br />
     }
 
-    <MudText Typo="Typo.caption"><u>Note</u> : Après chaque utilisation des raccourcis Markdown, ajouter n'importe quel caractère pour que le serveur prenne la modification en compte.</MudText>
+    <MudText Typo="Typo.caption"><u>Note</u> : Après chaque utilisation des raccourcis Markdown <b><u>ou</u></b> ajout d'une image <i>(drag&drop)</i>, ajouter n'importe quel caractère pour que le serveur prenne la modification en compte.</MudText>
 	<br />
-<MudTextField T="string"
+
+    <div @ondragenter="OnDropEnter"
+            @ondragleave="OnDragLeave"
+            @ondragend="OnDragLeave">
+    @if (!isDragItem)
+    {
+        <MudTextField T="string"
 		    @ref="@Text"
             id="texteditor"
 			Label="Article" 
 			Variant="Variant.Outlined"
 			Text="@Content"
 			Lines="28"
-			TextChanged="OnTextChanged" />
+			TextChanged="OnTextChanged"
+             />
+    }
+    else
+	{
+		<MudPaper @ondragenter="@SetDragClass" 
+                  @ondragleave="@ClearDragClass" 
+                  @ondragend="@ClearDragClass" 
+                  Height="200px" 
+                  Outlined="true" 
+                  Class="@DragClass">
+            <InputFile OnChange="@OnInputFileChanged"
+                        class="absolute mud-width-full mud-height-full overflow-hidden z-2" 
+                        style="opacity:0;"
+                        multiple />
+            
+                <MudText Typo="Typo.h6">Déposez l'image (max 3 Mo) ou cliquez</MudText>
+        </MudPaper>
+    }
+        </div>
 </MudPaper>

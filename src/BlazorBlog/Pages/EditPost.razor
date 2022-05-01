@@ -25,7 +25,9 @@
 					</div>
 					
 					<div>
-						<MarkdownEditor @bind-Content="ViewModel.ValidationPost.Content" />
+						<MarkdownEditor @bind-Content="ViewModel.ValidationPost.Content"
+										ImageInput="ViewModel.AddImage"
+										@bind-ImageUploaded="ViewModel.ImageUploaded" />
 					</div>
 				
 			</div>

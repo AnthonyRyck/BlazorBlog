@@ -69,5 +69,11 @@ namespace BlazorBlog.ViewModels
 		/// </summary>
 		/// <returns></returns>
 		Task OpenPreview();
+
+
+		Task AddImage(IBrowserFile file);
+
+
+		string ImageUploaded { get; set; }
 	}
 }

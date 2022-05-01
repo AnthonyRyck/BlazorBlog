@@ -50,6 +50,15 @@
 		public const string EXTENSION_IMAGE_BMP = ".bmp";
 		public const string EXTENSION_IMAGE_ICO = ".ico";
 		public const string EXTENSION_IMAGE_SVG = ".svg";
+
+		#endregion
+
+		#region MIME Types Images
+
+		public const string MIME_JPG = "image/jpg";
+		public const string MIME_JPEG = "image/jpeg";
+		public const string MIME_GIF = "image/gif";
+		public const string MIME_PNG = "image/png";
 		
 		#endregion
 	}
