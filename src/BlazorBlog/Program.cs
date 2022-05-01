@@ -10,6 +10,8 @@ using MudBlazor;
 using Microsoft.Extensions.FileProviders;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using BlazorDownloadFile;
+using Microsoft.AspNetCore.HttpOverrides;
+using BlazorBlog.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,7 +80,6 @@ builder.Services.AddScoped<ICategoriesViewModel, CategoriesViewModel>();
 builder.Services.AddScoped<IGalerieSettingViewModel, GalerieSettingViewModel>();
 builder.Services.AddBlazorDownloadFile(ServiceLifetime.Scoped);
 
-
 // Augmentation de la taille des messages pour des posts très long.
 builder.Services.AddSignalR(e => {
     e.MaximumReceiveMessageSize = 102400000;
@@ -117,6 +118,16 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+// ***** Pas encore mis en place *****
+// Middleware Track
+//app.UseForwardedHeaders(new ForwardedHeadersOptions
+//{
+//    ForwardedHeaders = ForwardedHeaders.XForwardedFor
+//            | ForwardedHeaders.XForwardedHost
+//});
+//app.UseMiddleware<TrackMiddleware>();
+
 
 
 // Ajout dans la base de l'utilisateur "root"
