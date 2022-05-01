@@ -44,6 +44,10 @@ URL de connexion : `https://YOUR-DOMAIN/Identity/Account/Login`
 * Choix de l'icône du blog (le favicon)
 C'est l'utilisateur root qui peut créer des comptes **Auteur**.  
 
+### Drag & Drop d'une image dans un post
+
+![](https://raw.githubusercontent.com/AnthonyRyck/BlazorBlog/main/ImgRessources/BlazorBlog-DragAndDropImg.gif)  
+  
 ## Roadmap
 * :white_check_mark: Création de la base de donnée au démarrage de l'application  
 * :white_check_mark: Page pour créer un article  
@@ -60,3 +64,4 @@ C'est l'utilisateur root qui peut créer des comptes **Auteur**.
 * :white_check_mark: Faire une page pour gérer les images de la galerie  
 * :white_check_mark: Intégrer des vidéos dans l'article (*ne sera pas lu dans l'article, mais ouvre un nouvel onglet*)  
 * :black_square_button: Faire une page sur l'auteur  
+* :white_check_mark: Possible de Drag&Drop une image pour l'ajouter à l'article.  
