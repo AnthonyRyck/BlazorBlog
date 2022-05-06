@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: Deployment to Docker
+name: Deployment to Docker Hub
 
 on:
   # Lancement manuel
