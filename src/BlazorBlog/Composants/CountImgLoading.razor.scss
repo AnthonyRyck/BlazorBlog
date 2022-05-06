@@ -1,0 +1,32 @@
+﻿* {
+	border: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+:root {
+	--hue: 223;
+	--bg: hsl(var(--hue),90%,55%);
+	--fg: hsl(var(--hue),10%,90%);
+	font-size: calc(16px + (24 - 16) * (100vw - 320px) / (1280 - 320));
+}
+
+body {
+	background: var(--bg);
+	color: var(--fg);
+	font: 1em/1.5 sans-serif;
+	height: 100vh;
+	display: grid;
+	place-items: center;
+}
+
+.tally {
+	width: 10em;
+	height: 10em;
+}
+
+.tally__line,
+.tally__path {
+	stroke: currentColor;
+}

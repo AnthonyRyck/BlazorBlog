@@ -3,13 +3,18 @@
 @inject IGalerieSettingViewModel ViewModel
 
 <h3>Gestion des images</h3>
+    @if(ViewModel.IsLoading)
+	{
+		<CountImgLoading />
+    }
+	else
+	{
         <MudPaper>
             <MudTextField @bind-Value="@ViewModel.ImageRecherche" 
                         Placeholder="Rechercher une image" 
                         Adornment="Adornment.Start" 
                         AdornmentIcon="@Icons.Material.Filled.Search" 
-                        IconSize="Size.Medium" 
-                        />
+                        IconSize="Size.Medium" />
         </MudPaper>
 
         <MudGrid>
@@ -70,6 +75,7 @@
         
         </MudGrid>
 
+}
 
 @code {
     private static string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
@@ -86,6 +92,7 @@
 
     protected override void OnInitialized()
     {
+        ViewModel.SetStateChanged(StateHasChanged);
         ViewModel.LoadImages();
         base.OnInitialized();
     }

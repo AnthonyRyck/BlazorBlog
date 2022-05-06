@@ -113,9 +113,13 @@
 
 		public List<ImageSetting> ImagesSelectedToDelete { get; private set; } = new List<ImageSetting>();
 
+		public bool IsLoading { get; private set; } = true;
+
 		public int CounterPage { get; private set; }
 
 		private string _imageRecherche;
+		private Action StateChanged;
+
 		public string ImageRecherche
 		{
 			get { return _imageRecherche; }
@@ -139,6 +143,9 @@
 		{
 			PathImages = await GetFilesFromPath(PathImagesUser);
 			SetImageToDisplay(PathImages);
+
+			IsLoading = false;
+			StateChanged?.Invoke();
 		}
 
 		public void SelectImage(ImageSetting image)
@@ -197,6 +204,11 @@
 			}
 		}
 
+
+		public void SetStateChanged(Action stateHasChanged)
+		{
+			StateChanged = stateHasChanged;
+		}
 
 		#endregion
 	}

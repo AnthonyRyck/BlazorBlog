@@ -12,6 +12,11 @@
 		List<ImageSetting> ImagesSelectedToDelete { get; }
 
 		/// <summary>
+		/// Indique que la page se charge
+		/// </summary>
+		bool IsLoading { get; }
+
+		/// <summary>
 		/// Nombre de page
 		/// </summary>
 		int CounterPage { get; }
@@ -35,5 +40,7 @@
 		void DeleteImage();
 
 		void ResetSelection();
+
+		void SetStateChanged(Action stateHasChanged);
 	}
 }
