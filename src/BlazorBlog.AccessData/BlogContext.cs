@@ -344,14 +344,23 @@ namespace BlazorBlog.AccessData
 		public async Task<int> GetCounterImage(string name)
 		{
 			// Récupération de toutes les catégories
-			var commandText = "SELECT COUNT(idpost)" 
+			var cmdTxtEnAvant = "SELECT COUNT(idpost)" 
 							+ " FROM posts"
-							+ $" WHERE image LIKE '%{name}';";
+							+ $" WHERE image = '{name}';";
+
+			var cmdTxtInPost = "SELECT COUNT(idpost)"
+							+ " FROM posts"
+							+ $" WHERE content LIKE '%]({name})%';";
+
+
 			int counter;
 
 			try
 			{
-				counter = await GetIntCore(commandText);
+				int counterImgEnAvant = await GetIntCore(cmdTxtEnAvant);
+				int counterImgInPost = await GetIntCore(cmdTxtInPost);
+
+				counter = counterImgEnAvant + counterImgInPost;
 			}
 			catch (Exception)
 			{

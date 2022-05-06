@@ -40,9 +40,10 @@
 				{
 					if (extensionsImage.Contains(file.Extension))
 					{
-						int counter = await _blogContext.GetCounterImage(file.Name);
-
+						
 						string url = SetUrlImageName(file.Name);
+						int counter = await _blogContext.GetCounterImage(url);
+
 						ImageSetting imageSetting = new ImageSetting()
 						{
 							FileName = file.Name,

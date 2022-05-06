@@ -50,7 +50,7 @@
             <div>
                <MudFab Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="ViewModel.DeleteImage" />
                <MudFab Color="Color.Primary" StartIcon="@Icons.Filled.Cancel" OnClick="ViewModel.ResetSelection" />
-               <MudPaper>Sélection : @ViewModel.ImagesSelectedToDelete.Count</MudPaper>
+               <MudPaper><h4>Sélection : @ViewModel.ImagesSelectedToDelete.Count</h4></MudPaper>
             </div>
             <div class="scroll" style="max-height: 500px;">
                 @foreach(ImageSetting imgToDelete in ViewModel.ImagesSelectedToDelete)
