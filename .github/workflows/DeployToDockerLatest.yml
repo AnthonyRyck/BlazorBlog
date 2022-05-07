@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: Deploy to Docker
+name: Deploy to Docker with Latest tag
 
 on:
   # Lancement manuel
