@@ -13,15 +13,29 @@
 
 		 <Column T="SauvegardeFile" CellClass="d-flex justify-end">
             <CellTemplate>
-                <MudFab Size="@Size.Small"
-						Color="Color.Success"
-                        Icon="@Icons.Outlined.Download"
-                        OnClick="(() => ViewModel.Download(context.Item))" />
+                <MudTooltip Text="Download la sauvegarde">
+                    <MudFab Size="@Size.Small"
+				    		Color="Color.Success"
+                            Icon="@Icons.Outlined.Download"
+                            Disabled="@ViewModel.InLoading"							
+                            OnClick="(() => ViewModel.Download(context.Item))" />
+                </MudTooltip>
 
-				<MudFab Size="@Size.Small"
-				        Color="Color.Error"
-                        Icon="@Icons.Outlined.DeleteForever" 
-                        OnClick="(() => ViewModel.Delete(context.Item))" />
+                <MudTooltip Text="Restore la sauvegarde">
+                     <MudFab Size="@Size.Small"
+				    		Color="Color.Primary"
+                            Icon="@Icons.Filled.Restore"
+                            Disabled="@ViewModel.InLoading"
+                            OnClick="(() => ViewModel.Restore(context.Item))" />
+                </MudTooltip>
+
+                <MudTooltip Text="Supprime la sauvegarde">
+				    <MudFab Size="@Size.Small"
+				            Color="Color.Error"
+							Disabled="@ViewModel.InLoading"
+                            Icon="@Icons.Outlined.DeleteForever" 
+                            OnClick="(() => ViewModel.Delete(context.Item))" />
+                </MudTooltip>
             </CellTemplate>
         </Column>
     </Columns>
@@ -30,10 +44,10 @@
 <MudButton Variant="Variant.Outlined"
            StartIcon="@Icons.Filled.SaveAlt"
            Color="Color.Tertiary"
+           Disabled="@ViewModel.InLoading"
             OnClick="ViewModel.ExportDatabase">
     Créer une sauvegarde
 </MudButton>
-
 
 <InputFile OnChange="@ViewModel.ImportDatabase"
             id="fileInputSave"
@@ -44,15 +58,23 @@
             HtmlTag="label"
            StartIcon="@Icons.Filled.Upload"
            Color="Color.Tertiary"
+           Disabled="@ViewModel.InLoading"
            for="fileInputSave">
     Importer une sauvegarde
 </MudButton>
+
+@if(ViewModel.InUploadFile)
+{
+<MudProgressLinear Color="Color.Secondary" 
+                    Size="Size.Medium"
+                    Value="@ViewModel.ProgressUpload" />
+}
 	
 </MudPaper>
 
 @code{
     protected override void OnInitialized()
     {
-        ViewModel.InitAsync();
+        ViewModel.InitAsync(this.StateHasChanged);
     }
 }

@@ -64,10 +64,19 @@
 
 		#region Nom de fichier pour Export
 
+		public const string EXPORT_EXTENSION = ".json";
 		public const string EXPORT_POSTS = "Posts.json";
 		public const string EXPORT_SETTINGS = "Settings.json";
 		public const string EXPORT_CATEGORIES = "Categories.json";
+		public const string EXPORT_USERS = "Users.json";
 		public const string EXPORT_CATEGORIES_TO_POSTS = "CategorieToPosts.json";
+
+		#endregion
+
+		#region Role pour les comptes
+
+		public const string ROLE_ADMIN = "Admin";
+		public const string ROLE_AUTEUR = "Compositeur";
 
 		#endregion
 	}

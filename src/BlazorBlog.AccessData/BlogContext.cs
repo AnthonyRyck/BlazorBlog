@@ -413,7 +413,6 @@ namespace BlazorBlog.AccessData
 			return settings;
 		}
 
-
 		public async Task AddDefaultSettings(List<Settings> settings)
 		{
 			try
@@ -758,8 +757,7 @@ namespace BlazorBlog.AccessData
 
 		#endregion
 
-		#region Export Database
-
+		#region Export/Import Database
 
 		public async Task<List<CategorieToPost>> GetCategoriesPosts()
 		{
@@ -849,6 +847,106 @@ namespace BlazorBlog.AccessData
 
 			return posts;
 		}
+
+
+		public async Task DeleteAllDataForRestore()
+		{
+			List<string> cmdToDelet = new List<string>()
+			{
+				@"Delete from categorietopost;",
+				@"Delete from categories;",
+				@"Delete from posts;",
+				@"Delete from settings;",
+				@"Delete from Logs;"
+			};
+
+			using (var conn = new MySqlConnection(ConnectionString))
+			{
+				using (var cmd = new MySqlCommand())
+				{
+					cmd.Connection = conn;
+					conn.Open();
+				
+					foreach (var deleteCmd in cmdToDelet)
+					{
+						cmd.CommandText = deleteCmd;
+						await cmd.ExecuteNonQueryAsync();
+					}
+					conn.Close();
+				}
+			}
+		}
+
+		public async Task InsertRestore(List<Categorie> allCategories, List<Post> allPosts, 
+						List<CategorieToPost> categoriesPosts)
+		{
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					using (var cmd = new MySqlCommand())
+					{
+						cmd.Connection = conn;
+
+						conn.Open();
+						
+						var cmdInsertCategories = @"INSERT INTO categories (idcategorie, nom) VALUES(@idcat, @nom);";
+						cmd.CommandText = cmdInsertCategories;
+						foreach (var cat in allCategories)
+						{
+							cmd.Parameters.AddWithValue("@idcat", cat.IdCategorie);
+							cmd.Parameters.AddWithValue("@nom", cat.Nom);
+							await cmd.ExecuteNonQueryAsync();
+							cmd.Parameters.Clear();
+						}
+
+						var cmdInsertPosts = @"INSERT INTO posts (idpost, title, content, image, posted, updateat, userid, ispublished) "
+									+ "VALUES(@idpost, @title, @content, @image, @posted, @updateat, @userid, @ispublished);";
+						cmd.CommandText = cmdInsertPosts;
+						foreach (var post in allPosts)
+						{
+							cmd.Parameters.AddWithValue("@idpost", post.Id);
+							cmd.Parameters.AddWithValue("@title", post.Title);
+							cmd.Parameters.AddWithValue("@content", post.Content);
+							cmd.Parameters.AddWithValue("@image", post.Image);
+							cmd.Parameters.AddWithValue("@posted", post.Posted);
+							cmd.Parameters.AddWithValue("@updateat", post.UpdatedAt);
+							cmd.Parameters.AddWithValue("@userid", post.UserId);
+							cmd.Parameters.AddWithValue("@ispublished", post.IsPublished);
+							await cmd.ExecuteNonQueryAsync();
+							cmd.Parameters.Clear();
+						}
+
+						var cmdInsertCategorieToPost = @"INSERT INTO categorietopost (postid, categorieid) VALUES(@postid, @categorieid);";
+						cmd.CommandText = cmdInsertCategorieToPost;
+						foreach (var catPost in categoriesPosts)
+						{
+							cmd.Parameters.AddWithValue("@postid", catPost.PostId);
+							cmd.Parameters.AddWithValue("@categorieid", catPost.CategorieId);
+							await cmd.ExecuteNonQueryAsync();
+							cmd.Parameters.Clear();
+						}
+
+						//var cmdInsertSettings = @"INSERT INTO settings (settingname, settingvalue) VALUES(@nom, @valeur);";						
+						//cmd.CommandText = cmdInsertSettings;
+						//foreach (var setting in allSettings)
+						//{
+						//	cmd.Parameters.AddWithValue("@nom", setting.SettingName);
+						//	cmd.Parameters.AddWithValue("@valeur", setting.Value);
+						//	await cmd.ExecuteNonQueryAsync();
+						//	cmd.Parameters.Clear();
+						//}
+
+						conn.Close();
+					}
+				}
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+
 
 		#endregion
 
