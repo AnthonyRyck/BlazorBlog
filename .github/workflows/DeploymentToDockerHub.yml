@@ -1,0 +1,22 @@
+# This is a basic workflow that is manually triggered
+
+name: Deployment to Docker Hub
+
+on:
+  # Lancement manuel
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Nom de la version pour Docker"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build image
+        run: docker build --file ./src/dockerfilegitactions --tag anthonyryck/blazorblog:${{ github.event.inputs.tags }} .
+      - name: Login to DockerHub
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username anthonyryck --password-stdin
+      - name: Push to DockerHub
+        run: docker push anthonyryck/blazorblog:${{ github.event.inputs.tags }}
