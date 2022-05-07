@@ -179,19 +179,21 @@ namespace BlazorBlog.ViewModels
 
 						foreach (var repUser in repUsers)
 						{
+							Log.Information($"Ajout du répertoire {repUser}");
 							var nameRepUser = repUser.Replace(Path.GetDirectoryName(repUser) + @"\", string.Empty);
 
 							foreach (string file in Directory.EnumerateFiles(repUser))
 							{
 								string nameImgFile = Path.GetFileName(file);
 								string fileImg = Path.Combine(nameRepUser, nameImgFile);
-
+								
 								ZipArchiveEntry entry = archive.CreateEntry(fileImg);
 								using (Stream stream = entry.Open())
 								{
 									using (FileStream fs = new FileStream(file, FileMode.Open))
 									{
 										fs.CopyTo(stream);
+										Log.Information($"Ajout de l'image {fileImg}");
 									}
 								}
 							}
