@@ -52,14 +52,14 @@ namespace BlazorBlog.AccessData
 		#region Posts
 
 		/// <summary>
-		/// Récupère tous les posts d'un auteur
+		/// Récupère tous les posts d'un auteur, si null, récupère tous les posts
 		/// </summary>
 		/// <returns></returns>
 		public async Task<List<PostView>> GetPostsAsync(string userId)
 		{
 			var commandText = @"SELECT idpost, title, posted, updateat, userid, ispublished "
 							 + $"FROM posts WHERE userid='{userId}' ORDER BY posted DESC;";
-
+			
 			Func<MySqlCommand, Task<List<PostView>>> funcCmd = async (cmd) =>
 			{
 				List<PostView> posts = new List<PostView>();
@@ -754,9 +754,104 @@ namespace BlazorBlog.AccessData
 				throw;
 			}
 		}
-		
+
 
 		#endregion
+
+		#region Export Database
+
+
+		public async Task<List<CategorieToPost>> GetCategoriesPosts()
+		{
+			// Récupération de toutes les catégories
+			var commandText = @"SELECT postid, categorieid "
+							 + "FROM categorietopost;";
+
+			Func<MySqlCommand, Task<List<CategorieToPost>>> funcCmd = async (cmd) =>
+			{
+				List<CategorieToPost> allCategorieToPosts = new List<CategorieToPost>();
+
+				using (var reader = await cmd.ExecuteReaderAsync())
+				{
+					while (reader.Read())
+					{
+						CategorieToPost item = new CategorieToPost()
+						{
+							PostId = reader.GetInt32(0),
+							CategorieId = reader.GetInt32(1)
+						};
+
+						allCategorieToPosts.Add(item);
+					}
+				}
+
+				return allCategorieToPosts;
+			};
+			List<CategorieToPost> categories;
+
+			try
+			{
+				categories = await GetCoreAsync(commandText, funcCmd);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			return categories;
+		}
+
+		public async Task<List<Post>> GetAllPostsAsync()
+		{
+			var commandText = @"SELECT idpost, title, content, image, posted, updateat, userid, ispublished "
+							 + $"FROM posts;";
+
+			Func<MySqlCommand, Task<List<Post>>> funcCmd = async (cmd) =>
+			{
+				List<Post> posts = new List<Post>();
+
+				using (var reader = await cmd.ExecuteReaderAsync())
+				{
+					while (reader.Read())
+					{
+						object tempDate = reader.GetValue(4);
+						DateTime? datePosted = ConvertFromDBVal<DateTime?>(tempDate);
+
+						var post = new Post()
+						{
+							Id = reader.GetInt32(0),
+							Title = reader.GetString(1),
+							Content = reader.GetString(2),
+							Image = reader.GetString(3),
+							Posted = datePosted,
+							UpdatedAt = reader.GetDateTime(5),
+							UserId = reader.GetString(6),
+							IsPublished = reader.GetBoolean(7)
+						};
+
+						posts.Add(post);
+					}
+				}
+
+				return posts;
+			};
+
+			List<Post> posts = new List<Post>();
+
+			try
+			{
+				posts = await GetCoreAsync(commandText, funcCmd);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			return posts;
+		}
+
+		#endregion
+
 
 		#region Private methods
 

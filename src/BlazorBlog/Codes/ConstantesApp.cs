@@ -59,7 +59,16 @@
 		public const string MIME_JPEG = "image/jpeg";
 		public const string MIME_GIF = "image/gif";
 		public const string MIME_PNG = "image/png";
-		
+
+		#endregion
+
+		#region Nom de fichier pour Export
+
+		public const string EXPORT_POSTS = "Posts.json";
+		public const string EXPORT_SETTINGS = "Settings.json";
+		public const string EXPORT_CATEGORIES = "Categories.json";
+		public const string EXPORT_CATEGORIES_TO_POSTS = "CategorieToPosts.json";
+
 		#endregion
 	}
 }

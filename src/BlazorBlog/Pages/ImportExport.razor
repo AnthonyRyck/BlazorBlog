@@ -1,0 +1,44 @@
+﻿@page "/importexport"
+@attribute [Authorize(Roles = "Admin")]
+@inject IImportExportViewModel ViewModel
+
+<MudPaper Elevation="3">
+	<MudText Typo="Typo.h4">Sauvegardes</MudText>
+	
+<MudDataGrid Items="@ViewModel.Sauvegardes">
+    <Columns>
+        <Column T="SauvegardeFile" Field="FileName" Title="Nom" />
+        <Column T="SauvegardeFile" Field="Created" Title="Date" Sortable="true" />
+        <Column T="SauvegardeFile" Field="Taille" Title="Taille" />
+
+		 <Column T="SauvegardeFile" CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudFab Size="@Size.Small"
+						Color="Color.Success"
+                        Icon="@Icons.Outlined.Download"
+                        OnClick="(() => ViewModel.Download(context.Item))" />
+
+				<MudFab Size="@Size.Small"
+				        Color="Color.Error"
+                        Icon="@Icons.Outlined.DeleteForever" 
+                        OnClick="(() => ViewModel.Delete(context.Item))" />
+            </CellTemplate>
+        </Column>
+    </Columns>
+</MudDataGrid>	
+
+<MudButton Variant="Variant.Outlined"
+           StartIcon="@Icons.Filled.SaveAlt"
+           Color="Color.Tertiary"
+            OnClick="ViewModel.ExportDatabase">
+    Créer une sauvegarde
+</MudButton>
+	
+</MudPaper>
+
+@code{
+    protected override void OnInitialized()
+    {
+        ViewModel.InitAsync();
+    }
+}

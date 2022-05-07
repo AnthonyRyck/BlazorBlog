@@ -79,6 +79,7 @@ builder.Services.AddScoped<IArticlesViewModel, ArticlesViewModel>();
 builder.Services.AddScoped<IEditPostViewModel, EditPostViewModel>();
 builder.Services.AddScoped<ICategoriesViewModel, CategoriesViewModel>();
 builder.Services.AddScoped<IGalerieSettingViewModel, GalerieSettingViewModel>();
+builder.Services.AddScoped<IImportExportViewModel, ImportExportViewModel>();
 builder.Services.AddBlazorDownloadFile(ServiceLifetime.Scoped);
 
 // Augmentation de la taille des messages pour des posts très long.
