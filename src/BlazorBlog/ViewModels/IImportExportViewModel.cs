@@ -1,4 +1,6 @@
-﻿namespace BlazorBlog.ViewModels
+﻿using Microsoft.AspNetCore.Components.Forms;
+
+namespace BlazorBlog.ViewModels
 {
 	public interface IImportExportViewModel
 	{
@@ -29,5 +31,11 @@
 		/// <param name="file"></param>
 		/// <returns></returns>
 		Task Delete(SauvegardeFile file);
+
+		/// <summary>
+		/// Importe un fichier de sauvegarde
+		/// </summary>
+		/// <returns></returns>
+		Task ImportDatabase(InputFileChangeEventArgs e);
 	}
 }

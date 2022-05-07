@@ -144,55 +144,6 @@ namespace BlazorBlog.ViewModels
             }
         }
 
-        // A GARDER 
-        //public async Task OnInputFileChanged(InputFileChangeEventArgs e)
-        //      {
-        //          var files = e.GetMultipleFiles(1);
-
-        //          foreach (var file in files)
-        //          {
-        //              string pathImage = Path.Combine(PathImagesUser, file.Name);
-
-        //              try
-        //              {
-        //                  string extensionFile = new FileInfo(file.Name).Extension.ToLower();
-
-        //                  if (extensionFile == ConstantesApp.EXTENSION_IMAGE_JPEG
-        //                      || extensionFile == ConstantesApp.EXTENSION_IMAGE_PNG
-        //                      || extensionFile == ConstantesApp.EXTENSION_IMAGE_JPG
-        //                      || extensionFile == ConstantesApp.EXTENSION_IMAGE_ICO)
-        //                  {
-        //                      using FileStream fs = new(pathImage, FileMode.Create);
-        //                      // Max 3 Mo
-        //                      await file.OpenReadStream(3000000).CopyToAsync(fs);
-
-        //                      Snack.Add($"Upload de {file.Name} réussi", Severity.Success);
-
-        //                      string urlImg = SetUrlImageName(file.Name);
-
-        //				// Pour qu'il soit connu dans le composant
-        //				PathImages.Add(urlImg);
-        //				// Pour qu'il soit affiché
-        //				ImagesToDisplay.Add(SetUrlImageName(file.Name));
-        //			}
-        //                  else
-        //                  {
-        //                      Snack.Add($"Il faut une image JPG ou JPEG ou PNG ou ICO", Severity.Warning);
-        //                      return;
-        //                  }
-        //              }
-        //              catch (Exception ex)
-        //              {
-        //			if (File.Exists(pathImage))
-        //			{
-        //				File.Delete(pathImage);
-        //			}
-        //                  Log.Error(ex, "Error OnInputFileChanged");
-        //                  Snack.Add("Erreur lors de l'upload de l'image - Max 3 Mo", Severity.Error);
-        //		}
-        //          }
-        //      }
-
         public void PageChanged(int page)
 		{
             // Aucune recherche

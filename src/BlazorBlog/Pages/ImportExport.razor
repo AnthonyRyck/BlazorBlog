@@ -33,6 +33,20 @@
             OnClick="ViewModel.ExportDatabase">
     Créer une sauvegarde
 </MudButton>
+
+
+<InputFile OnChange="@ViewModel.ImportDatabase"
+            id="fileInputSave"
+            accept=".zip"
+            hidden />
+			
+<MudButton Variant="Variant.Outlined"
+            HtmlTag="label"
+           StartIcon="@Icons.Filled.Upload"
+           Color="Color.Tertiary"
+           for="fileInputSave">
+    Importer une sauvegarde
+</MudButton>
 	
 </MudPaper>
 

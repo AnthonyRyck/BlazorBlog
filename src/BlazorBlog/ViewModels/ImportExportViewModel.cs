@@ -1,5 +1,6 @@
 ﻿using BlazorBlog.Composants;
 using BlazorDownloadFile;
+using Microsoft.AspNetCore.Components.Forms;
 using System.IO.Compression;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -76,7 +77,7 @@ namespace BlazorBlog.ViewModels
 				{
 					return;
 				}
-				
+
 				File.Delete(pathZip);
 			}
 
@@ -201,6 +202,72 @@ namespace BlazorBlog.ViewModels
 			{
 				Log.Error(ex, $"Erreur lors du téléchargement de la sauvegarde - {file.FileName}");
 				Snackbar.Add("Erreur lors du téléchargement de la sauvegarde", Severity.Error);
+			}
+		}
+
+
+		public async Task ImportDatabase(InputFileChangeEventArgs e)
+		{
+			var files = e.GetMultipleFiles(1);
+
+			foreach (IBrowserFile file in files)
+			{
+				string pathZip = Path.Combine(PathImages, file.Name);
+				
+				try
+				{
+					string extensionFile = new FileInfo(file.Name).Extension.ToLower();
+
+					if (extensionFile == ".zip")
+					{
+						
+						if (File.Exists(pathZip))
+						{
+							var parameters = new DialogParameters();
+							parameters.Add("ContentText", "Un fichier de sauvegarde à ce jour existe déjà, le remplacer ?");
+							parameters.Add("ButtonText", "Remplacer");
+							parameters.Add("Color", Color.Error);
+
+							var opt = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+							var dialog = SvcDialog.Show<DialogTemplate>("Attention", parameters, opt);
+							var result = await dialog.Result;
+
+							if (result.Cancelled)
+							{
+								return;
+							}
+							else
+							{
+								File.Delete(pathZip);
+								Sauvegardes.RemoveAll(x => x.FileName == file.Name);
+							}
+						}
+
+						using FileStream fs = new(pathZip, FileMode.Create);
+						await file.OpenReadStream(200000000).CopyToAsync(fs);
+
+						FileInfo fileInfo = new FileInfo(pathZip);
+						SauvegardeFile save = new SauvegardeFile()
+						{
+							FileName = fileInfo.Name,
+							Created = fileInfo.CreationTime,
+							Size = fileInfo.Length
+						};
+						Sauvegardes.Add(save);
+						Snackbar.Add($"Upload de {file.Name} réussi", Severity.Success);
+					}
+					else
+					{
+						Snackbar.Add($"Il faut un fichier zip", Severity.Warning);
+						return;
+					}
+				}
+				catch (Exception ex)
+				{
+					Log.Error(ex, "Error ImportDatabase");
+					Snackbar.Add("Erreur lors de l'upload du fichier de sauvegarde", Severity.Error);
+					File.Delete(pathZip);
+				}
 			}
 		}
 
