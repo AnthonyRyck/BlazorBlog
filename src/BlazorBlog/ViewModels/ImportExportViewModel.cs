@@ -175,11 +175,13 @@ namespace BlazorBlog.ViewModels
 
 						// Ajouter les images
 						string pathImages = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES);
+						Log.Information($"EXPORT - Repertoire des images : {pathImages}");
 						var repUsers = Directory.GetDirectories(pathImages, "*", SearchOption.TopDirectoryOnly);
+						Log.Information($"EXPORT - Nombre de répertoire : {repUsers.Length}");
 
 						foreach (var repUser in repUsers)
 						{
-							Log.Information($"Ajout du répertoire {repUser}");
+							Log.Information($"EXPORT - Répertoire {repUser}");
 							var nameRepUser = repUser.Replace(Path.GetDirectoryName(repUser) + @"\", string.Empty);
 
 							foreach (string file in Directory.EnumerateFiles(repUser))
@@ -193,7 +195,7 @@ namespace BlazorBlog.ViewModels
 									using (FileStream fs = new FileStream(file, FileMode.Open))
 									{
 										fs.CopyTo(stream);
-										Log.Information($"Ajout de l'image {fileImg}");
+										Log.Information($"EXPORT - Ajout de l'image {fileImg}");
 									}
 								}
 							}
@@ -209,11 +211,11 @@ namespace BlazorBlog.ViewModels
 					Size = fileInfo.Length
 				};
 				Sauvegardes.Add(save);
-				Snackbar.Add("Sauvegarde effectuée avec succès !", Severity.Success);
+				Snackbar.Add("EXPORT - Sauvegarde effectuée avec succès !", Severity.Success);
 			}
 			catch (Exception ex)
 			{
-				string message = "Erreur sur création de la sauvegarde";
+				string message = "EXPORT - Erreur sur création de la sauvegarde";
 				Log.Error(ex, message);
 				Snackbar.Add(message, Severity.Error);
 			}
