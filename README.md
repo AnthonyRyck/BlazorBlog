@@ -35,9 +35,13 @@ blazorblog:
 ```
 
 ## Utilisation
-L'utilisateur **root** est créé au lancement de l'application. Il a le rôle d'administrateur. Il permet de configurer le blog.  
+
 URL de connexion : `https://YOUR-DOMAIN/Identity/Account/Login`  
+
+L'utilisateur **root** est créé au lancement de l'application. Il a le rôle d'administrateur. Il permet de configurer le blog.  
+  
 ![Paramètre](https://github.com/AnthonyRyck/BlazorBlog/blob/main/ImgRessources/Parametres.png)  
+  
 * Choix du nom du blog  
 * Une description du blog
 * Choix du logo du blog  
@@ -65,3 +69,4 @@ C'est l'utilisateur root qui peut créer des comptes **Auteur**.
 * :white_check_mark: Intégrer des vidéos dans l'article (*ne sera pas lu dans l'article, mais ouvre un nouvel onglet*)  
 * :black_square_button: Faire une page sur l'auteur  
 * :white_check_mark: Possible de Drag&Drop une image pour l'ajouter à l'article.  
+* :white_check_mark: `root` peut faire un export/import complet de la base et des images.
