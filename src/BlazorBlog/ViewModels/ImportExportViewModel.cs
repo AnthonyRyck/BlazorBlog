@@ -182,7 +182,11 @@ namespace BlazorBlog.ViewModels
 						foreach (var repUser in repUsers)
 						{
 							Log.Information($"EXPORT - Répertoire {repUser}");
-							var nameRepUser = repUser.Replace(Path.GetDirectoryName(repUser) + @"\", string.Empty);
+
+							// TODO : Voir ici !
+							// Juste pour avoir le nom du répertoire utiliser, sans tout le chemin avant.
+							var nameRepUser = repUser.Replace(Path.GetDirectoryName(repUser) + Path.DirectorySeparatorChar, string.Empty);
+							Log.Information($"EXPORT - Nom du répertoire de l'utilisateur : {nameRepUser}");
 
 							foreach (string file in Directory.EnumerateFiles(repUser))
 							{
