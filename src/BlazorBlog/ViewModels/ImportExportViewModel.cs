@@ -248,7 +248,8 @@ namespace BlazorBlog.ViewModels
 
 				string fileToDelete = Path.Combine(PathImages, file.FileName);
 				await Task.Run(() => File.Delete(fileToDelete));
-				Sauvegardes.Remove(file);
+				Sauvegardes.RemoveAll(x => x.FileName == file.FileName);
+				StateChanged?.Invoke();
 				Snackbar.Add("Sauvegarde supprimée avec succès !", Severity.Success);
 			}
 			catch (Exception ex)
@@ -385,6 +386,9 @@ namespace BlazorBlog.ViewModels
 			}
 
 			InLoading = true;
+			ProgressUpload = 0;
+			InUploadFile = true;
+			StateChanged?.Invoke();
 
 			List<Post> allPosts = new List<Post>();
 			List<Categorie> allCategories = new List<Categorie>();
@@ -397,18 +401,33 @@ namespace BlazorBlog.ViewModels
 
 			try
 			{
+				// Etape 1 : dézipper les fichiers
 				using (ZipArchive archive = ZipFile.Open(pathZip, ZipArchiveMode.Read))
 				{
 					allCategories = await GetEntry<List<Categorie>>(archive, ConstantesApp.EXPORT_CATEGORIES);
 					Log.Information("RESTORE - Zip Categories loaded");
+					ProgressUpload = 8;
+					StateChanged?.Invoke();
+
 					allPosts = await GetEntry<List<Post>>(archive, ConstantesApp.EXPORT_POSTS);
 					Log.Information("RESTORE - Zip Posts loaded");
+					ProgressUpload = 17;
+					StateChanged?.Invoke();
+
 					categoriesPosts = await GetEntry<List<CategorieToPost>>(archive, ConstantesApp.EXPORT_CATEGORIES_TO_POSTS);
 					Log.Information("RESTORE - Zip CategoriesToPosts loaded");
+					ProgressUpload = 28;
+					StateChanged?.Invoke();
+
 					allSettings = await GetEntry<List<Settings>>(archive, ConstantesApp.EXPORT_SETTINGS);
 					Log.Information("RESTORE - Zip Settings loaded");
+					ProgressUpload = 37;
+					StateChanged?.Invoke();
+
 					allAuteurs = await GetEntry<List<Auteur>>(archive, ConstantesApp.EXPORT_USERS);
 					Log.Information("RESTORE - Zip Users loaded");
+					ProgressUpload = 46;
+					StateChanged?.Invoke();
 				}
 			}
 			catch (Exception ex)
@@ -416,21 +435,30 @@ namespace BlazorBlog.ViewModels
 				Log.Error(ex, "RESTORE - Error fichier zip");
 				Snackbar.Add("Erreur lors de la restoration.", Severity.Error);
 				InLoading = false;
+				InUploadFile = false;
 				return;
 			}
 
-			// Supprimer/Injecter dans la base de donnée.
+			// Etape 2 : Supprimer/Injecter dans la base de donnée.
 			await Context.DeleteAllDataForRestore();
 			Log.Information("RESTORE - Delete all data for restore");
+			ProgressUpload = 55;
+			StateChanged?.Invoke();
+
 			// Ajouter les categories
 			await Context.InsertRestore(allCategories, allPosts, categoriesPosts);
 			Log.Information("RESTORE - Insert all data for restore");
+			ProgressUpload = 64;
+			StateChanged?.Invoke();
+
 			await Context.AddDefaultSettings(allSettings);
 			await setting.UpadateSettings(allSettings);
 			Log.Information("RESTORE - Update settings");
+			ProgressUpload = 73;
+			StateChanged?.Invoke();
 
-			// Supprimer les répertoires image
-			// Mettre les images
+			// Etape 3 : Supprimer les répertoires image
+			// et mettre les images
 			try
 			{
 				var repUser = new DirectoryInfo(PathImages);
@@ -458,6 +486,8 @@ namespace BlazorBlog.ViewModels
 						}
 					}
 					Log.Information("RESTORE - Extract all images");
+					ProgressUpload = 82;
+					StateChanged?.Invoke();
 				}
 			}
 			catch (Exception ex)
@@ -465,11 +495,13 @@ namespace BlazorBlog.ViewModels
 				Log.Error(ex, "RESTORE - Error Restore Images");
 				Snackbar.Add("Erreur lors de la restoration sur les Images.", Severity.Error);
 				InLoading = false;
+				InUploadFile = false;
 				return;
 			}
 
 			try
 			{
+				// Etape 4 : Supprimer les auteurs
 				List<IdentityUser> usersToDelete = new List<IdentityUser>();
 				foreach (var user in UserManager.Users)
 				{
@@ -485,12 +517,13 @@ namespace BlazorBlog.ViewModels
 				}
 
 				Log.Information("RESTORE - Delete all users - OK");
+				ProgressUpload = 91;
+				StateChanged?.Invoke();
 
-				// Ajout des utilisateurs
+				// Etape 5 : Ajout des auteurs
 				foreach (var user in allAuteurs)
 				{
 					var userToCreate = new IdentityUser() { UserName = user.UserName, Email = user.Email, EmailConfirmed = true };
-					//userToCreate.PasswordHash = UserManager.PasswordHasher.HashPassword(userToCreate, "Azerty123!");
 					var resultUser = await UserManager.CreateAsync(userToCreate, "Azerty123!");
 
 					if (resultUser.Succeeded)
@@ -506,17 +539,35 @@ namespace BlazorBlog.ViewModels
 					await UserManager.AddToRoleAsync(userToCreate, ConstantesApp.ROLE_AUTEUR);
 					Log.Information($"RESTORE - Add role {ConstantesApp.ROLE_AUTEUR} to user {userToCreate.UserName}");
 				}
+				ProgressUpload = 100;
+				StateChanged?.Invoke();
 			}
 			catch (Exception ex)
 			{
 				Log.Error(ex, "RESTORE - Error Restore Users");
 				Snackbar.Add("Erreur sur la création des auteurs.", Severity.Error);
 				InLoading = false;
+				InUploadFile = false;
 				return;
 			}
 			
 			InLoading = false;
 			Snackbar.Add("Restoration réussie.", Severity.Success);
+			InUploadFile = false;
+			ProgressUpload = 0;
+
+			var param = new DialogParameters();
+			parameters.Add("ContentText", "Restoration terminé."
+						+ Environment.NewLine
+						+ "Note : Les mots de passe des auteurs ont été réinitilisés, nouveau MDP : Azerty123! " 
+						+ Environment.NewLine
+						+ "Le mot de passe de root n'a pas changé.");
+
+			parameters.Add("ButtonText", "Ok");
+			parameters.Add("Color", Color.Success);
+
+			var optFin = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Large };
+			var dialogFin = SvcDialog.Show<DialogTemplate>("Restoration", parameters, opt);
 		}
 
 		#endregion
