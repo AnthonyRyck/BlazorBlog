@@ -112,6 +112,7 @@ namespace BlazorBlog.ViewModels
 				}
 
 				File.Delete(pathZip);
+				Sauvegardes.RemoveAll(x => x.FileName == $"export-{dateToday}.zip");
 			}
 
 			try
