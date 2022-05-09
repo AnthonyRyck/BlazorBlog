@@ -950,6 +950,135 @@ namespace BlazorBlog.AccessData
 
 		#endregion
 
+		#region Profils
+
+		public async Task<Profil> GetProfil(string userid)
+		{
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					var command = @$"SELECT userid, imgprofil, profilcontent FROM profils WHERE userid='{userid}';";
+
+					using (var cmd = new MySqlCommand(command, conn))
+					{
+						Profil profil = null;
+						using (var reader = await cmd.ExecuteReaderAsync())
+						{
+							while (reader.Read())
+							{
+								profil = new Profil()
+								{
+									UserId = reader.GetString(0),
+									UrlImage = reader.GetString(1),
+									ContentProfil = reader.GetString(2)
+								};
+							}
+						}
+
+						return profil;
+					}
+				}
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+
+		public async Task AddImgProfil(string userid, string urlImg)
+		{
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					string cmdIfExist = $"SELECT COUNT(userid) FROM profils WHERE userid='{userid}'";
+
+					int counter = await GetIntCore(cmdIfExist);
+					if (counter > 0)
+					{
+						// Utilisateur déjà créé, donc faire un UPDATE
+						var command = @"UPDATE profils SET imgprofil=@img WHERE userid=@user;";
+
+						using (var cmd = new MySqlCommand(command, conn))
+						{
+							cmd.Parameters.AddWithValue("@user", userid);
+							cmd.Parameters.AddWithValue("@img", urlImg);
+
+							conn.Open();
+							await cmd.ExecuteNonQueryAsync();
+							conn.Close();
+						}
+					}
+					else
+					{
+						var command = @"INSERT INTO profils (userid, imgprofil) VALUES(@user, @img);";
+
+						using (var cmd = new MySqlCommand(command, conn))
+						{
+							cmd.Parameters.AddWithValue("@user", userid);
+							cmd.Parameters.AddWithValue("@img", urlImg);
+
+							conn.Open();
+							await cmd.ExecuteNonQueryAsync();
+							conn.Close();
+						}
+					}
+				}
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+
+		public async Task AddProfilContent(string userid, string content)
+		{
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					string cmdIfExist = $"SELECT COUNT(userid) FROM profils WHERE userid='{userid}'";
+
+					int counter = await GetIntCore(cmdIfExist);
+					if (counter > 0)
+					{
+						// Utilisateur déjà créé, donc faire un UPDATE
+						var command = @"UPDATE profils SET profilcontent=@content WHERE userid=@user);";
+
+						using (var cmd = new MySqlCommand(command, conn))
+						{
+							cmd.Parameters.AddWithValue("@user", userid);
+							cmd.Parameters.AddWithValue("@content", content);
+
+							conn.Open();
+							await cmd.ExecuteNonQueryAsync();
+							conn.Close();
+						}
+					}
+					else
+					{
+						var command = @"INSERT INTO profils (userid, profilcontent) VALUES(@user, @content);";
+
+						using (var cmd = new MySqlCommand(command, conn))
+						{
+							cmd.Parameters.AddWithValue("@user", userid);
+							cmd.Parameters.AddWithValue("@content", content);
+
+							conn.Open();
+							await cmd.ExecuteNonQueryAsync();
+							conn.Close();
+						}
+					}
+				}
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+
+		#endregion
 
 		#region Private methods
 

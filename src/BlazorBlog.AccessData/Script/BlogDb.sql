@@ -26,4 +26,8 @@ PRIMARY KEY(postid, categorieid),
 FOREIGN KEY (postid) REFERENCES posts (idpost) ON DELETE CASCADE,
 FOREIGN KEY (categorieid) REFERENCES categories (idcategorie) ON DELETE CASCADE);
 
-ALTER TABLE posts MODIFY COLUMN image VARCHAR(300);
+CREATE TABLE IF NOT EXISTS profils
+(userid VARCHAR(256) NOT NULL,
+imgprofil VARCHAR(300),
+profilcontent LONGTEXT,
+PRIMARY KEY(userid));

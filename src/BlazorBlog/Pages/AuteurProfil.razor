@@ -1,0 +1,33 @@
+﻿@page "/monprofil"
+@attribute [Authorize(Roles = ConstantesApp.ROLE_AUTEUR)]
+@inject IProfilViewModel ViewModel
+
+<h3>Mon profil</h3>
+
+<MudCard>
+    <MudMainContent>
+         <MudText>Image pour votre avatar :</MudText>
+                <MudImage Src="@ViewModel.UserProfil.UrlImage"
+					  Alt="Définir une image de votre profil"
+					    Elevation="25" 
+					    Fluid="true"
+					    ObjectFit="ObjectFit.Cover"
+					    Class="rounded-lg background-gray"
+					    @onclick="ViewModel.OpenGalerieProfil" />		
+
+        <MudText>Preview de l'avatar :</MudText>
+        <MudAvatar Image="@ViewModel.UserProfil.UrlImage"
+                    Size="Size.Large" />
+    </MudMainContent>
+
+	 <MudCardActions>
+        <MudButton Variant="Variant.Filled" 
+                   Color="Color.Primary" 
+                   Class="ml-auto"
+                    OnClick="ViewModel.SaveProfil">Sauvegarder</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+
+}
