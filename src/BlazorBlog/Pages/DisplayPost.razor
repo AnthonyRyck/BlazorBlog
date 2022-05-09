@@ -49,7 +49,11 @@ else
             
             @if (!IsPreview)
             {
-    		<span>@viewModel.Article.UserId / @viewModel.Article.Posted.Value.ToString("D")</span>
+                @if(!string.IsNullOrEmpty(viewModel.Avatar))
+                {
+    		    <MudAvatar Image="@viewModel.Avatar" Size="Size.Medium" /> 
+                }
+             <span>@viewModel.Article.UserId / @viewModel.Article.Posted.Value.ToString("D")</span>
             }
 
             @foreach (Categorie categorie in viewModel.Categories)

@@ -29,6 +29,8 @@
 
 		public IEnumerable<Categorie> Categories { get; private set; }
 
+		public string Avatar { get; private set; }
+
 		public async Task LoadPost(int idpost, bool isPreview)
 		{
 			IsLoading = true;
@@ -56,6 +58,8 @@
 
 				DisabledShare = false;
 			}
+
+			Avatar = await Context.GetProfilImage(Article.UserId);
 			IsLoading = false;
 		}
 

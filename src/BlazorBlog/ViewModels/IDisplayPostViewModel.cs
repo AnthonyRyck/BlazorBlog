@@ -36,6 +36,11 @@
 		bool DisabledShare { get; }
 
 		/// <summary>
+		/// Avatar de l'auteur.
+		/// </summary>
+		string Avatar { get; }
+
+		/// <summary>
 		/// Liste toutes les catégories pour ce post.
 		/// </summary>
 		IEnumerable<Categorie> Categories { get; }

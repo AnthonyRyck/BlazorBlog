@@ -963,6 +963,7 @@ namespace BlazorBlog.AccessData
 					using (var cmd = new MySqlCommand(command, conn))
 					{
 						Profil profil = null;
+						await conn.OpenAsync();
 						using (var reader = await cmd.ExecuteReaderAsync())
 						{
 							while (reader.Read())
@@ -976,6 +977,7 @@ namespace BlazorBlog.AccessData
 							}
 						}
 
+						await conn.CloseAsync();
 						return profil;
 					}
 				}
@@ -985,6 +987,43 @@ namespace BlazorBlog.AccessData
 				throw;
 			}
 		}
+
+		/// <summary>
+		/// Récupère l'avatar de cet auteur.
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
+		public async Task<string> GetProfilImage(string userId)
+		{
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					var command = @$"SELECT imgprofil FROM profils WHERE userid='{userId}';";
+
+					using (var cmd = new MySqlCommand(command, conn))
+					{
+						await conn.OpenAsync();
+						string img = string.Empty;
+						using (var reader = await cmd.ExecuteReaderAsync())
+						{
+							while (reader.Read())
+							{
+								img = reader.GetString(0);
+							}
+						}
+
+						await conn.CloseAsync();
+						return img;
+					}
+				}
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+
 
 		public async Task AddImgProfil(string userid, string urlImg)
 		{
