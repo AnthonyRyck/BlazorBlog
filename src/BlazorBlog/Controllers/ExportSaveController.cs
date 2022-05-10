@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace BlazorBlog.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+    [Authorize(Roles = ConstantesApp.ROLE_ADMIN)]
 	public class ExportSaveController : ControllerBase
 	{
         // GET api/values/5

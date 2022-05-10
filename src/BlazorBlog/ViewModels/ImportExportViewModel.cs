@@ -16,7 +16,6 @@ namespace BlazorBlog.ViewModels
 		private readonly BlogContext Context;
 		private readonly ISnackbar Snackbar;
 		private readonly IDialogService SvcDialog;
-		private readonly IBlazorDownloadFileService downloadSvc;
 		private string PathImages;
 		private Action StateChanged;
 		private readonly SettingsSvc setting;
@@ -30,7 +29,6 @@ namespace BlazorBlog.ViewModels
 			Context = blogContext;
 			Snackbar = snackbar;
 			SvcDialog = dialogSvc;
-			downloadSvc = svcDownload;
 			setting = settingsSvc;
 			UserManager = userManager;
 			PathImages = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES);
@@ -268,11 +266,6 @@ namespace BlazorBlog.ViewModels
 		{
 			try
 			{
-				// TODO : A delete si OK avec le controlleur
-				//string pathToDownload = Path.Combine(PathImages, file.FileName);
-				//byte[] content = File.ReadAllBytes(pathToDownload);
-				//await downloadSvc.DownloadFile(file.FileName, content, "application/octet-stream");
-
 				await JSRuntime.InvokeAsync<object>("open", $"/api/exportsave/{file.FileName}", "_blank");
 			}
 			catch (Exception ex)
