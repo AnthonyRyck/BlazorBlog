@@ -2,6 +2,7 @@
 using BlazorDownloadFile;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.JSInterop;
 using System.IO.Compression;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -20,9 +21,11 @@ namespace BlazorBlog.ViewModels
 		private Action StateChanged;
 		private readonly SettingsSvc setting;
 		private readonly UserManager<IdentityUser> UserManager;
+		private readonly IJSRuntime JSRuntime;
 
 		public ImportExportViewModel(BlogContext blogContext, ISnackbar snackbar, IDialogService dialogSvc,
-									IBlazorDownloadFileService svcDownload, SettingsSvc settingsSvc, UserManager<IdentityUser> userManager)
+									IBlazorDownloadFileService svcDownload, SettingsSvc settingsSvc, UserManager<IdentityUser> userManager,
+									IJSRuntime js)
 		{
 			Context = blogContext;
 			Snackbar = snackbar;
@@ -31,6 +34,7 @@ namespace BlazorBlog.ViewModels
 			setting = settingsSvc;
 			UserManager = userManager;
 			PathImages = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES);
+			JSRuntime = js;
 		}
 
 		private async Task<T> GetEntry<T>(ZipArchive archive, string nameEntry)
@@ -264,9 +268,12 @@ namespace BlazorBlog.ViewModels
 		{
 			try
 			{
-				string pathToDownload = Path.Combine(PathImages, file.FileName);
-				byte[] content = File.ReadAllBytes(pathToDownload);
-				await downloadSvc.DownloadFile(file.FileName, content, "application/octet-stream");
+				// TODO : A delete si OK avec le controlleur
+				//string pathToDownload = Path.Combine(PathImages, file.FileName);
+				//byte[] content = File.ReadAllBytes(pathToDownload);
+				//await downloadSvc.DownloadFile(file.FileName, content, "application/octet-stream");
+
+				await JSRuntime.InvokeAsync<object>("open", $"/api/exportsave/{file.FileName}", "_blank");
 			}
 			catch (Exception ex)
 			{
