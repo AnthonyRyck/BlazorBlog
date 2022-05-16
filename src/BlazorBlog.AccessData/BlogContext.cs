@@ -1119,6 +1119,36 @@ namespace BlazorBlog.AccessData
 
 		#endregion
 
+		#region Tracks
+
+		public async Task SaveTracks(Track track)
+		{
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					var command = @"INSERT INTO tracks (visitorid, postid, daterequested) VALUES(@visitor, @idpost, @date);";
+
+					using (var cmd = new MySqlCommand(command, conn))
+					{
+						cmd.Parameters.AddWithValue("@visitor", track.VisitorId);
+						cmd.Parameters.AddWithValue("@idpost", track.PostId);
+						cmd.Parameters.AddWithValue("@date", track.DateRequest);
+
+						conn.Open();
+						await cmd.ExecuteNonQueryAsync();
+						conn.Close();
+					}
+				}
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+
+		#endregion
+
 		#region Private methods
 
 		private async Task<List<T>> GetCoreAsync<T>(string commandSql, Func<MySqlCommand, Task<List<T>>> func)

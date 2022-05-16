@@ -79,5 +79,12 @@
 		public const string ROLE_AUTEUR = "Compositeur";
 
 		#endregion
+
+		#region Counter
+
+		public const string COUNTER_KEY_EXCEPT = "/blazor";
+		public const string COUNTER_KEY_POSTS = "/post/";
+
+		#endregion
 	}
 }
