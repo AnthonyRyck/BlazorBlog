@@ -110,6 +110,13 @@ else
 		</MudItem>
 	</MudGrid>
 </MudPaper>
+
+<MudChart ChartType="ChartType.Line" 
+			ChartSeries="@ViewModel.Series"
+			XAxisLabels="@ViewModel.XAxisLabels"
+			Width="100%" 
+			Height="350px"></MudChart>
+
 }
 
 @code {

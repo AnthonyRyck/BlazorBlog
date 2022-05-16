@@ -12,8 +12,6 @@
 			Context = blogContext;
 		}
 
-
-
 		#region ICounterViewModel
 
 		public bool IsLoading { get; private set; }
@@ -30,12 +28,18 @@
 
 		public CounterPost MonthPostCounter { get; private set; }
 
+
+		public string[] XAxisLabels { get; private set; }
+
+		public List<ChartSeries> Series { get; private set; }
+
 		public async Task LoadCounter()
 		{
 			IsLoading = true;
 
 			try
 			{
+
 				DayCount = await Context.GetCounterDay(UserName);
 				YearCount = await Context.GetCounterYear(UserName);
 				MonthCount = await Context.GetCounterMonth(UserName);
@@ -43,6 +47,13 @@
 
 				TodayPostCounter = await Context.GetCounterPostDay(UserName);
 				MonthPostCounter = await Context.GetCounterPostMonth(UserName);
+
+				var tempGraphData = await Context.GetCounter(UserName, 20);
+				XAxisLabels = tempGraphData.Select(x => x.Key).ToArray();
+				Series = new List<ChartSeries>()
+				{
+					new ChartSeries() { Name = "Visites", Data = tempGraphData.Select(x => x.Value).ToArray() }
+				};
 			}
 			catch (Exception ex)
 			{

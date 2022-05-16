@@ -34,6 +34,11 @@
 		/// </summary>
 		CounterPost MonthPostCounter { get; }
 
+
+		string[] XAxisLabels { get; }
+
+		List<ChartSeries> Series { get; }
+
 		/// <summary>
 		/// Fait les requêtes pour avoir les compteurs
 		/// </summary>

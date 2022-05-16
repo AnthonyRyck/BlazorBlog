@@ -1321,6 +1321,49 @@ namespace BlazorBlog.AccessData
 			}
 		}
 
+
+		
+		public async Task<List<KeyValuePair<string, double>>> GetCounter(string userId, int jour)
+		{
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					var command = "SELECT COUNT(trk.id), DATE_FORMAT(trk.daterequested, '%d-%b') "
+									+ "FROM posts post "
+									+ "LEFT JOIN tracks trk "
+									+ "ON trk.postid = post.idpost "
+									+ $"WHERE post.userid = '{userId}' "
+									+ $"AND trk.daterequested > DATE_SUB(NOW(), INTERVAL {jour} DAY) "
+									+ "GROUP BY DATE_FORMAT(trk.daterequested, '%d-%b');";
+
+					using (var cmd = new MySqlCommand(command, conn))
+					{
+						List<KeyValuePair<string, double>> valuePairs = new List<KeyValuePair<string, double>>();
+						
+						conn.Open();
+						using (var reader = await cmd.ExecuteReaderAsync())
+						{
+							if (reader.HasRows)
+							{
+								while (reader.Read())
+								{
+									KeyValuePair<string, double> item = KeyValuePair.Create(reader.GetString(1), Convert.ToDouble(reader.GetInt32(0)));
+									valuePairs.Add(item);
+								}
+							}
+						}
+
+						await conn.CloseAsync();
+						return valuePairs;
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
 		
 		#endregion
 
