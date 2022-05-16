@@ -26,6 +26,10 @@
 
 		public Counter WeekCount { get; private set; }
 
+		public CounterPost TodayPostCounter { get; private set; }
+
+		public CounterPost MonthPostCounter { get; private set; }
+
 		public async Task LoadCounter()
 		{
 			IsLoading = true;
@@ -36,6 +40,9 @@
 				YearCount = await Context.GetCounterYear(UserName);
 				MonthCount = await Context.GetCounterMonth(UserName);
 				WeekCount = await Context.GetCounterWeek(UserName);
+
+				TodayPostCounter = await Context.GetCounterPostDay(UserName);
+				MonthPostCounter = await Context.GetCounterPostMonth(UserName);
 			}
 			catch (Exception ex)
 			{

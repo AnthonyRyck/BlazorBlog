@@ -2,9 +2,9 @@
 @attribute [Authorize(Roles = ConstantesApp.ROLE_AUTEUR)]
 @inject ICounterViewModel ViewModel
 
-<h3>Compteurs</h3>
 
 <MudPaper Elevation="3">
+	<h3>Compteurs</h3>
 	<MudGrid>
 		<MudItem>
 			<MudCard Class="margin-left-right-5px">
@@ -50,6 +50,56 @@
 					<MudText Align="Align.Center" 
 							Color="@(ViewModel.DayCount.Difference > 0 ? Color.Success : Color.Error)" 
 							Typo="Typo.h6">@ViewModel.DayCount.Sign @ViewModel.DayCount.Difference</MudText>
+				</MudCardContent>
+    		</MudCard>
+		</MudItem>
+	</MudGrid>
+</MudPaper>
+
+
+<MudPaper Elevation="3">
+	<MudText Typo="Typo.h3">Aujourd'hui</MudText>
+	
+	<MudGrid>
+		<MudItem>
+			<MudCard Class="margin-left-right-5px">
+				<MudCardContent>
+					<MudText Typo="Typo.h6">Post le plus visité</MudText>
+				    <MudText Align="Align.Center" Typo="Typo.h6">@ViewModel.TodayPostCounter.Title</MudText>
+				</MudCardContent>
+    		</MudCard>
+		</MudItem>
+		
+		<MudItem>
+			<MudCard>
+				<MudCardContent>
+					<MudText Typo="Typo.h6">Total visites</MudText>
+				    <MudText Align="Align.Center" Typo="Typo.h5">@ViewModel.TodayPostCounter.Count</MudText>
+				</MudCardContent>
+    		</MudCard>
+		</MudItem>
+	</MudGrid>
+</MudPaper>
+
+
+<MudPaper Elevation="3">
+	<MudText Typo="Typo.h4">30 derniers jours</MudText>
+	
+	<MudGrid>
+		<MudItem>
+			<MudCard Class="margin-left-right-5px">
+				<MudCardContent>
+					<MudText Typo="Typo.h6">Post le plus visité</MudText>
+				    <MudText Align="Align.Center" Typo="Typo.h6">@ViewModel.MonthPostCounter.Title</MudText>
+				</MudCardContent>
+    		</MudCard>
+		</MudItem>
+		
+		<MudItem>
+			<MudCard>
+				<MudCardContent>
+					<MudText Typo="Typo.h6">Total visites</MudText>
+				    <MudText Align="Align.Center" Typo="Typo.h5">@ViewModel.MonthPostCounter.Count</MudText>
 				</MudCardContent>
     		</MudCard>
 		</MudItem>

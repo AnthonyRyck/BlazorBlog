@@ -25,6 +25,16 @@
 		Counter WeekCount { get; }
 
 		/// <summary>
+		/// Post le plus visité du jour
+		/// </summary>
+		CounterPost TodayPostCounter { get; }
+
+		/// <summary>
+		/// Post le plus visité du mois
+		/// </summary>
+		CounterPost MonthPostCounter { get; }
+
+		/// <summary>
 		/// Fait les requêtes pour avoir les compteurs
 		/// </summary>
 		/// <returns></returns>

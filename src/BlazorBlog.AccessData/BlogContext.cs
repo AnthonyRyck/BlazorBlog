@@ -1258,6 +1258,61 @@ namespace BlazorBlog.AccessData
 			}
 		}
 
+
+		public async Task<CounterPost> GetCounterPostDay(string userId)
+		{
+			return await GetCounterPostCore("DAY", userId);
+		}
+
+		public async Task<CounterPost> GetCounterPostMonth(string userId)
+		{
+			return await GetCounterPostCore("MONTH", userId);
+		}
+
+
+		private async Task<CounterPost> GetCounterPostCore(string interval, string userId)
+		{
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					var command = "SELECT post.title, COUNT(trk.postid) as Compteur "
+									+ "FROM tracks trk "
+									+ "INNER JOIN posts post "
+									+ "ON trk.postid = post.idpost "
+									+ $"WHERE post.userid = '{userId}' "
+									+ $"AND daterequested > DATE_SUB(NOW(), INTERVAL 1 {interval}) "
+									+ "GROUP BY trk.postid "
+									+ "ORDER BY Compteur DESC LIMIT 1;";
+
+					using (var cmd = new MySqlCommand(command, conn))
+					{
+						CounterPost counter = new CounterPost();
+						conn.Open();
+						using (var reader = await cmd.ExecuteReaderAsync())
+						{
+							if (reader.HasRows)
+							{
+								while (reader.Read())
+								{
+									counter.Title = reader.GetString(0);
+									counter.Count = reader.GetInt32(1);
+								}
+							}
+						}
+
+						await conn.CloseAsync();
+						return counter;
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		
 		#endregion
 
 		#region Private methods
