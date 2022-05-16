@@ -2,7 +2,12 @@
 @attribute [Authorize(Roles = ConstantesApp.ROLE_AUTEUR)]
 @inject ICounterViewModel ViewModel
 
-
+@if(ViewModel.IsLoading)
+{
+	<CountLoading TextToDisplay="Calcul des différents compteurs..." />	
+}
+else
+{
 <MudPaper Elevation="3">
 	<h3>Compteurs</h3>
 	<MudGrid>
@@ -105,7 +110,7 @@
 		</MudItem>
 	</MudGrid>
 </MudPaper>
-
+}
 
 @code {
 	protected override async Task OnInitializedAsync()
