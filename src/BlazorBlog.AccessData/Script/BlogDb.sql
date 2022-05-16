@@ -37,4 +37,5 @@ CREATE TABLE IF NOT EXISTS tracks
 visitorid VARCHAR(255),
 postid INT NULL,
 daterequested DATETIME NOT NULL,
-PRIMARY KEY(id))
+PRIMARY KEY(id),
+FOREIGN KEY (postid) REFERENCES posts (idpost) ON DELETE CASCADE);
