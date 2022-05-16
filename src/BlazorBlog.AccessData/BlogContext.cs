@@ -57,8 +57,16 @@ namespace BlazorBlog.AccessData
 		/// <returns></returns>
 		public async Task<List<PostView>> GetPostsAsync(string userId)
 		{
-			var commandText = @"SELECT idpost, title, posted, updateat, userid, ispublished "
-							 + $"FROM posts WHERE userid='{userId}' ORDER BY posted DESC;";
+			//var commandText = @"SELECT idpost, title, posted, updateat, userid, ispublished "
+			//				 + $"FROM posts WHERE userid='{userId}' ORDER BY posted DESC;";
+
+			var commandText = "SELECT post.idpost, post.title, post.posted, post.updateat, post.userid, post.ispublished, COUNT(trk.postid) "
+								+ "FROM posts post "
+								+ "LEFT JOIN tracks trk "
+								+ "ON trk.postid = post.idpost "
+								+ $"WHERE userid = '{userId}' "
+								+ "GROUP BY post.idpost "
+								+ "ORDER BY posted DESC;";
 			
 			Func<MySqlCommand, Task<List<PostView>>> funcCmd = async (cmd) =>
 			{
@@ -78,7 +86,8 @@ namespace BlazorBlog.AccessData
 							Posted = datePosted,
 							UpdatedAt = reader.GetDateTime(3),
 							UserId = reader.GetString(4),
-							IsPublished = reader.GetBoolean(5)
+							IsPublished = reader.GetBoolean(5),
+							CompteurVisite = reader.GetInt32(6)
 						};
 
 						posts.Add(post);
