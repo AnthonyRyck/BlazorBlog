@@ -124,12 +124,12 @@ app.MapFallbackToPage("/_Host");
 
 // ***** Pas encore mis en place *****
 // Middleware Track
-//app.UseForwardedHeaders(new ForwardedHeadersOptions
-//{
-//    ForwardedHeaders = ForwardedHeaders.XForwardedFor
-//            | ForwardedHeaders.XForwardedHost
-//});
-//app.UseMiddleware<TrackMiddleware>();
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+	ForwardedHeaders = ForwardedHeaders.XForwardedFor
+			| ForwardedHeaders.XForwardedHost
+});
+app.UseMiddleware<TrackMiddleware>();
 
 
 
