@@ -1,0 +1,65 @@
+﻿@page "/stats"
+@attribute [Authorize(Roles = ConstantesApp.ROLE_AUTEUR)]
+@inject ICounterViewModel ViewModel
+
+<h3>Compteurs</h3>
+
+<MudPaper Elevation="3">
+	<MudGrid>
+		<MudItem>
+			<MudCard Class="margin-left-right-5px">
+				<MudCardContent>
+					<MudText Typo="Typo.h6">Total visites (1 an)</MudText>
+				    <MudText Align="Align.Center" Typo="Typo.h4">@ViewModel.YearCount.CompteurActuel</MudText>
+					<MudText Align="Align.Center" 
+							Color="@(ViewModel.YearCount.Difference > 0 ? Color.Success : Color.Error)" 
+							Typo="Typo.h6">@ViewModel.YearCount.Sign @ViewModel.YearCount.Difference</MudText>
+				</MudCardContent>
+    		</MudCard>
+		</MudItem>
+		
+		<MudItem>
+			<MudCard>
+				<MudCardContent>
+					<MudText Typo="Typo.h6">Total visites (mois)</MudText>
+				    <MudText Align="Align.Center" Typo="Typo.h4">@ViewModel.MonthCount.CompteurActuel</MudText>
+					<MudText Align="Align.Center" 
+							Color="@(ViewModel.MonthCount.Difference > 0 ? Color.Success : Color.Error)" 
+							Typo="Typo.h6">@ViewModel.MonthCount.Sign @ViewModel.MonthCount.Difference</MudText>
+				</MudCardContent>
+    		</MudCard>
+		</MudItem>
+		
+		<MudItem>
+			<MudCard>
+				<MudCardContent>
+					<MudText Typo="Typo.h6">Total visites (semaine)</MudText>
+				    <MudText Align="Align.Center" Typo="Typo.h4">@ViewModel.WeekCount.CompteurActuel</MudText>
+					<MudText Align="Align.Center" 
+						Color="@(ViewModel.WeekCount.Difference > 0 ? Color.Success : Color.Error)" 
+						Typo="Typo.h6">@ViewModel.WeekCount.Sign @ViewModel.WeekCount.Difference</MudText>
+				</MudCardContent>
+    		</MudCard>
+		</MudItem>
+		
+		<MudItem>
+			<MudCard Outlined="true">
+				<MudCardContent>
+					<MudText Typo="Typo.h6">Total visites (aujourd'hui)</MudText>
+				    <MudText Align="Align.Center" Typo="Typo.h4">@ViewModel.DayCount.CompteurActuel</MudText>
+					<MudText Align="Align.Center" 
+							Color="@(ViewModel.DayCount.Difference > 0 ? Color.Success : Color.Error)" 
+							Typo="Typo.h6">@ViewModel.DayCount.Sign @ViewModel.DayCount.Difference</MudText>
+				</MudCardContent>
+    		</MudCard>
+		</MudItem>
+	</MudGrid>
+</MudPaper>
+
+
+@code {
+	protected override async Task OnInitializedAsync()
+	{
+		await ViewModel.LoadCounter();
+	}
+}

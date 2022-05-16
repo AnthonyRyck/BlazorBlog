@@ -1147,6 +1147,117 @@ namespace BlazorBlog.AccessData
 			}
 		}
 
+
+		public async Task<Counter> GetCounterDay(string userId)
+		{
+			try
+			{
+				return await GetCounterCore("DAY", userId);
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		public async Task<Counter> GetCounterWeek(string userId)
+		{
+			try
+			{
+				return await GetCounterCore("WEEK", userId);
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		public async Task<Counter> GetCounterMonth(string userId)
+		{
+			try
+			{
+				return await GetCounterCore("MONTH", userId);
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		public async Task<Counter> GetCounterYear(string userId)
+		{
+			try
+			{
+				return await GetCounterCore("YEAR", userId);
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		private async Task<Counter> GetCounterCore(string interval, string userId)
+		{
+			try
+			{
+				using (var conn = new MySqlConnection(ConnectionString))
+				{
+					// Pour avoir un compteur sur les dernières 24h
+					var command = $"SELECT COUNT(id) "
+					+ "FROM tracks trk "
+					+ "INNER JOIN posts post "
+					+ "ON trk.postid = post.idpost "
+					+ $"WHERE post.userid = '{userId}' "
+					+ $"AND daterequested > DATE_SUB(NOW(), INTERVAL 1 {interval});";
+
+					using (var cmd = new MySqlCommand(command, conn))
+					{
+						Counter counter = new Counter();
+						conn.Open();
+						using (var reader = await cmd.ExecuteReaderAsync())
+						{
+							if (reader.HasRows)
+							{
+								while (reader.Read())
+								{
+									counter.CompteurActuel = reader.GetInt32(0);
+								}
+							}
+						}
+
+						string cmdJourAvant = @"SELECT COUNT(id) "
+											+ "FROM tracks trk "
+											+ "INNER JOIN posts post "
+											+ "ON trk.postid = post.idpost "
+											+ $"WHERE post.userid = '{userId}' "
+											+ $"AND daterequested BETWEEN DATE_SUB((DATE_SUB(NOW(), INTERVAL 1 {interval})), INTERVAL 1 {interval}) AND DATE_SUB(NOW(), INTERVAL 1 {interval});";
+						cmd.CommandText = cmdJourAvant;
+
+						int compteurComparaison = 0;
+						using (var readerDiff = await cmd.ExecuteReaderAsync())
+						{
+							if (readerDiff.HasRows)
+							{
+								while (readerDiff.Read())
+								{
+									compteurComparaison = readerDiff.GetInt32(0);
+								}
+							}
+						}
+
+						counter.Difference = counter.CompteurActuel - compteurComparaison;
+
+						await conn.CloseAsync();
+						return counter;
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
 		#endregion
 
 		#region Private methods
