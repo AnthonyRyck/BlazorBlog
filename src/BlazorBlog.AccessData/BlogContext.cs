@@ -821,14 +821,19 @@ namespace BlazorBlog.AccessData
 				{
 					while (reader.Read())
 					{
+						// Cas ou le post n'est pas encore publié.
 						object tempDate = reader.GetValue(4);
 						DateTime? datePosted = ConvertFromDBVal<DateTime?>(tempDate);
+
+						// Cas ou le post n'a pas de contenu.
+						object tempContent = reader.GetValue(2);
+						string content = ConvertFromDBVal<string>(tempContent);
 
 						var post = new Post()
 						{
 							Id = reader.GetInt32(0),
 							Title = reader.GetString(1),
-							Content = reader.GetString(2),
+							Content = content,
 							Image = reader.GetString(3),
 							Posted = datePosted,
 							UpdatedAt = reader.GetDateTime(5),

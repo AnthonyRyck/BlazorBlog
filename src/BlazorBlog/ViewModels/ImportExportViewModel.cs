@@ -81,6 +81,7 @@ namespace BlazorBlog.ViewModels
 				Sauvegardes = temp.OrderBy(x => x.Created).ToList();
 				InLoading = false;
 			});
+			StateChanged?.Invoke();
 		}
 
 		public List<SauvegardeFile> Sauvegardes { get; private set; } = new List<SauvegardeFile>();
