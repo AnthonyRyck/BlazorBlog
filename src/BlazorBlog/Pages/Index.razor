@@ -5,6 +5,19 @@
 
 <Title Value="@SvcSettings.BlogName" />
 
+<HeadContent>
+    @* OpenGraph meta tags *@
+    <meta property="og:title" content="@SvcSettings.BlogName" />
+    <meta property="og:image" content="@SvcSettings.BlogImage" />
+	<meta property="og:description" content="@SvcSettings.BlogDescription" />
+
+    @*Twitter specific meta tags *@
+    <meta property="twitter:title" content="@SvcSettings.BlogName">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:image" content="@SvcSettings.BlogImage">
+	<meta property="twitter:description" content="@SvcSettings.BlogDescription">
+</HeadContent>
+
 @if(ViewModel.CategorieSelected != null)
 {
     <h1><u>Catégorie</u>: @ViewModel.CategorieSelected.Nom</h1>
