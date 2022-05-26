@@ -100,7 +100,7 @@ else
 
     private bool IsPreview { get; set; }
 
-    protected async override Task OnInitializedAsync()
+    protected async override void OnParametersSet()
     {
         if(idPost > 0 && idPostPreview == 0)
         {
@@ -113,5 +113,7 @@ else
             await viewModel.LoadPost(idPostPreview, true);
             IsPreview = true;
         }
+
+        StateHasChanged();
     }
 }
