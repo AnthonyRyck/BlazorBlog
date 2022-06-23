@@ -41,6 +41,16 @@
 		string Avatar { get; }
 
 		/// <summary>
+		/// Mots clé pour les metadonnées.
+		/// </summary>
+		string MetaKeywords { get; }
+
+		/// <summary>
+		/// Description pour les metadonnées.
+		/// </summary>
+		string MetaDescription { get; }
+
+		/// <summary>
 		/// Liste toutes les catégories pour ce post.
 		/// </summary>
 		IEnumerable<Categorie> Categories { get; }

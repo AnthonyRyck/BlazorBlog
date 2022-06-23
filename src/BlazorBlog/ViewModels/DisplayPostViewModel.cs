@@ -29,6 +29,9 @@
 
 		public IEnumerable<Categorie> Categories { get; private set; }
 
+		public string MetaKeywords { get; private set; }
+		public string MetaDescription { get; private set; }
+
 		public string Avatar { get; private set; }
 
 		public async Task LoadPost(int idpost, bool isPreview)
@@ -49,6 +52,10 @@
 
 			Article = temp;
 			Categories = await Context.GetCategories(idpost);
+
+			MetaKeywords = Categories.Select(c => c.Nom).Aggregate((a, b) => a + ", " + b);
+			IEnumerable<char> descr = Article.Content.Take(130);
+			MetaDescription = string.Join("", descr);
 
 			if (!string.IsNullOrEmpty(Settings.BlogUrl))
 			{

@@ -1,19 +1,19 @@
 ﻿@page "/post/{idPost:int}"
 @page "/preview/{idPostPreview:int}"
+
 @layout UserLayout
 @inject IDisplayPostViewModel viewModel
 
+<Title Value="@viewModel.Article.Title" />
 
 @if(viewModel.IsLoading)
 {
-	<Title Value="Chargement..." />
 	<div>Chargement de l'article...</div>   
 }
 else
 {
     @if(viewModel.Article == null)
     {
-        <Title Value="Oups" />
     	<h3>Oups</h3>
     
     <MudText Typo="Typo.body1">Aucun article trouvé à cette adresse.</MudText>
@@ -38,10 +38,12 @@ else
                 <meta property="twitter:title" content="@viewModel.Article.Title">
                 <meta property="twitter:card" content="summary_large_image">
                 <meta property="twitter:image" content="@viewModel.Article.Image">
+
+				<meta name="description" content="@viewModel.MetaDescription" />
+				<meta name="keywords" content="@viewModel.MetaKeywords" />
+				
             </HeadContent>
         }	
-
-		<Title Value="@viewModel.Article.Title" />
 		
     <div class="center-content post-title" style="background-image:url(@viewModel.Article.Image)">
 	    <div class="imagefade">
