@@ -204,6 +204,52 @@ namespace BlazorBlog.AccessData
 		}
 
 		/// <summary>
+		/// Récupère tous les posts qui sont publiés
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<Post>> GetPublishedPostsSitemapAsync()
+		{
+			string commandText = @"SELECT idpost, posted, updateat "
+								 + "FROM posts "
+								 + "WHERE ispublished=1 "
+								 + "ORDER BY posted DESC;";
+			
+			Func<MySqlCommand, Task<List<Post>>> funcCmd = async (cmd) =>
+			{
+				List<Post> posts = new List<Post>();
+
+				using (var reader = await cmd.ExecuteReaderAsync())
+				{
+					while (reader.Read())
+					{
+						var post = new Post()
+						{
+							Id = reader.GetInt32(0),
+							Posted = ConvertFromDBVal<DateTime?>(reader.GetValue(1)),
+							UpdatedAt = reader.GetDateTime(2)
+						};
+
+						posts.Add(post);
+					}
+				}
+
+				return posts;
+			};
+			List<Post> posts = new List<Post>();
+
+			try
+			{
+				posts = await GetCoreAsync(commandText, funcCmd);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+
+			return posts;
+		}
+
+		/// <summary>
 		/// Récupère le post par rapport à son id
 		/// </summary>
 		/// <param name="id"></param>

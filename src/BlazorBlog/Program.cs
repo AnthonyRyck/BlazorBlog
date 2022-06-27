@@ -178,10 +178,6 @@ using (var scope = scopeFactory.CreateScope())
 
     string updateSql = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Script", "BlogDbUpdate.sql");
     await blogCtx.UpdateDatabaseAsync(updateSql);
-
-	// Création du fichier sitemap
-	var siteMapService = scope.ServiceProvider.GetService<SiteMapService>();
-	await siteMapService.CreateSitemapAsync();
 }
 
 // Pour les logs.
@@ -195,6 +191,12 @@ Log.Logger = new LoggerConfiguration()
 	.WriteTo.MySQL(connectionDb, "Logs")
 	.CreateLogger();
 
+using (var scope = scopeFactory.CreateScope())
+{
+    // Création du fichier sitemap
+    var siteMapService = scope.ServiceProvider.GetService<SiteMapService>();
+    await siteMapService.CreateSitemapAsync();
+}
 
 
 app.Run();

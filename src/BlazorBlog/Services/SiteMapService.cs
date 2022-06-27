@@ -19,7 +19,7 @@ namespace BlazorBlog.Services
 		{
 			try
 			{
-				var posts = await BlogContext.GetPublishedPostsAsync();
+				var posts = await BlogContext.GetPublishedPostsSitemapAsync();
 				List<url> urlset = new List<url>();
 
 				string frequence = "weekly";
