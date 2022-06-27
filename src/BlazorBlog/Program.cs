@@ -49,6 +49,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 // Service de l'application
 builder.Services.AddSingleton(new BlogContext(connectionDb));
 builder.Services.AddSingleton<SettingsSvc>();
+builder.Services.AddScoped<SiteMapService>();
 
 // MudBlazor Services
 builder.Services.AddMudServices(config =>
@@ -133,6 +134,27 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 app.UseMiddleware<TrackMiddleware>();
 
 
+// Chemin pour stocker les images
+string pathImages = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES);
+if (!Directory.Exists(pathImages))
+    Directory.CreateDirectory(pathImages);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(pathImages),
+    RequestPath = ConstantesApp.USERIMG
+});
+
+// Chemin pour le fichier sitemap.xml
+string pathSitemap = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES, "sitemap");
+if (!Directory.Exists(pathSitemap))
+    Directory.CreateDirectory(pathSitemap);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(pathSitemap),
+    RequestPath = ""
+});
 
 // Ajout dans la base de l'utilisateur "root"
 var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
@@ -156,6 +178,10 @@ using (var scope = scopeFactory.CreateScope())
 
     string updateSql = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Script", "BlogDbUpdate.sql");
     await blogCtx.UpdateDatabaseAsync(updateSql);
+
+	// Création du fichier sitemap
+	var siteMapService = scope.ServiceProvider.GetService<SiteMapService>();
+	await siteMapService.CreateSitemapAsync();
 }
 
 // Pour les logs.
@@ -169,16 +195,6 @@ Log.Logger = new LoggerConfiguration()
 	.WriteTo.MySQL(connectionDb, "Logs")
 	.CreateLogger();
 
-// Chemin pour stocker les images
-string pathImages = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConstantesApp.IMAGES);
-if (!Directory.Exists(pathImages))
-    Directory.CreateDirectory(pathImages);
 
-	
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(pathImages),
-    RequestPath = ConstantesApp.USERIMG
-});
 
 app.Run();

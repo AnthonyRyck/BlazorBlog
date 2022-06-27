@@ -17,9 +17,10 @@ namespace BlazorBlog.ViewModels
 		private readonly string LoginUser;
 		private readonly IJSRuntime JSRuntime;
 		private readonly IServiceImage ImageService;
+		private readonly SiteMapService SiteMapSvc;
 
 		public NewPostViewModel(BlogContext blogContext, ISnackbar snackbar, HotKeys hotKeys, IDialogService dialogService, 
-								IHttpContextAccessor httpContextAccessor, IJSRuntime js, IServiceImage imageService)
+								IHttpContextAccessor httpContextAccessor, IJSRuntime js, IServiceImage imageService, SiteMapService siteMap)
 		{
 			ContextBlog = blogContext;
 			DialogService = dialogService;
@@ -42,6 +43,8 @@ namespace BlazorBlog.ViewModels
 			InitViewModel().GetAwaiter().GetResult();
 			ValidationCategorie = new CategorieValidation();
 			EditCtxCategorie = new EditContext(ValidationCategorie);
+
+			SiteMapSvc = siteMap;
 		}
 
 		private async Task InitViewModel()
@@ -151,6 +154,9 @@ namespace BlazorBlog.ViewModels
 
 						await ContextBlog.PublishPostAsync(PostEnCours);
 						Snack.Add($"Post publié {PostEnCours.UpdatedAt.ToString("f")}", Severity.Success);
+
+						// A la publication, mise à jour du fichier sitemap
+						await SiteMapSvc.CreateSitemapAsync();
 					}
 					else
 					{
