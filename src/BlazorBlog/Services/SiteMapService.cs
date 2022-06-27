@@ -27,6 +27,12 @@ namespace BlazorBlog.Services
 				if (posts.Count > 0)
 				{
 					Uri baseUri = new Uri(SettingSvc.BlogUrl);
+					urlset.Add(new url()
+					{
+						loc = baseUri.AbsoluteUri,
+						changefreq = frequence,
+						lastmod = String.Format("{0:yyyy-MM-dd}", DateTime.Now)
+					});
 					
 					foreach (var post in posts)
 					{
