@@ -66,7 +66,7 @@ namespace BlazorBlog.Services
 					HttpClient httpClient = new HttpClient();
 					var responseGoogle = await httpClient.GetAsync(urlPingGoogle);
 					if(responseGoogle.IsSuccessStatusCode)
-						Log.Information("Sitemap pingé à Google");
+						Log.Information("Sitemap pingé à Google : " + urlPingGoogle);
 					else Log.Information("Sitemap avec status : " + responseGoogle.StatusCode);
 				}
 			}
