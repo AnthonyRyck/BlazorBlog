@@ -61,7 +61,7 @@ namespace BlazorBlog.Services
 					// Une fois le fichier créé, faire un ping à Google.
 					// https://www.google.com/ping?sitemap=FULL_URL_OF_SITEMAP
 					Uri uriSitemap = new Uri(baseUri, "sitemap.xml");
-					string urlPingGoogle = "https://www.google.com/ping?sitemap=" + uriSitemap.AbsolutePath;
+					string urlPingGoogle = "https://www.google.com/ping?sitemap=" + uriSitemap.AbsoluteUri;
 
 					HttpClient httpClient = new HttpClient();
 					var responseGoogle = await httpClient.GetAsync(urlPingGoogle);
