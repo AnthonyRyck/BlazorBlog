@@ -72,7 +72,7 @@
 
 		public void OpenCategoriePosts(int idCategorie)
 		{
-			NavigationManager.NavigateTo($"/categorie/{idCategorie}", true);
+			NavigationManager.NavigateTo($"/categorie/{idCategorie}");
 		}
 
 		#endregion

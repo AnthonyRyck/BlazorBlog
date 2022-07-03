@@ -124,7 +124,6 @@ app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-// ***** Pas encore mis en place *****
 // Middleware Track
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
@@ -191,12 +190,13 @@ Log.Logger = new LoggerConfiguration()
 	.WriteTo.MySQL(connectionDb, "Logs")
 	.CreateLogger();
 
+#if !DEBUG
 using (var scope = scopeFactory.CreateScope())
 {
     // Création du fichier sitemap
     var siteMapService = scope.ServiceProvider.GetService<SiteMapService>();
     await siteMapService.CreateSitemapAsync();
 }
-
+#endif
 
 app.Run();

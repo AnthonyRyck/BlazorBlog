@@ -92,7 +92,7 @@ namespace BlazorBlog.ViewModels
 
 		public async Task EditPost(int idPost)
 		{
-			Nav.NavigateTo($"/editpost/{idPost}", true);
+			Nav.NavigateTo($"/editpost/{idPost}");
 		}
 
 		public async Task SaveThePost(int idPost)

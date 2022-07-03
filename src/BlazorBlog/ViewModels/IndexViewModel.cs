@@ -55,7 +55,7 @@ namespace BlazorBlog.ViewModels
 
 		public void OpenPost(int id)
 		{
-			navigationManager.NavigateTo($"/post/{id}", true);
+			navigationManager.NavigateTo($"/post/{id}");
 		}
 
 

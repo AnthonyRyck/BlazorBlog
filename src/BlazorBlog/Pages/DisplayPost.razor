@@ -4,7 +4,23 @@
 @layout UserLayout
 @inject IDisplayPostViewModel viewModel
 
-<Title Value="@viewModel.Article.Title" />
+<PageTitle>@viewModel.Article.Title</PageTitle>
+
+<HeadContent>
+    @* OpenGraph meta tags *@
+    <meta property="og:title" content="@viewModel.Article.Title" />
+    <meta property="og:author" content="@viewModel.Article.UserId" />
+    <meta property="og:image" content="@viewModel.Article.Image"/>
+
+    @*Twitter specific meta tags *@
+    <meta property="twitter:title" content="@viewModel.Article.Title">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:image" content="@viewModel.Article.Image">
+
+    <meta name="robots" content="index, follow" />
+    <meta name="description" content="@viewModel.MetaDescription" />
+    <meta name="keywords" content="@viewModel.MetaKeywords" />
+</HeadContent>
 
 @if(viewModel.IsLoading)
 {
@@ -26,25 +42,6 @@ else
     }
     else
     {
-        @if (!IsPreview)
-        {
-            <HeadContent>
-                @* OpenGraph meta tags *@
-                <meta property="og:title" content="@viewModel.Article.Title" />
-                <meta property="og:author" content="@viewModel.Article.UserId" />
-                <meta property="og:image" content="@viewModel.Article.Image"/>
-
-                @*Twitter specific meta tags *@
-                <meta property="twitter:title" content="@viewModel.Article.Title">
-                <meta property="twitter:card" content="summary_large_image">
-                <meta property="twitter:image" content="@viewModel.Article.Image">
-
-                <meta name="robots" content="index, follow" />
-				<meta name="description" content="@viewModel.MetaDescription" />
-				<meta name="keywords" content="@viewModel.MetaKeywords" />
-            </HeadContent>
-        }	
-		
     <div class="center-content post-title" style="background-image:url(@viewModel.Article.Image)">
 	    <div class="imagefade">
             <h1>@viewModel.Article.Title</h1>
@@ -89,7 +86,7 @@ else
                       Disabled="@viewModel.DisabledShare"/>					
             </div>
         }
-        </div>
+    </div>
     }
 }
 
